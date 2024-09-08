@@ -1,7 +1,7 @@
 import os
 import json
 from llama_index.core import Document
-from ..config import Config
+from config import Config
 
 cfg = Config()
 

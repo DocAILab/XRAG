@@ -1,9 +1,9 @@
 from llama_index.llms.openai import OpenAI
 
-from huggingface_model import get_huggingfacellm
-import chatglm4
-from ..embs import chatglmemb
-from ..config import Config
+from llms.huggingface_model import get_huggingfacellm
+from llms import chatglm4
+from embs import chatglmemb
+from config import Config
 
 
 llm_dict = {

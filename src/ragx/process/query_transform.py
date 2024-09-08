@@ -7,7 +7,7 @@ from llama_index.core.tools import QueryEngineTool, ToolMetadata
 from llama_index.core.query_engine import SubQuestionQueryEngine
 from llama_index.question_gen.openai import OpenAIQuestionGenerator
 
-
+from llms import llm
 def transform_and_query(query, cfg, query_engine):
     if cfg.query_transform == "subquery_zeroshot":
         return subquery_zeroshot(query, query_engine)

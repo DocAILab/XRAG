@@ -25,7 +25,7 @@ from jury import Jury
 import jury
 import evaluate
 
-from llm import get_llm
+from llms.llm import get_llm
 from typing import Optional, Sequence, Any
 from llama_index.core.evaluation import FaithfulnessEvaluator, CorrectnessEvaluator, GuidelineEvaluator
 from llama_index.core.evaluation import BaseEvaluator, EvaluationResult
