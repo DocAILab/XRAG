@@ -49,6 +49,8 @@ from uptrain.framework.evalllm import EvalLLM
 
 import nest_asyncio
 
+ppl_bug_number = 0
+
 LLAMA_CUSTOM_FAITHFULNESS_TEMPLATE = PromptTemplate(
     "Please tell if the context supports the given information related to the question.\n"
     "You need to answer with either YES or NO.\n"
@@ -259,6 +261,11 @@ def NLGEvaluate(questions, actual_responses, golden_contexts, golden_context_ids
     perplexity = jury.load_metric("perplexity")
     score = perplexity.compute(predictions=predictions, references=references, model_id="openai-community/gpt2")
     scores["perplexity"] = score["mean_perplexity"]
+    if int(scores["perplexity"]) > 1600:
+        global ppl_bug_number
+        ppl_bug_number = ppl_bug_number + 1
+        print("\n\n" + "ppl_bug_number:" + str(ppl_bug_number) + "\n\n")
+        scores["perplexity"] = 0
     #
     score = scorer(predictions=predictions, references=[references])
     scores["chrf"] = score["chrf"]["score"]
