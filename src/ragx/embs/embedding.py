@@ -1,6 +1,5 @@
-# from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.legacy.embeddings import HuggingFaceEmbedding
-
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+# from llama_index.legacy.embeddings import HuggingFaceEmbedding
 
 def get_embedding(name):
     return HuggingFaceEmbedding(
