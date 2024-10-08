@@ -252,11 +252,7 @@ def NLGEvaluate(questions, actual_responses, golden_contexts, golden_context_ids
     # chrf++
     chrf_plus = evaluate.load("chrf")
     score = chrf_plus.compute(predictions=predictions, references=[references], word_order=2)
-    scores["chrf_pp"] = score["score"]
-    # MAUVE 一个 predictions 只能对应一个references
-    mauve = evaluate.load('mauve')
-    score = mauve.compute(predictions=predictions, references=[''.join(references)])
-    scores["mauve"] = score.mauve
+    scores["chrf_pp"] = score["score"] / 100
     # perplexity:model id are needed
     perplexity = jury.load_metric("perplexity")
     score = perplexity.compute(predictions=predictions, references=references, model_id="openai-community/gpt2")
