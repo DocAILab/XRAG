@@ -7,9 +7,9 @@ import random
 # from huggingface_hub import login
 # login(token='xxxxxx')
 from tqdm import tqdm
-from config import GlobalVar
+from ..config import GlobalVar
 import warnings
-from config import Config
+from ..config import Config
 cfg = Config()
 
 test_init_total_number_documents = cfg.test_init_total_number_documents

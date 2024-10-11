@@ -5,7 +5,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModel
 from transformers.generation.utils import GenerationConfig
 from llama_index.llms.huggingface import HuggingFaceLLM
 # pip install llama-index-llms-huggingface
-from config import Config
+from ..config import Config
 cfg = Config()
 
 load_tokenizer = []

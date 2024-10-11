@@ -36,3 +36,4 @@ seqeval==1.2.2
 bert_score
 sentencepiece
 mauve-text
+streamlit

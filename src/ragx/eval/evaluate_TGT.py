@@ -1,6 +1,3 @@
-# 因为本地evaluate与外部包重名，需要暂时删除路径
-import os
-
 from jury import Jury
 import jury
 import evaluate

@@ -9,7 +9,7 @@ class Config:
         if cls._instance is None:
             cls._instance = super(Config, cls).__new__(cls)
             if config_file_path is None:
-                config_file_path = os.path.join(os.path.dirname(__file__), '..', '..', 'config.toml')
+                config_file_path = 'config.toml'
             cls._instance.config = toml.load(config_file_path)  # Load the config only once
 
             # Dynamically set attributes based on TOML config

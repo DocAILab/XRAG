@@ -9,8 +9,7 @@ from llama_index.llms.openai import OpenAI
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from deepeval.models.base_model import DeepEvalBaseLLM
 from uptrain import Settings
-from eval.DeepEvalLocalModel import DeepEvalLocalModel
-from llms.llm import get_llm
+from .DeepEvalLocalModel import DeepEvalLocalModel
 
 load_tokenizer = []
 llm_args = {"context_window": 4096, "max_new_tokens": 256,

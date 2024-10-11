@@ -1,6 +1,4 @@
 import logging
-import sys
-
 import numpy as np
 from deepeval.metrics import (
     ContextualPrecisionMetric,
@@ -17,32 +15,14 @@ from llama_index.core import PromptTemplate
 from llama_index.core.schema import NodeWithScore, TextNode
 from uptrain import Settings, Evals, EvalLlamaIndex, operators
 from uptrain.framework import DataSchema
-# 因为本地evaluate与外部包重名，需要暂时删除路径
-import os
-
 
 from jury import Jury
 import jury
 import evaluate
-
-from llms.llm import get_llm
-from typing import Optional, Sequence, Any
 from llama_index.core.evaluation import FaithfulnessEvaluator, CorrectnessEvaluator, GuidelineEvaluator
 from llama_index.core.evaluation import BaseEvaluator, EvaluationResult
 from llama_index.core.evaluation import AnswerRelevancyEvaluator, RelevancyEvaluator, SemanticSimilarityEvaluator
-from deepeval.integrations.llama_index import (
-    DeepEvalAnswerRelevancyEvaluator,
-    DeepEvalFaithfulnessEvaluator,
-    DeepEvalContextualRelevancyEvaluator,
-    DeepEvalSummarizationEvaluator,
-    DeepEvalBiasEvaluator,
-    DeepEvalToxicityEvaluator,
-)
-from llama_index.core.evaluation import RetrieverEvaluator
-import os
-
 import typing as t
-import pandas as pd
 import polars as pl
 from uptrain.framework.evals import ParametricEval, ResponseMatching
 from uptrain.framework.evalllm import EvalLLM
