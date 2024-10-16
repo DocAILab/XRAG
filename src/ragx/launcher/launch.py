@@ -138,5 +138,5 @@ def run():
         print("总数：" + str(all_num))
 
 if __name__ == '__main__':
-    launch()
+    run()
     print('Success')

@@ -92,8 +92,8 @@ def get_qa_dataset(dataset_name:str):
         # split the dataset 8:1:1
         random.shuffle(indexes)
         train_indexes = indexes[:int(len(indexes)*0.9)]
-        valid_indexes = indexes[int(len(indexes)*0.9):int(len(indexes)*0.95)]
-        test_indexes = indexes[int(len(indexes)*0.95):]
+        valid_indexes = indexes[int(len(indexes)*0.9):int(len(indexes)*0.99)]
+        test_indexes = indexes[int(len(indexes)*0.99):]
         train_data = {}
         valid_data = {}
         test_data = {}
@@ -153,8 +153,8 @@ def get_qa_dataset(dataset_name:str):
 
         random.shuffle(indexs)
         train_indexs = indexs[:int(len(indexs)*0.9)]
-        valid_indexs = indexs[int(len(indexs)*0.9):int(len(indexs)*0.95)]
-        test_indexs = indexs[int(len(indexs)*0.95):]
+        valid_indexs = indexs[int(len(indexs)*0.9):int(len(indexs)*0.99)]
+        test_indexs = indexs[int(len(indexs)*0.99):]
         train_data['question'] = [questions[i] for i in train_indexs]
         train_data['expected_answer'] = [answers[i] for i in train_indexs]
         train_data['golden_sources'] = [golden_sources[i] for i in train_indexs]
@@ -382,8 +382,8 @@ def get_qa_dataset(dataset_name:str):
 
             random.shuffle(indexs)
             train_indexs = indexs[:int(len(indexs) * 0.9)]
-            valid_indexs = indexs[int(len(indexs) * 0.9):int(len(indexs) * 0.95)]
-            test_indexs = indexs[int(len(indexs) * 0.95):]
+            valid_indexs = indexs[int(len(indexs) * 0.9):int(len(indexs) * 0.99)]
+            test_indexs = indexs[int(len(indexs) * 0.99):]
             train_data['question'] = [questions[i] for i in train_indexs]
             train_data['expected_answer'] = [answers[i] for i in train_indexs]
             train_data['golden_sources'] = [documents[i] for i in train_indexs]
@@ -482,8 +482,8 @@ def get_qa_dataset(dataset_name:str):
 
         random.shuffle(indexs)
         train_indexs = indexs[:int(len(indexs)*0.9)]
-        valid_indexs = indexs[int(len(indexs)*0.9):int(len(indexs)*0.95)]
-        test_indexs = indexs[int(len(indexs)*0.95):]
+        valid_indexs = indexs[int(len(indexs)*0.9):int(len(indexs)*0.99)]
+        test_indexs = indexs[int(len(indexs)*0.99):]
         train_data['question'] = [questions[i] for i in train_indexs]
         train_data['expected_answer'] = [answers[i] for i in train_indexs]
         train_data['golden_sources'] = [search_results[i] for i in train_indexs]
@@ -668,8 +668,8 @@ def get_qa_dataset(dataset_name:str):
         indexs = list(range(len(questions)))
         random.shuffle(indexs)
         train_indexs = indexs[:int(len(indexs)*0.9)]
-        valid_indexs = indexs[int(len(indexs)*0.9):int(len(indexs)*0.95)]
-        test_indexs = indexs[int(len(indexs)*0.95):]
+        valid_indexs = indexs[int(len(indexs)*0.9):int(len(indexs)*0.99)]
+        test_indexs = indexs[int(len(indexs)*0.99):]
         train_data['question'] = [questions[i] for i in train_indexs]
         train_data['expected_answer'] = [answers[i] for i in train_indexs]
         train_data['golden_sources'] = [golden_sources[i] for i in train_indexs]

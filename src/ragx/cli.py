@@ -1,10 +1,9 @@
-import os
-import random
-import subprocess
+import argparse
 import sys
 from enum import Enum, unique
 from .webui import run_web_ui
 from .launcher import run
+from .config import Config
 VERSION = "0.1.0"
 USAGE = (
     "-" * 70
@@ -35,16 +34,46 @@ class Command(str, Enum):
     VER = "version"
     HELP = "help"
 
-
 def main():
-    command = sys.argv.pop(1) if len(sys.argv) != 1 else Command.HELP
-    if command == Command.RUN:
+    # Initialize the argument parser
+    parser = argparse.ArgumentParser(description='RAGX CLI Tool')
+
+    # Define the subcommands
+    subparsers = parser.add_subparsers(dest='command', help='Subcommands')
+
+    # 'run' command
+    run_parser = subparsers.add_parser('run', help='Run the application')
+    run_parser.add_argument('--override', nargs='*', help='Override config values (e.g., --override key1=value1 key2=value2)')
+
+    # Other commands
+    subparsers.add_parser('webui', help='Run the web UI')
+    subparsers.add_parser('ver', help='Show version')
+    subparsers.add_parser('help', help='Show help')
+
+    # Parse the arguments
+    args = parser.parse_args()
+
+    # Handle commands
+    if args.command == Command.RUN:
+        # Parse overrides
+        config_overrides = {}
+        if args.override:
+            for override in args.override:
+                if '=' in override:
+                    key, value = override.split('=', 1)
+                    config_overrides[key.strip()] = value.strip()
+                else:
+                    print(f"Invalid override format: {override}")
+                    sys.exit(1)
+        # Update the Config instance
+        config = Config()
+        config.update_config(config_overrides)
         run()
-    elif command == Command.WEBUI:
+    elif args.command == Command.WEBUI:
         run_web_ui()
-    elif command == Command.VER:
+    elif args.command == Command.VER:
         print(WELCOME)
-    elif command == Command.HELP:
-        print(USAGE)
+    elif args.command == Command.HELP or args.command is None:
+        parser.print_help()
     else:
-        raise NotImplementedError("Unknown command: {}".format(command))
+        print(f"Unknown command: {args.command}")
