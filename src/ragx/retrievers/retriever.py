@@ -154,48 +154,42 @@ class CustomRetriever(BaseRetriever):
 
 
 # 融合检索器 其将来自多个文档的索引作为输入，并自动进行问题扩充，以获得多次查询结果用于合并
-# mode = 0, 1 分别使用llama simple重排序方法，1采用RRF
+# mode: 代表融合模式. 0 代表简单合并. 1: 采用RRF倒数排名融合
 def query_fusion_retriever(index, num_queries=4, similarity_top_k=2, mode=0, retriever_weight=None):
     query_fusion_r = None
-    if isinstance(index, list):
-        if retriever_weight is None:
-            retriever_weight = [1 / len(index)] * len(index)
-        if mode == 0:
-            query_fusion_r = QueryFusionRetriever(
-                [index_s.as_retriever() for index_s in index],
-                llm=Settings.llm,
-                similarity_top_k=similarity_top_k,
-                num_queries=num_queries,
-                use_async=True,
-                verbose=True,
-                # query_gen_prompt="...",
-                # 默认用于多轮询问的问题模板：
-                # QUERY_GEN_PROMPT=(
-                #     "You are a helpful assistant that generates multiple search queries based on a "
-                #     "single input query. Generate {num_queries} search queries, one on each line, "
-                #     "related to the following input query:\n"
-                #     "Query: {query}\n"
-                #     "Queries:\n"
-                # )
-            )
-        elif mode == 1:
-            query_fusion_r = QueryFusionRetriever(
-                [index_s.as_retriever() for index_s in index],
-                llm=Settings.llm,
-                similarity_top_k=similarity_top_k,
-                num_queries=num_queries,
-                use_async=True,
-                verbose=True,
-                mode=FUSION_MODES.RECIPROCAL_RANK
-            )
-    else:
+    if not isinstance(index, list):
+        index = [index]
+    if retriever_weight is None:
+        retriever_weight = [1 / len(index)] * len(index)
+    if mode == 0:
         query_fusion_r = QueryFusionRetriever(
-            [index.as_retriever()],
+            [index_s.as_retriever() for index_s in index],
+            llm=Settings.llm,
             similarity_top_k=similarity_top_k,
             num_queries=num_queries,
             use_async=True,
             verbose=True,
+            # query_gen_prompt="...",
+            # 默认用于多轮询问的问题模板：
+            # QUERY_GEN_PROMPT=(
+            #     "You are a helpful assistant that generates multiple search queries based on a "
+            #     "single input query. Generate {num_queries} search queries, one on each line, "
+            #     "related to the following input query:\n"
+            #     "Query: {query}\n"
+            #     "Queries:\n"
+            # )
         )
+    elif mode == 1:
+        query_fusion_r = QueryFusionRetriever(
+            [index_s.as_retriever() for index_s in index],
+            llm=Settings.llm,
+            similarity_top_k=similarity_top_k,
+            num_queries=num_queries,
+            use_async=True,
+            verbose=True,
+            mode=FUSION_MODES.RECIPROCAL_RANK
+        )
+
     return query_fusion_r
 
 
