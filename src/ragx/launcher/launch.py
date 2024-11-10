@@ -52,27 +52,10 @@ def run():
         node_postprocessors=[get_postprocessor(cfg)]
     )
 
-    text_qa_template_str = (
-        "Context information is below.\n"
-        "---------------------\n"
-        "{context_str}\n"
-        "---------------------\n"
-        "Given the context information and not prior knowledge, "
-        "answer the question: {query_str}\n"
-    )
+    text_qa_template_str = cfg.text_qa_template_str
     text_qa_template = PromptTemplate(text_qa_template_str)
 
-    refine_template_str = (
-        "We have the opportunity to refine the original answer "
-        "(only if needed) with some more context below.\n"
-        "------------\n"
-        "{context_msg}\n"
-        "------------\n"
-        "Given the new context, refine the original answer to better "
-        "answer the question: {query_str}. "
-        "If the context isn't useful, output the original answer again.\n"
-        "Original Answer: {existing_answer}"
-    )
+    refine_template_str = cfg.refine_template_str
     refine_template = PromptTemplate(refine_template_str)
 
     # Setup index query engine using LLM
@@ -89,24 +72,7 @@ def run():
     # golden_source = "The 2015 Diamond Head Classic was a college:    basketball tournament ... Buddy Hield was named the tournament’s MVP. Chavano Rainier ”Buddy” Hield is a Bahamian professional basketball player for the Sacramento Kings of the NBA..."
     true_num = 0
     all_num = 0
-    evaluateResults = EvaluationResult(metrics=[
-        "NLG_chrf", "NLG_bleu", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp",
-                                   "NLG_mauve", "NLG_perplexity",
-                                   "NLG_rouge_rouge1", "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum"
-        # "Llama_retrieval_Faithfulness", "Llama_retrieval_Relevancy", "Llama_response_correctness",
-        #                           "Llama_response_semanticSimilarity", "Llama_response_answerRelevancy","Llama_retrieval_RelevancyG",
-        #                           "Llama_retrieval_FaithfulnessG",
-        #                           "DeepEval_retrieval_contextualPrecision","DeepEval_retrieval_contextualRecall",
-        #                           "DeepEval_retrieval_contextualRelevancy","DeepEval_retrieval_faithfulness",
-        #                           "DeepEval_response_answerRelevancy","DeepEval_response_hallucination",
-        #                           "DeepEval_response_bias","DeepEval_response_toxicity",
-        #                           "UpTrain_Response_Completeness","UpTrain_Response_Conciseness","UpTrain_Response_Relevance",
-        #                           "UpTrain_Response_Valid","UpTrain_Response_Consistency","UpTrain_Response_Response_Matching",
-        #                           "UpTrain_Retrieval_Context_Relevance","UpTrain_Retrieval_Context_Utilization",
-        #                           "UpTrain_Retrieval_Factual_Accuracy","UpTrain_Retrieval_Context_Conciseness",
-        #                           "UpTrain_Retrieval_Code_Hallucination",
-
-    ])
+    evaluateResults = EvaluationResult(metrics=cfg.metrics)
 
     evalAgent = EvalModelAgent(cfg)
     if cfg.experiment_1:
@@ -136,6 +102,8 @@ def run():
         all_num = all_num + 1
         evaluateResults.print_results()
         print("总数：" + str(all_num))
+
+    return evaluateResults
 
 if __name__ == '__main__':
     run()
