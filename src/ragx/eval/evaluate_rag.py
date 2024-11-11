@@ -209,7 +209,7 @@ NLG_EVALUATION_METRICS = [
 ]
 #
 
-def NLGEvaluate(questions, actual_responses, golden_contexts, golden_context_ids, metrics):
+def NLGEvaluate(questions, actual_responses, expect_answers, golden_context_ids, metrics):
     # omit_metrics = []
     # for metric in NLG_EVALUATION_METRICS:
     #     if metric not in metrics:
@@ -218,8 +218,11 @@ def NLGEvaluate(questions, actual_responses, golden_contexts, golden_context_ids
 
     # n = NLGEval(metrics_to_omit=omit_metrics)
     references = []
-    for context in golden_contexts:
-        references.append(str(context))
+    if type(expect_answers) == list:
+        references = [str(response) for response in expect_answers]
+    elif type(expect_answers) == str:
+        references = [expect_answers]
+
     if type(actual_responses) == list:
         predictions = [str(response) for response in actual_responses]
     elif type(actual_responses) == str:
@@ -442,7 +445,7 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
         if i[0:3] == "NLG":
             NLG_metrics.append(i[4:])
     if NLG_metrics.__len__() != 0:
-        result = NLGEvaluate(question, actual_response, golden_context, golden_context_ids, NLG_metrics)
+        result = NLGEvaluate(question, actual_response, expected_answer, golden_context_ids, NLG_metrics)
         for i in NLG_EVALUATION_METRICS:
             eval_result.metrics_results["NLG_"+i]["score"] = result[i]
             eval_result.metrics_results["NLG_"+i]["count"] = 1
