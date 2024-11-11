@@ -3,7 +3,7 @@ import jury
 import evaluate
 
 NLG_EVALUATION_METRICS = [
-    "chrf", "bleu", "meteor", "wer", "cer", "chrf_pp", "mauve", "perplexity",
+    "chrf", "meteor", "wer", "cer", "chrf_pp", "mauve", "perplexity",
     "rouge_rouge1", "rouge_rouge2", "rouge_rougeL", "rouge_rougeLsum"
 ]
 
@@ -25,7 +25,7 @@ def NLGEvaluate(questions, actual_responses, golden_contexts, golden_context_ids
 
     # Individual Metrics
     # scores = n.compute_individual_metrics(ref=reference, hyp=hypothesis)
-    scorer = Jury(metrics=["chrf", "bleu", "meteor", "rouge", "wer", "cer"])
+    scorer = Jury(metrics=["chrf", "meteor", "rouge", "wer", "cer"])
     scores = {}
     # chrf++
     chrf_plus = evaluate.load("chrf")
@@ -42,7 +42,6 @@ def NLGEvaluate(questions, actual_responses, golden_contexts, golden_context_ids
     #
     score = scorer(predictions=predictions, references=[references])
     scores["chrf"] = score["chrf"]["score"]
-    scores["bleu"] = score["bleu"]["score"]
     scores["meteor"] = score["meteor"]["score"]
     # 'rouge1': 0.6666666666666665, 'rouge2': 0.5714285714285715, 'rougeL': 0.6666666666666665, 'rougeLsum': 0.6666666666666665
     scores["rouge_rouge1"] = score["rouge"]["rouge1"]
