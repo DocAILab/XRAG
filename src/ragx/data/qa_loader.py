@@ -85,8 +85,8 @@ def get_qa_dataset(dataset_name:str):
                     cur += len(s)
                     title2id[t] = id
                     id += 1
-                else:
-                    print("title already exists, skip.")
+                # else:
+                    # print("title already exists, skip.")
 
         indexes = list(range(len(questions)))
         # split the dataset 8:1:1
@@ -189,8 +189,8 @@ def get_qa_dataset(dataset_name:str):
                 source_sentences.append(source)
                 title2id[sec] = id
                 id += 1
-            else:
-                print("title already exists, skip.")
+            # else:
+            #     print("title already exists, skip.")
 
         train_data['golden_context_ids'] = [[title2id[sec]] for sec in train_data['sections']]
         valid_data['golden_context_ids'] = [[title2id[sec]] for sec in valid_data['sections']]
@@ -327,8 +327,8 @@ def get_qa_dataset(dataset_name:str):
                     source_sentences.append(text)
                     title2id[title] = id
                     id += 1
-                else:
-                    print("title already exists, skip.")
+                # else:
+                #     print("title already exists, skip.")
 
                 # mermory will be out of use ,so do memory optimization
 
@@ -362,8 +362,8 @@ def get_qa_dataset(dataset_name:str):
                     source_sentences.append(text)
                     title2id[title] = id
                     id += 1
-                else:
-                    print("title already exists, skip.")
+                # else:
+                #     print("title already exists, skip.")
 
             # questions = dataset['validation']['question'] + dataset['train']['question']
             # questions = [x['text'] for x in questions]
@@ -469,8 +469,8 @@ def get_qa_dataset(dataset_name:str):
                     source_sentences.append(s)
                     title2id[t] = id
                     id += 1
-                else:
-                    print("title already exists, skip.")
+                # else:
+                #     print("title already exists, skip.")
         # split the dataset 8:1:1
         train_data = {}
         valid_data = {}
@@ -553,8 +553,8 @@ def get_qa_dataset(dataset_name:str):
                 source_sentences.extend(sentence)
                 title2id[title] = id
                 id += 1
-            else:
-                print("title already exists, skip.")
+            # else:
+            #     print("title already exists, skip.")
 
         train_data = {}
         valid_data = {}

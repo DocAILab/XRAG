@@ -5,7 +5,7 @@ import pandas as pd
 import plotly.express as px
 from ragx.config import Config
 from ragx.eval.EvalModelAgent import EvalModelAgent
-from ragx.eval.evaluate_LLM import evaluating
+from ragx.eval.evaluate_rag import evaluating
 from ragx.launcher import run
 from ragx.eval.evaluate_rag import EvaluationResult
 from ragx.process.query_transform import transform_and_query
@@ -118,7 +118,6 @@ def main():
         cfg.query_transform = st.selectbox("Query Transform", options=QUERY_TRANSFORM_OPTIONS,
                                            index=QUERY_TRANSFORM_OPTIONS.index(
                                                cfg.query_transform) if cfg.query_transform in QUERY_TRANSFORM_OPTIONS else 0)
-        cfg.query_transform_mode = st.selectbox("Query Transform Mode", options=[0, 1], index=cfg.query_transform_mode)
         cfg.text_qa_template_str = st.text_area("Text QA Template", value=cfg.text_qa_template_str)
         cfg.refine_template_str = st.text_area("Refine Template", value=cfg.refine_template_str)
 
@@ -130,9 +129,7 @@ def main():
     if st.session_state.step == 4:
         st.header("Evaluate your RAG Model with single question")
         prompt = st.text_input('Input your question here')
-
-        # If the user hits enter
-        if prompt:
+        if st.button("Evaluate Your Question"):
             response = transform_and_query(prompt, cfg, st.session_state.query_engine)
             st.write(response.response)
 
@@ -146,7 +143,7 @@ def main():
 
     if st.session_state.step == 5:
         st.header("Evaluate your RAG Model with your dataset")
-        cfg.metrics = st.multiselect("Evaluation Metrics", options=AVAILABLE_METRICS, default=AVAILABLE_METRICS)
+        cfg.metrics = st.multiselect("Evaluation Metrics", options=AVAILABLE_METRICS, default=cfg.metrics)
         # cfg.n = st.number_input("Number of documents to evaluate", min_value=1, value=cfg.n, step=1)
         cfg.test_init_total_number_documents = st.number_input("Total number of documents to evaluate", min_value=1, value=cfg.test_init_total_number_documents, step=1)
 
@@ -183,7 +180,12 @@ def main():
                     st.markdown(response.response)
                     st.markdown('### Retrieval context')
                     st.markdown('\n\n'.join(retrieval_context))
+                    st.markdown('### Expected answer')
+                    st.markdown(expected_answer)
                     st.markdown('### Golden context')
+                    st.markdown('\n\n'.join(golden_context))
+
+                print(eval_result)
 
 
                 evaluateResults.add(eval_result)
