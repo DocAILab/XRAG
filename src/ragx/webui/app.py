@@ -13,8 +13,8 @@ from ragx.launcher import build_index, build_query_engine
 from ragx.data.qa_loader import get_qa_dataset
 
 AVAILABLE_METRICS = [
-    "NLG_chrf", "NLG_bleu", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp",
-    "NLG_mauve", "NLG_perplexity",
+    "NLG_chrf", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp",
+    "NLG_perplexity",
     "NLG_rouge_rouge1", "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum",
     "Llama_retrieval_Faithfulness", "Llama_retrieval_Relevancy", "Llama_response_correctness",
     "Llama_response_semanticSimilarity", "Llama_response_answerRelevancy", "Llama_retrieval_RelevancyG",
@@ -150,7 +150,8 @@ def main():
         if st.button("Evaluate Your Dataset"):
 
             all_num = 0
-            evaluateResults = EvaluationResult(metrics=cfg.metrics)
+            metrics = cfg.metrics
+            evaluateResults = EvaluationResult(metrics=metrics)
             evalAgent = EvalModelAgent(cfg)
             if cfg.experiment_1:
                 if len(st.session_state.qa_dataset) < cfg.test_init_total_number_documents:

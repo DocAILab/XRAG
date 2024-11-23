@@ -80,7 +80,7 @@ class EvaluationResult:
                               "UpTrain_Retrieval_Factual_Accuracy","UpTrain_Retrieval_Context_Conciseness",
                               "UpTrain_Retrieval_Code_Hallucination",
                               "NLG_chrf", "NLG_meteor", "NLG_rouge", "NLG_wer", "NLG_cer", "NLG_chrf_pp",
-                               "NLG_mauve", "NLG_perplexity",
+                             "NLG_perplexity",
                                "NLG_rouge_rouge1", "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum"
                               ]
         self.evaluationName = evaluation_metrics
@@ -221,7 +221,7 @@ Map_Uptrain_metrics_score_name = {
 #
 
 NLG_EVALUATION_METRICS = [
-    "chrf", "meteor", "wer", "cer", "chrf_pp", "mauve", "perplexity",
+    "chrf", "meteor", "wer", "cer", "chrf_pp", "perplexity",
     "rouge_rouge1", "rouge_rouge2", "rouge_rougeL", "rouge_rougeLsum"
 ]
 #
