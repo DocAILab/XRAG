@@ -39,19 +39,19 @@ RETRIEVER_OPTIONS = ["BM25", "Vector", "Summary", "Tree", "Keyword", "Custom", "
 POSTPROCESS_RERANK_OPTIONS = ["none","long_context_reorder", "colbertv2_rerank","bge-reranker-base"]  # Add more as needed
 QUERY_TRANSFORM_OPTIONS = ["none", "hyde_zeroshot", "hyde_fewshot","stepback_zeroshot","stepback_fewshot"]  # Add more as needed
 
-@st.cache_resource
+@st.cache_resource(show_spinner=False)
 def get_query():
     return run(cli=False)
 
-@st.cache_resource
-def get_qa_dataset(dataset):
+@st.cache_resource(show_spinner=False)
+def get_qa_dataset_(dataset):
     return get_qa_dataset(dataset)
 
-@st.cache_resource
+@st.cache_resource(show_spinner=False)
 def get_index():
     return build_index(st.session_state.qa_dataset)
 
-@st.cache_resource
+@st.cache_resource(show_spinner=False)
 def get_query_engine():
     return build_query_engine(st.session_state.index, st.session_state.hierarchical_storage_context)
 
@@ -73,12 +73,12 @@ def main():
         if st.button("Load Dataset"):
             st.session_state.step = 2
             with st.spinner("Loading Dataset..."):
-                st.session_state.qa_dataset = get_qa_dataset(cfg.dataset)
+                st.session_state.qa_dataset = get_qa_dataset_(cfg.dataset)
             st.rerun()
 
     if st.session_state.step == 2:
         st.header("Configure your RAG Index")
-        st.markdown("Selected Dataset: " + st.session_state.dataset)
+        st.markdown("Selected Dataset: " + cfg.dataset)
         col1, col2 = st.columns([1, 1])
         with col1:
             # API Keys
