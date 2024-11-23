@@ -132,6 +132,23 @@ class EvaluationResult:
                     print(f"{key}: 0, valid number : {value['count']}")
                 else:
                     print(f"{key}: {value['score']/value['count']}, valid number : {value['count']}")
+
+    def get_results_str(self):
+        ans = ''
+        for key, value in self.results.items():
+            if key in self.metrics:
+                if key == 'n':
+                    ans += f"{key}: {value}"
+                else:
+                    ans += f"{key}: {value/self.results['n']}"
+        for key, value in self.metrics_results.items():
+            if key in self.metrics:
+                if value['count'] == 0:
+                    ans += f"{key}: 0, valid number : {value['count']}"
+                else:
+                    ans += f"{key}: {value['score']/value['count']}, valid number : {value['count']}"
+
+
     def print_results_to_path(self, path, config, sample_arr):
         print("save data to " + path)
         f = open(path, 'a')

@@ -24,15 +24,9 @@ def seed_everything(seed):
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
 
-def run():
-
-    seed_everything(42)
-
+def build_index(qa_dataset):
     cfg = Config()
-    # cfg.get_args()
-    qa_dataset = get_qa_dataset(cfg.dataset)
     llm = get_llm(cfg.llm)
-
     # Create and dl embeddings instance
     embeddings = get_embedding(cfg.embeddings)
 
@@ -41,13 +35,20 @@ def run():
     Settings.embed_model = embeddings
     # pip install llama-index-embeddings-langchain
 
-    cfg.persist_dir = cfg.persist_dir + '-' + cfg.dataset + '-' + cfg.embeddings + '-' + cfg.split_type + '-' + str(cfg.chunk_size)
+    cfg.persist_dir = cfg.persist_dir + '-' + cfg.dataset + '-' + cfg.embeddings + '-' + cfg.split_type + '-' + str(
+        cfg.chunk_size)
 
-    index, hierarchical_storage_context = get_index(qa_dataset, cfg.persist_dir, split_type=cfg.split_type, chunk_size=cfg.chunk_size)
+    index, hierarchical_storage_context = get_index(qa_dataset, cfg.persist_dir, split_type=cfg.split_type,
+                                                    chunk_size=cfg.chunk_size)
 
+
+    return index, hierarchical_storage_context
+
+def build_query_engine(index, hierarchical_storage_context):
+
+    cfg = Config()
     query_engine = RetrieverQueryEngine(
-
-        retriever=get_retriver(cfg.retriever, index, hierarchical_storage_context=hierarchical_storage_context), # todo: cfg.retriever
+        retriever=get_retriver(cfg.retriever, index, hierarchical_storage_context=hierarchical_storage_context),
         response_synthesizer=response_synthesizer(0),
         node_postprocessors=[get_postprocessor(cfg)]
     )
@@ -58,22 +59,19 @@ def run():
     refine_template_str = cfg.refine_template_str
     refine_template = PromptTemplate(refine_template_str)
 
-    # Setup index query engine using LLM
-    # query_engine = index.as_query_engine(response_mode="compact")
-
     query_engine.update_prompts({"response_synthesizer:text_qa_template": text_qa_template,
                                  "response_synthesizer:refine_template": refine_template})
     query_engine = query_expansion([query_engine], query_number=4, similarity_top_k=10)
     query_engine = RetrieverQueryEngine.from_args(query_engine)
 
+    return query_engine
 
-    # question = "Which team does the player named 2015 Diamond Head Classic’s MVP play for?"
-    # answer = "Sacramento Kings"
-    # golden_source = "The 2015 Diamond Head Classic was a college:    basketball tournament ... Buddy Hield was named the tournament’s MVP. Chavano Rainier ”Buddy” Hield is a Bahamian professional basketball player for the Sacramento Kings of the NBA..."
+
+def eval_cli(qa_dataset, query_engine):
+    cfg = Config()
     true_num = 0
     all_num = 0
     evaluateResults = EvaluationResult(metrics=cfg.metrics)
-
     evalAgent = EvalModelAgent(cfg)
     if cfg.experiment_1:
         if len(qa_dataset) < cfg.test_init_total_number_documents:
@@ -86,7 +84,7 @@ def run():
             qa_dataset['test_data']['expected_answer'][:cfg.test_init_total_number_documents],
             qa_dataset['test_data']['golden_context'][:cfg.test_init_total_number_documents],
             qa_dataset['test_data']['golden_context_ids'][:cfg.test_init_total_number_documents]
-            ):
+    ):
         response = transform_and_query(question, cfg, query_engine)
         # 返回node节点
         retrieval_ids = []
@@ -102,8 +100,23 @@ def run():
         all_num = all_num + 1
         evaluateResults.print_results()
         print("总数：" + str(all_num))
-
     return evaluateResults
+def run(cli=True):
+
+    seed_everything(42)
+    cfg = Config()
+    qa_dataset = get_qa_dataset(cfg.dataset)
+    index, hierarchical_storage_context = build_index(qa_dataset)
+    query_engine = build_query_engine(index, hierarchical_storage_context)
+    if cli:
+        evaluateResults = eval_cli(qa_dataset, query_engine)
+        return evaluateResults
+    else:
+        return query_engine, qa_dataset
+
+
+
+
 
 if __name__ == '__main__':
     run()
