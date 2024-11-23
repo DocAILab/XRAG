@@ -147,6 +147,7 @@ class EvaluationResult:
                     ans += f"{key}: 0, valid number : {value['count']}"
                 else:
                     ans += f"{key}: {value['score']/value['count']}, valid number : {value['count']}"
+        return ans
 
 
     def print_results_to_path(self, path, config, sample_arr):
