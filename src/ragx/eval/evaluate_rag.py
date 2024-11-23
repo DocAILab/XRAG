@@ -138,15 +138,15 @@ class EvaluationResult:
         for key, value in self.results.items():
             if key in self.metrics:
                 if key == 'n':
-                    ans += f"{key}: {value}"
+                    ans += f"{key}: {value}"+ "\n"
                 else:
-                    ans += f"{key}: {value/self.results['n']}"
+                    ans += f"{key}: {value/self.results['n']}"+ "\n"
         for key, value in self.metrics_results.items():
             if key in self.metrics:
                 if value['count'] == 0:
-                    ans += f"{key}: 0, valid number : {value['count']}"
+                    ans += f"{key}: 0, valid number : {value['count']}"+"\n"
                 else:
-                    ans += f"{key}: {value['score']/value['count']}, valid number : {value['count']}"
+                    ans += f"{key}: {value['score']/value['count']}, valid number : {value['count']}"+"\n"
         return ans
 
 

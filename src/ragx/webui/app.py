@@ -150,7 +150,7 @@ def main():
         if st.button("Evaluate Your Dataset"):
 
             all_num = 0
-            metrics = cfg.metrics
+            metrics = cfg.metrics.copy()
             evaluateResults = EvaluationResult(metrics=metrics)
             evalAgent = EvalModelAgent(cfg)
             if cfg.experiment_1:
