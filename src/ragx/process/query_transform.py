@@ -6,6 +6,7 @@ from llama_index.core.prompts.prompt_type import PromptType
 from llama_index.core.tools import QueryEngineTool, ToolMetadata
 from llama_index.core.query_engine import SubQuestionQueryEngine
 from llama_index.question_gen.openai import OpenAIQuestionGenerator
+from llama_index.core.schema import NodeWithScore, TextNode
 
 from ..llms import llm
 def transform_and_query(query, cfg, query_engine):
@@ -183,7 +184,7 @@ def subquery(query, prompt_template_str, query_engine):
         )
     ]
 
-    subquery_engine = SubQuestionQueryEngine.from_defaults(
+    subquery_engine = CustomSubQuestionQueryEngine.from_defaults(
         query_engine_tools=query_engine_tools,
         use_async=False,
         question_gen=OpenAIQuestionGenerator.from_defaults(
@@ -295,3 +296,14 @@ def subquery_fewshot(query, query_engine):
     {query_str}
     """
     return subquery(query, FEWSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL, query_engine)
+
+
+class CustomSubQuestionQueryEngine(SubQuestionQueryEngine):
+    def _construct_node(self, qa_pair):
+        node_text = f"Sub question: {qa_pair.sub_q.sub_question}\nResponse: {qa_pair.answer}"
+        if qa_pair.sources and len(qa_pair.sources) > 0:
+            metadata = qa_pair.sources[0].node.metadata.copy()
+        else:
+            metadata = {}
+        node = TextNode(text=node_text, metadata=metadata)
+        return NodeWithScore(node=node)
