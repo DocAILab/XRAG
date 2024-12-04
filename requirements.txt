@@ -38,3 +38,4 @@ bert_score
 sentencepiece
 mauve-text
 streamlit
+streamlit-option-menu

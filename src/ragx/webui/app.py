@@ -31,8 +31,8 @@ AVAILABLE_METRICS = [
 ]
 
 # Define options for each dropdown
-LLM_OPTIONS = ["chatgpt-3.5", "gpt-4", "text-davinci-003"]  # Add more as needed
-EMBEDDING_OPTIONS = ["BAAI/bge-large-en-v1.5", "openai"]  # Add more as needed
+LLM_OPTIONS = ["openai", "gpt-4", "text-davinci-003"]  # Add more as needed
+EMBEDDING_OPTIONS = ["BAAI/bge-large-en-v1.5", "BAAI/bge-m3", "BAAI/bge-base-en-v1.5","BAAI/bge-small-en-v1.5","BAAI/bge-large-zh-v1.5","BAAI/bge-base-zh-v1.5","BAAI/bge-small-zh-v1.5"]  # Add more as needed
 SPLIT_TYPE_OPTIONS = ["sentence", "character", "hierarchical"]
 DATASET_OPTIONS = ["hotpot_qa", "drop", "natural_questions","trivia_qa","search_qa","finqa","law"]  # Replace with actual dataset options
 RETRIEVER_OPTIONS = ["BM25", "Vector", "Summary", "Tree", "Keyword", "Custom", "QueryFusion", "AutoMerging", "Recursive", "SentenceWindow"]  # Add more as needed
@@ -78,7 +78,7 @@ def main():
 
     if st.session_state.step == 2:
         st.header("Configure your RAG Index")
-        st.markdown("Selected Dataset: " + cfg.dataset)
+        # st.markdown("Selected Dataset: " + cfg.dataset)
         col1, col2 = st.columns([1, 1])
         with col1:
             # API Keys
@@ -100,11 +100,18 @@ def main():
             cfg.source_dir = st.text_input("Source Directory", value=cfg.source_dir)
             cfg.persist_dir = st.text_input("Persist Directory", value=cfg.persist_dir)
 
-        if st.button("Build Index"):
-            st.session_state.step = 3
-            with st.spinner("Building Index..."):
-                st.session_state.index, st.session_state.hierarchical_storage_context = get_index()
-            st.rerun()
+        # 返回或者继续
+        c1,c_,c2 = st.columns([1,4,1])
+        with c1:
+            if st.button("Back"):
+                st.session_state.step = 1
+                st.rerun()
+        with c2:
+            if st.button("Build Index"):
+                st.session_state.step = 3
+                with st.spinner("Building Index..."):
+                    st.session_state.index, st.session_state.hierarchical_storage_context = get_index()
+                st.rerun()
             # Evaluation Metrics Selection
 
     if st.session_state.step == 3:
@@ -121,11 +128,17 @@ def main():
         cfg.text_qa_template_str = st.text_area("Text QA Template", value=cfg.text_qa_template_str)
         cfg.refine_template_str = st.text_area("Refine Template", value=cfg.refine_template_str)
 
-        if st.button("Build Query Engine"):
-            st.session_state.step = 4
-            with st.spinner("Building Query Engine..."):
-                st.session_state.query_engine = get_query_engine()
-            st.rerun()
+        c1, c_, c2 = st.columns([1, 4, 1])
+        with c1:
+            if st.button("Back"):
+                st.session_state.step = 2
+                st.rerun()
+        with c2:
+            if st.button("Build Query Engine"):
+                st.session_state.step = 4
+                with st.spinner("Building Query Engine..."):
+                    st.session_state.query_engine = get_query_engine()
+                st.rerun()
     if st.session_state.step == 4:
         st.header("Evaluate your RAG Model with single question")
         prompt = st.text_input('Input your question here')
@@ -137,9 +150,16 @@ def main():
             with st.expander('Source Text'):
                 st.write(response.get_formatted_sources(length=1024))
 
-        if st.button("Evaluate Your Dataset"):
-            st.session_state.step = 5
-            st.rerun()
+        c1, c_, c2 = st.columns([1, 4, 1])
+        with c1:
+            if st.button("Back"):
+                st.session_state.step = 3
+                st.rerun()
+
+        with c2:
+            if st.button("Evaluate Your Dataset"):
+                st.session_state.step = 5
+                st.rerun()
 
     if st.session_state.step == 5:
         st.header("Evaluate your RAG Model with your dataset")
@@ -147,57 +167,64 @@ def main():
         # cfg.n = st.number_input("Number of documents to evaluate", min_value=1, value=cfg.n, step=1)
         cfg.test_init_total_number_documents = st.number_input("Total number of documents to evaluate", min_value=1, value=cfg.test_init_total_number_documents, step=1)
 
-        if st.button("Evaluate Your Dataset"):
+        c1, c_, c2 = st.columns([1, 4, 1])
+        with c1:
+            if st.button("Back"):
+                st.session_state.step = 4
+                st.rerun()
 
-            all_num = 0
-            metrics = cfg.metrics.copy()
-            evaluateResults = EvaluationResult(metrics=metrics)
-            evalAgent = EvalModelAgent(cfg)
-            if cfg.experiment_1:
-                if len(st.session_state.qa_dataset) < cfg.test_init_total_number_documents:
-                    warnings.filterwarnings('default')
-                    warnings.warn("使用的数据集长度大于数据集本身的最大长度，请修改。 本轮代码无法运行", UserWarning)
-            else:
-                cfg.test_init_total_number_documents = cfg.n
-            for question, expected_answer, golden_context, golden_context_ids in zip(
-                    st.session_state.qa_dataset['test_data']['question'][:cfg.test_init_total_number_documents],
-                    st.session_state.qa_dataset['test_data']['expected_answer'][:cfg.test_init_total_number_documents],
-                    st.session_state.qa_dataset['test_data']['golden_context'][:cfg.test_init_total_number_documents],
-                    st.session_state.qa_dataset['test_data']['golden_context_ids'][:cfg.test_init_total_number_documents]
-            ):
-                response = transform_and_query(question, cfg, st.session_state.query_engine)
-                # 返回node节点
-                retrieval_ids = []
-                retrieval_context = []
-                for source_node in response.source_nodes:
-                    retrieval_ids.append(source_node.metadata['id'])
-                    retrieval_context.append(source_node.get_content())
-                actual_response = response.response
-                eval_result = evaluating(question, response, actual_response, retrieval_context, retrieval_ids,
-                                         expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
-                                         evalAgent)
-                with st.expander(question):
-                    st.markdown("### Answer")
-                    st.markdown(response.response)
-                    st.markdown('### Retrieval context')
-                    st.markdown('\n\n'.join(retrieval_context))
-                    st.markdown('### Expected answer')
-                    st.markdown(expected_answer)
-                    st.markdown('### Golden context')
-                    st.markdown('\n\n'.join(golden_context))
+        with c2:
+            if st.button("Evaluate Your Dataset"):
 
-                print(eval_result)
+                all_num = 0
+                metrics = cfg.metrics.copy()
+                evaluateResults = EvaluationResult(metrics=metrics)
+                evalAgent = EvalModelAgent(cfg)
+                if cfg.experiment_1:
+                    if len(st.session_state.qa_dataset) < cfg.test_init_total_number_documents:
+                        warnings.filterwarnings('default')
+                        warnings.warn("使用的数据集长度大于数据集本身的最大长度，请修改。 本轮代码无法运行", UserWarning)
+                else:
+                    cfg.test_init_total_number_documents = cfg.n
+                for question, expected_answer, golden_context, golden_context_ids in zip(
+                        st.session_state.qa_dataset['test_data']['question'][:cfg.test_init_total_number_documents],
+                        st.session_state.qa_dataset['test_data']['expected_answer'][:cfg.test_init_total_number_documents],
+                        st.session_state.qa_dataset['test_data']['golden_context'][:cfg.test_init_total_number_documents],
+                        st.session_state.qa_dataset['test_data']['golden_context_ids'][:cfg.test_init_total_number_documents]
+                ):
+                    response = transform_and_query(question, cfg, st.session_state.query_engine)
+                    # 返回node节点
+                    retrieval_ids = []
+                    retrieval_context = []
+                    for source_node in response.source_nodes:
+                        retrieval_ids.append(source_node.metadata['id'])
+                        retrieval_context.append(source_node.get_content())
+                    actual_response = response.response
+                    eval_result = evaluating(question, response, actual_response, retrieval_context, retrieval_ids,
+                                             expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
+                                             evalAgent)
+                    with st.expander(question):
+                        st.markdown("### Answer")
+                        st.markdown(response.response)
+                        st.markdown('### Retrieval context')
+                        st.markdown('\n\n'.join(retrieval_context))
+                        st.markdown('### Expected answer')
+                        st.markdown(expected_answer)
+                        st.markdown('### Golden context')
+                        st.markdown('\n\n'.join(golden_context))
+
+                    print(eval_result)
 
 
-                evaluateResults.add(eval_result)
-                all_num = all_num + 1
-                st.markdown(evaluateResults.get_results_str())
+                    evaluateResults.add(eval_result)
+                    all_num = all_num + 1
+                    st.markdown(evaluateResults.get_results_str())
 
-                # print("总数：" + str(all_num))
-            st.success("Evaluation complete!")
-            st.session_state.evaluation_results = evaluateResults
+                    # print("总数：" + str(all_num))
+                st.success("Evaluation complete!")
+                st.session_state.evaluation_results = evaluateResults
             # st.session_state.step = 5
-            st.rerun()
+
 
     # if st.session_state.step == 5:
     #     st.header("Evaluation Results")

@@ -6,7 +6,7 @@ auth_token = "hf_xxx"
 
 
 [settings]
-llm = "chatgpt-3.5"
+llm = "openai"
 embeddings = "BAAI/bge-large-en-v1.5"
 split_type = "sentence"
 chunk_size = 128
@@ -30,7 +30,7 @@ retriever = "BM25"
 retriever_mode = 0
 postprocess_rerank = "long_context_reorder"
 query_transform = "none"
-metrics = ["NLG_chrf", "NLG_bleu", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp","NLG_mauve", "NLG_perplexity", "NLG_rouge_rouge1", "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum"]
+metrics = ["NLG_chrf", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp","NLG_perplexity", "NLG_rouge_rouge1", "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum"]
 
 [prompt]
 text_qa_template_str = "Context information is below.\n---------------------\n{context_str}\n---------------------\nGiven the context information and not prior knowledge, answer the question: {query_str}\n"

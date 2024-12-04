@@ -25,7 +25,7 @@ def get_openai(api_base,api_key,api_name):
 def get_llm(name):
     if name in llm_dict.keys():
         return get_huggingfacellm(llm_dict[name])
-    elif name == 'chatgpt-3.5':
+    elif name == 'openai':
         return get_openai(Config().api_base,Config().api_key,Config().api_name)
     else:
         raise ValueError(f"no model name: {name}.")
