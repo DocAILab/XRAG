@@ -47,7 +47,7 @@ def main():
 
     # Other commands
     subparsers.add_parser('webui', help='Run the web UI')
-    subparsers.add_parser('ver', help='Show version')
+    subparsers.add_parser('version', help='Show version')
     subparsers.add_parser('help', help='Show help')
 
     # Parse the arguments
