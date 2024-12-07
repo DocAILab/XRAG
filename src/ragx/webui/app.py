@@ -35,6 +35,14 @@ LLM_OPTIONS = ["openai", "gpt-4", "text-davinci-003"]  # Add more as needed
 EMBEDDING_OPTIONS = ["BAAI/bge-large-en-v1.5", "BAAI/bge-m3", "BAAI/bge-base-en-v1.5","BAAI/bge-small-en-v1.5","BAAI/bge-large-zh-v1.5","BAAI/bge-base-zh-v1.5","BAAI/bge-small-zh-v1.5"]  # Add more as needed
 SPLIT_TYPE_OPTIONS = ["sentence", "character", "hierarchical"]
 DATASET_OPTIONS = ["hotpot_qa", "drop", "natural_questions","trivia_qa","search_qa","finqa","law"]  # Replace with actual dataset options
+DATASET_DISPLAY_MAP = {
+    "hotpot_qa": "HotpotQA",
+    "drop": "DropQA",
+    "natural_questions": "NaturalQA"
+    # remain for other options
+}
+# frontend dataset options
+FRONTEND_DATASET_OPTIONS = [DATASET_DISPLAY_MAP.get(ds, ds) for ds in DATASET_OPTIONS]
 RETRIEVER_OPTIONS = ["BM25", "Vector", "Summary", "Tree", "Keyword", "Custom", "QueryFusion", "AutoMerging", "Recursive", "SentenceWindow"]  # Add more as needed
 POSTPROCESS_RERANK_OPTIONS = ["none","long_context_reorder", "colbertv2_rerank","bge-reranker-base"]  # Add more as needed
 QUERY_TRANSFORM_OPTIONS = ["none", "hyde_zeroshot", "hyde_fewshot","stepback_zeroshot","stepback_fewshot"]  # Add more as needed
@@ -65,11 +73,26 @@ def main():
     cfg = Config()
 
     if st.session_state.step == 1:
-
-
         st.header("Choose your Dataset")
-        cfg.dataset = st.selectbox("Dataset", options=DATASET_OPTIONS,
-                                   index=DATASET_OPTIONS.index(cfg.dataset) if cfg.dataset in DATASET_OPTIONS else 0,key="dataset")
+        
+        # find the backend dataset value
+        backend_dataset = cfg.dataset if cfg.dataset in DATASET_OPTIONS else DATASET_OPTIONS[0]
+        # find the frontend dataset value and index
+        frontend_dataset = DATASET_DISPLAY_MAP.get(backend_dataset, backend_dataset)
+        frontend_index = FRONTEND_DATASET_OPTIONS.index(frontend_dataset)
+
+        selected_frontend_dataset = st.selectbox(
+            "Dataset", 
+            options=FRONTEND_DATASET_OPTIONS, 
+            index=frontend_index,
+            key="dataset"
+        )
+
+        # reverse map: from the frontend dataset to the backend dataset
+        DISPLAY_TO_BACKEND_MAP = {v: k for k, v in DATASET_DISPLAY_MAP.items()}
+        chosen_backend_dataset = DISPLAY_TO_BACKEND_MAP.get(selected_frontend_dataset, selected_frontend_dataset)
+        cfg.dataset = chosen_backend_dataset
+
         if st.button("Load Dataset"):
             st.session_state.step = 2
             with st.spinner("Loading Dataset..."):
