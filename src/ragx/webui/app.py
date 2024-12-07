@@ -47,6 +47,57 @@ RETRIEVER_OPTIONS = ["BM25", "Vector", "Summary", "Tree", "Keyword", "Custom", "
 POSTPROCESS_RERANK_OPTIONS = ["none","long_context_reorder", "colbertv2_rerank","bge-reranker-base"]  # Add more as needed
 QUERY_TRANSFORM_OPTIONS = ["none", "hyde_zeroshot", "hyde_fewshot","stepback_zeroshot","stepback_fewshot"]  # Add more as needed
 
+# 定义评测指标的显示名称映射
+METRIC_DISPLAY_MAP = {
+    # 传统的生成指标
+    "NLG_chrf": "ChrF",
+    "NLG_chrf_pp": "ChrF++",
+    "NLG_meteor": "METEOR",
+    "NLG_rouge_rouge1": "ROUGE1",
+    "NLG_rouge_rouge2": "ROUGE2",
+    "NLG_rouge_rougeL": "ROUGEL",
+    "NLG_rouge_rougeLsum": "ROUGELSUM",
+    "nlg-em": "EM",
+    "NLG_perplexity": "PPL",
+    "NLG_cer": "CER",
+    "NLG_wer": "WER",
+    
+    # 大模型指标，Llama的指标
+    "Llama_retrieval_Faithfulness": "Llama-Response-Faithfulness",
+    "Llama_retrieval_Relevancy": "Llama-Response-Relevance",
+    "Llama_response_correctness": "Llama-Response-Correctness",
+    "Llama_response_semanticSimilarity": "Llama-Response-Similarity",
+    "Llama_response_answerRelevancy": "Llama-Response-Relevance++",
+    "Llama_retrieval_RelevancyG": "Llama-Response-Relevance+",
+    "Llama_retrieval_FaithfulnessG": "Llama-Response-Faithfulness+",
+    
+    # UpTrain 指标
+    "UpTrain_Retrieval_Context_Relevance": "Uptrain-Context-Relevance",
+    "UpTrain_Retrieval_Context_Conciseness": "Uptrain-Context-Conciseness",
+    "UpTrain_Retrieval_Context_Utilization": "Uptrain-Factual-Accuracy",
+    "UpTrain_Retrieval_Factual_Accuracy": "Uptrain-Factual-Accuracy",
+    "UpTrain_Retrieval_Code_Hallucination": "Uptrain-Retrieval-Code-Hallucination",
+    "UpTrain_Response_Completeness": "Uptrain-Response-Completeness",
+    "UpTrain_Response_Conciseness": "Uptrain-Response-Conciseness",
+    "UpTrain_Response_Relevance": "Uptrain-Response-Relevance",
+    "UpTrain_Response_Valid": "Uptrain-Response-Valid",
+    "UpTrain_Response_Consistency": "Uptrain-Context-Utilization",
+    "UpTrain_Response_Response_Matching": "Uptrain-Response-Matching",
+    
+    # DeepEval 指标
+    "DeepEval_retrieval_contextualPrecision": "DeepEval-Context-Recall",
+    "DeepEval_retrieval_contextualRecall": "DeepEval-Context-Relevance",
+    "DeepEval_retrieval_contextualRelevancy": "Uptrain-Context-Consistency",
+    "DeepEval_retrieval_faithfulness": "DeepEval-Context-Faithfulness",
+    "DeepEval_response_answerRelevancy": "DeepEval-Response-Relevancy",
+    "DeepEval_response_hallucination": "DeepEval-Context-Hallucination",
+    
+    # 未在映射关系中提供的指标（保持原名或根据需要自定义）
+    "DeepEval_response_bias": "DeepEval Response Bias",
+    "DeepEval_response_toxicity": "DeepEval Response Toxicity",
+}
+
+
 @st.cache_resource(show_spinner=False)
 def get_query():
     return run(cli=False)
