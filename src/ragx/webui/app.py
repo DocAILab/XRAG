@@ -47,6 +47,61 @@ RETRIEVER_OPTIONS = ["BM25", "Vector", "Summary", "Tree", "Keyword", "Custom", "
 POSTPROCESS_RERANK_OPTIONS = ["none","long_context_reorder", "colbertv2_rerank","bge-reranker-base"]  # Add more as needed
 QUERY_TRANSFORM_OPTIONS = ["none", "hyde_zeroshot", "hyde_fewshot","stepback_zeroshot","stepback_fewshot"]  # Add more as needed
 
+# follow the order listed in the docs
+METRIC_DISPLAY_MAP = {
+    "NLG_chrf": "ChrF",
+    "NLG_chrf_pp": "ChrF++",
+    "NLG_meteor": "METEOR",
+    "NLG_rouge_rouge1": "ROUGE1",
+    "NLG_rouge_rouge2": "ROUGE2",
+    "NLG_rouge_rougeL": "ROUGEL",
+    "NLG_rouge_rougeLsum": "ROUGELSUM",
+    "nlg-em": "EM",
+    "NLG_perplexity": "PPL",
+    "NLG_cer": "CER",
+    "NLG_wer": "WER",
+    
+    # Llama metrics
+    "Llama_retrieval_Faithfulness": "Llama-Response-Faithfulness",
+    "Llama_retrieval_Relevancy": "Llama-Response-Relevance",
+    "Llama_response_correctness": "Llama-Response-Correctness",
+    "Llama_response_semanticSimilarity": "Llama-Response-Similarity",
+    "Llama_response_answerRelevancy": "Llama-Response-Relevance++",
+    "Llama_retrieval_FaithfulnessG": "Llama-Response-Faithfulness+",
+    "Llama_retrieval_RelevancyG": "Llama-Response-Relevance+",
+    
+    # UpTrain metrics
+    "UpTrain_Retrieval_Context_Relevance": "Uptrain-Context-Relevance",
+    "UpTrain_Retrieval_Context_Conciseness": "Uptrain-Context-Conciseness",
+    "DeepEval_response_answerRelevancy": "DeepEval-Response-Relevancy",
+    "UpTrain_Response_Completeness": "Uptrain-Response-Completeness",
+    "UpTrain_Response_Conciseness": "Uptrain-Response-Conciseness",
+    "UpTrain_Response_Relevance": "Uptrain-Response-Relevance",
+    "UpTrain_Response_Valid": "Uptrain-Response-Valid",
+    "UpTrain_Response_Response_Matching": "Uptrain-Response-Matching",
+
+    "UpTrain_Retrieval_Code_Hallucination": "Uptrain-Retrieval-Code-Hallucination",
+    
+    # DeepEval metrics
+    "DeepEval_retrieval_contextualPrecision": "DeepEval-Context-Recall",
+    "DeepEval_retrieval_contextualRecall": "DeepEval-Context-Relevance",
+    "DeepEval_retrieval_contextualRelevancy": "Uptrain-Context-Consistency",
+    "UpTrain_Response_Consistency": "Uptrain-Context-Utilization",
+    "UpTrain_Retrieval_Context_Utilization": "Uptrain-Factual-Accuracy",
+    "UpTrain_Retrieval_Factual_Accuracy": "Uptrain-Factual-Accuracy",
+    "DeepEval_retrieval_faithfulness": "DeepEval-Context-Faithfulness",
+    "DeepEval_response_hallucination": "DeepEval-Context-Hallucination",
+    
+    # others not in the docs but in the code
+    "DeepEval_response_bias": "DeepEval-Response-Bias",
+    "DeepEval_response_toxicity": "DeepEval-Response-Toxicity",
+}
+
+# frontend values
+FRONTEND_AVAILABLE_METRICS = [METRIC_DISPLAY_MAP.get(metric, metric) for metric in AVAILABLE_METRICS]
+# reverse map
+DISPLAY_TO_BACKEND_METRIC_MAP = {v: k for k, v in METRIC_DISPLAY_MAP.items()}
+
 @st.cache_resource(show_spinner=False)
 def get_query():
     return run(cli=False)
@@ -186,9 +241,32 @@ def main():
 
     if st.session_state.step == 5:
         st.header("Evaluate your RAG Model with your dataset")
-        cfg.metrics = st.multiselect("Evaluation Metrics", options=AVAILABLE_METRICS, default=cfg.metrics)
-        # cfg.n = st.number_input("Number of documents to evaluate", min_value=1, value=cfg.n, step=1)
-        cfg.test_init_total_number_documents = st.number_input("Total number of documents to evaluate", min_value=1, value=cfg.test_init_total_number_documents, step=1)
+        
+        # 确保默认选中的 metrics 按 AVAILABLE_METRICS 的顺序排列
+        sorted_default_metrics = [metric for metric in AVAILABLE_METRICS if metric in cfg.metrics]
+        sorted_frontend_default_metrics = [METRIC_DISPLAY_MAP.get(metric, metric) for metric in sorted_default_metrics]
+        
+        # 用户在前端选择评测指标
+        selected_frontend_metrics = st.multiselect(
+            "Evaluation Metrics",
+            options=FRONTEND_AVAILABLE_METRICS,
+            default=sorted_frontend_default_metrics
+        )
+        
+        # 将前端选择的显示名称映射回后端的真实名称
+        selected_backend_metrics = [DISPLAY_TO_BACKEND_METRIC_MAP.get(metric, metric) for metric in selected_frontend_metrics]
+        cfg.metrics = selected_backend_metrics
+        
+        # 显示选中的评测指标（仅用于调试，可移除）
+        st.write("Selected Metrics (Backend):", cfg.metrics)
+        
+        # 其他输入
+        cfg.test_init_total_number_documents = st.number_input(
+            "Total number of documents to evaluate", 
+            min_value=1, 
+            value=cfg.test_init_total_number_documents, 
+            step=1
+        )
 
         c1, c_, c2 = st.columns([1, 4, 1])
         with c1:
@@ -198,7 +276,6 @@ def main():
 
         with c2:
             if st.button("Evaluate Your Dataset"):
-
                 all_num = 0
                 metrics = cfg.metrics.copy()
                 evaluateResults = EvaluationResult(metrics=metrics)
@@ -223,9 +300,11 @@ def main():
                         retrieval_ids.append(source_node.metadata['id'])
                         retrieval_context.append(source_node.get_content())
                     actual_response = response.response
-                    eval_result = evaluating(question, response, actual_response, retrieval_context, retrieval_ids,
-                                             expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
-                                             evalAgent)
+                    eval_result = evaluating(
+                        question, response, actual_response, retrieval_context, retrieval_ids,
+                        expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
+                        evalAgent
+                    )
                     with st.expander(question):
                         st.markdown("### Answer")
                         st.markdown(response.response)
@@ -238,16 +317,12 @@ def main():
 
                     print(eval_result)
 
-
                     evaluateResults.add(eval_result)
-                    all_num = all_num + 1
+                    all_num += 1
                     st.markdown(evaluateResults.get_results_str())
 
-                    # print("总数：" + str(all_num))
                 st.success("Evaluation complete!")
                 st.session_state.evaluation_results = evaluateResults
-            # st.session_state.step = 5
-
 
     # if st.session_state.step == 5:
     #     st.header("Evaluation Results")
