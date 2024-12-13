@@ -1,0 +1,817 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ragx package &#8212; RAGX 1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="_static/documentation_options.js?v=a681ed88"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ragx';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ragx.data package" href="ragx.data.html" />
+    <link rel="prev" title="src" href="modules.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">RAGX 1.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="modules.html">src</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">ragx package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.data.html">ragx.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.embs.html">ragx.embs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html">ragx.eval package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.index.html">ragx.index package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.launcher.html">ragx.launcher package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html">ragx.llms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html">ragx.process package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html">ragx.retrievers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.webui.html">ragx.webui package</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/ragx.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>ragx package</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subpackages">Subpackages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.cli">ragx.cli module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.Command.HELP"><code class="docutils literal notranslate"><span class="pre">Command.HELP</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.Command.RUN"><code class="docutils literal notranslate"><span class="pre">Command.RUN</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.Command.VER"><code class="docutils literal notranslate"><span class="pre">Command.VER</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.Command.WEBUI"><code class="docutils literal notranslate"><span class="pre">Command.WEBUI</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.config">ragx.config module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.Config.update_config"><code class="docutils literal notranslate"><span class="pre">Config.update_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar"><code class="docutils literal notranslate"><span class="pre">GlobalVar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.get_query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.get_query_number()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.query_number</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.set_query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.set_query_number()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx">Module contents</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="ragx-package">
+<h1>ragx package<a class="headerlink" href="#ragx-package" title="Link to this heading">#</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ragx.data.html">ragx.data package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ragx.data.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.data.html#module-ragx.data.loader">ragx.data.loader module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.data.html#ragx.data.loader.get_documents"><code class="docutils literal notranslate"><span class="pre">get_documents()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.data.html#module-ragx.data.qa_loader">ragx.data.qa_loader module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.data.html#ragx.data.qa_loader.build_split"><code class="docutils literal notranslate"><span class="pre">build_split()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.data.html#ragx.data.qa_loader.get_qa_dataset"><code class="docutils literal notranslate"><span class="pre">get_qa_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.data.html#module-ragx.data">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ragx.embs.html">ragx.embs package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ragx.embs.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.embs.html#module-ragx.embs.chatglmemb">ragx.embs.chatglmemb module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.embs.html#ragx.embs.chatglmemb.ChatGLMEmbeddings"><code class="docutils literal notranslate"><span class="pre">ChatGLMEmbeddings</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ragx.embs.html#ragx.embs.chatglmemb.ChatGLMEmbeddings.api_key"><code class="docutils literal notranslate"><span class="pre">ChatGLMEmbeddings.api_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.embs.html#ragx.embs.chatglmemb.ChatGLMEmbeddings.class_name"><code class="docutils literal notranslate"><span class="pre">ChatGLMEmbeddings.class_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.embs.html#ragx.embs.chatglmemb.ChatGLMEmbeddings.get_general_text_embedding"><code class="docutils literal notranslate"><span class="pre">ChatGLMEmbeddings.get_general_text_embedding()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.embs.html#ragx.embs.chatglmemb.ChatGLMEmbeddings.model"><code class="docutils literal notranslate"><span class="pre">ChatGLMEmbeddings.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.embs.html#ragx.embs.chatglmemb.ChatGLMEmbeddings.model_config"><code class="docutils literal notranslate"><span class="pre">ChatGLMEmbeddings.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.embs.html#ragx.embs.chatglmemb.ChatGLMEmbeddings.model_post_init"><code class="docutils literal notranslate"><span class="pre">ChatGLMEmbeddings.model_post_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.embs.html#ragx.embs.chatglmemb.ChatGLMEmbeddings.reuse_client"><code class="docutils literal notranslate"><span class="pre">ChatGLMEmbeddings.reuse_client</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.embs.html#module-ragx.embs.embedding">ragx.embs.embedding module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.embs.html#ragx.embs.embedding.get_embedding"><code class="docutils literal notranslate"><span class="pre">get_embedding()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.embs.html#module-ragx.embs">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ragx.eval.html">ragx.eval package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ragx.eval.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.eval.html#module-ragx.eval.DeepEvalLocalModel">ragx.eval.DeepEvalLocalModel module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.DeepEvalLocalModel.DeepEvalLocalModel"><code class="docutils literal notranslate"><span class="pre">DeepEvalLocalModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.DeepEvalLocalModel.DeepEvalLocalModel.a_generate"><code class="docutils literal notranslate"><span class="pre">DeepEvalLocalModel.a_generate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.DeepEvalLocalModel.DeepEvalLocalModel.generate"><code class="docutils literal notranslate"><span class="pre">DeepEvalLocalModel.generate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.DeepEvalLocalModel.DeepEvalLocalModel.get_model_name"><code class="docutils literal notranslate"><span class="pre">DeepEvalLocalModel.get_model_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.DeepEvalLocalModel.DeepEvalLocalModel.load_model"><code class="docutils literal notranslate"><span class="pre">DeepEvalLocalModel.load_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.eval.html#module-ragx.eval.EvalModelAgent">ragx.eval.EvalModelAgent module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.EvalModelAgent.EvalModelAgent"><code class="docutils literal notranslate"><span class="pre">EvalModelAgent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.EvalModelAgent.qwen_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">qwen_completion_to_prompt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.eval.html#module-ragx.eval.evaluate_LLM">ragx.eval.evaluate_LLM module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_LLM.EvaluationResult_LLM"><code class="docutils literal notranslate"><span class="pre">EvaluationResult_LLM</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_LLM.EvaluationResult_LLM.add"><code class="docutils literal notranslate"><span class="pre">EvaluationResult_LLM.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_LLM.EvaluationResult_LLM.print_results"><code class="docutils literal notranslate"><span class="pre">EvaluationResult_LLM.print_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_LLM.EvaluationResult_LLM.print_results_to_path"><code class="docutils literal notranslate"><span class="pre">EvaluationResult_LLM.print_results_to_path()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_LLM.UptrainEvaluate"><code class="docutils literal notranslate"><span class="pre">UptrainEvaluate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_LLM.evaluating"><code class="docutils literal notranslate"><span class="pre">evaluating()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_LLM.get_DeepEval_Metrices"><code class="docutils literal notranslate"><span class="pre">get_DeepEval_Metrices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_LLM.get_llama_evaluator"><code class="docutils literal notranslate"><span class="pre">get_llama_evaluator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_LLM.upTrain_evaluate_self"><code class="docutils literal notranslate"><span class="pre">upTrain_evaluate_self()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.eval.html#module-ragx.eval.evaluate_TGT">ragx.eval.evaluate_TGT module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TGT.NLGEvaluate"><code class="docutils literal notranslate"><span class="pre">NLGEvaluate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.eval.html#module-ragx.eval.evaluate_TRT">ragx.eval.evaluate_TRT module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.DCG"><code class="docutils literal notranslate"><span class="pre">DCG()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.Em"><code class="docutils literal notranslate"><span class="pre">Em()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.EvaluationResult_TRT"><code class="docutils literal notranslate"><span class="pre">EvaluationResult_TRT</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.EvaluationResult_TRT.add"><code class="docutils literal notranslate"><span class="pre">EvaluationResult_TRT.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.EvaluationResult_TRT.print_results"><code class="docutils literal notranslate"><span class="pre">EvaluationResult_TRT.print_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.EvaluationResult_TRT.print_results_to_path"><code class="docutils literal notranslate"><span class="pre">EvaluationResult_TRT.print_results_to_path()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.F1"><code class="docutils literal notranslate"><span class="pre">F1()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.Hit"><code class="docutils literal notranslate"><span class="pre">Hit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.IDCG"><code class="docutils literal notranslate"><span class="pre">IDCG()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.MAP"><code class="docutils literal notranslate"><span class="pre">MAP()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.Mrr"><code class="docutils literal notranslate"><span class="pre">Mrr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.NDCG"><code class="docutils literal notranslate"><span class="pre">NDCG()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_TRT.evaluating_TRT"><code class="docutils literal notranslate"><span class="pre">evaluating_TRT()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.eval.html#module-ragx.eval.evaluate_rag">ragx.eval.evaluate_rag module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.DCG"><code class="docutils literal notranslate"><span class="pre">DCG()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.Em"><code class="docutils literal notranslate"><span class="pre">Em()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.EvaluationResult"><code class="docutils literal notranslate"><span class="pre">EvaluationResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.EvaluationResult.add"><code class="docutils literal notranslate"><span class="pre">EvaluationResult.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.EvaluationResult.get_results_str"><code class="docutils literal notranslate"><span class="pre">EvaluationResult.get_results_str()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.EvaluationResult.print_results"><code class="docutils literal notranslate"><span class="pre">EvaluationResult.print_results()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.EvaluationResult.print_results_to_path"><code class="docutils literal notranslate"><span class="pre">EvaluationResult.print_results_to_path()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.F1"><code class="docutils literal notranslate"><span class="pre">F1()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.Hit"><code class="docutils literal notranslate"><span class="pre">Hit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.IDCG"><code class="docutils literal notranslate"><span class="pre">IDCG()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.MAP"><code class="docutils literal notranslate"><span class="pre">MAP()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.Mrr"><code class="docutils literal notranslate"><span class="pre">Mrr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.NDCG"><code class="docutils literal notranslate"><span class="pre">NDCG()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.NLGEvaluate"><code class="docutils literal notranslate"><span class="pre">NLGEvaluate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.UptrainEvaluate"><code class="docutils literal notranslate"><span class="pre">UptrainEvaluate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.evaluating"><code class="docutils literal notranslate"><span class="pre">evaluating()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.get_DeepEval_Metrices"><code class="docutils literal notranslate"><span class="pre">get_DeepEval_Metrices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.get_llama_evaluator"><code class="docutils literal notranslate"><span class="pre">get_llama_evaluator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html#ragx.eval.evaluate_rag.upTrain_evaluate_self"><code class="docutils literal notranslate"><span class="pre">upTrain_evaluate_self()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.eval.html#module-ragx.eval">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ragx.index.html">ragx.index package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ragx.index.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.index.html#module-ragx.index.index">ragx.index.index module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.index.html#ragx.index.index.get_index"><code class="docutils literal notranslate"><span class="pre">get_index()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.index.html#module-ragx.index">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ragx.launcher.html">ragx.launcher package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ragx.launcher.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.launcher.html#module-ragx.launcher.launch">ragx.launcher.launch module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.launcher.html#ragx.launcher.launch.build_index"><code class="docutils literal notranslate"><span class="pre">build_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.launcher.html#ragx.launcher.launch.build_query_engine"><code class="docutils literal notranslate"><span class="pre">build_query_engine()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.launcher.html#ragx.launcher.launch.eval_cli"><code class="docutils literal notranslate"><span class="pre">eval_cli()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.launcher.html#ragx.launcher.launch.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.launcher.html#ragx.launcher.launch.seed_everything"><code class="docutils literal notranslate"><span class="pre">seed_everything()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.launcher.html#module-ragx.launcher">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ragx.llms.html">ragx.llms package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ragx.llms.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.llms.html#module-ragx.llms.chatglm4">ragx.llms.chatglm4 module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM"><code class="docutils literal notranslate"><span class="pre">ChatGLM</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.api_key"><code class="docutils literal notranslate"><span class="pre">ChatGLM.api_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.chat"><code class="docutils literal notranslate"><span class="pre">ChatGLM.chat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.class_name"><code class="docutils literal notranslate"><span class="pre">ChatGLM.class_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.complete"><code class="docutils literal notranslate"><span class="pre">ChatGLM.complete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.context_window"><code class="docutils literal notranslate"><span class="pre">ChatGLM.context_window</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.metadata"><code class="docutils literal notranslate"><span class="pre">ChatGLM.metadata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.model"><code class="docutils literal notranslate"><span class="pre">ChatGLM.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.model_config"><code class="docutils literal notranslate"><span class="pre">ChatGLM.model_config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.model_post_init"><code class="docutils literal notranslate"><span class="pre">ChatGLM.model_post_init()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.num_output"><code class="docutils literal notranslate"><span class="pre">ChatGLM.num_output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.reuse_client"><code class="docutils literal notranslate"><span class="pre">ChatGLM.reuse_client</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.stream_chat"><code class="docutils literal notranslate"><span class="pre">ChatGLM.stream_chat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.ChatGLM.stream_complete"><code class="docutils literal notranslate"><span class="pre">ChatGLM.stream_complete()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.get_additional_kwargs"><code class="docutils literal notranslate"><span class="pre">get_additional_kwargs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.chatglm4.to_message_dicts"><code class="docutils literal notranslate"><span class="pre">to_message_dicts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.llms.html#module-ragx.llms.huggingface_model">ragx.llms.huggingface_model module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.baichuan_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">baichuan_completion_to_prompt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.baichuan_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">baichuan_model_and_tokenizer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.chatglm_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">chatglm_completion_to_prompt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.chatglm_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">chatglm_model_and_tokenizer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.falcon_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">falcon_completion_to_prompt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.falcon_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">falcon_model_and_tokenizer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.get_huggingfacellm"><code class="docutils literal notranslate"><span class="pre">get_huggingfacellm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.llama_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">llama_completion_to_prompt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.llama_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">llama_model_and_tokenizer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.mpt_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">mpt_completion_to_prompt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.mpt_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">mpt_model_and_tokenizer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.qwen_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">qwen_completion_to_prompt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.qwen_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">qwen_model_and_tokenizer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.yi_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">yi_completion_to_prompt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.huggingface_model.yi_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">yi_model_and_tokenizer()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.llms.html#module-ragx.llms.llm">ragx.llms.llm module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.llm.get_llm"><code class="docutils literal notranslate"><span class="pre">get_llm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.llms.html#ragx.llms.llm.get_openai"><code class="docutils literal notranslate"><span class="pre">get_openai()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.llms.html#module-ragx.llms">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ragx.process.html">ragx.process package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ragx.process.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.process.html#module-ragx.process.postprocess_rerank">ragx.process.postprocess_rerank module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.postprocess_rerank.get_postprocessor"><code class="docutils literal notranslate"><span class="pre">get_postprocessor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.process.html#module-ragx.process.postprocessor">ragx.process.postprocessor module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.postprocessor.bm25_retriever"><code class="docutils literal notranslate"><span class="pre">bm25_retriever()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.postprocessor.gpt_rerank"><code class="docutils literal notranslate"><span class="pre">gpt_rerank()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.postprocessor.keyword_node_postprocessor"><code class="docutils literal notranslate"><span class="pre">keyword_node_postprocessor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.postprocessor.llm_rerank"><code class="docutils literal notranslate"><span class="pre">llm_rerank()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.postprocessor.long_context_reorder"><code class="docutils literal notranslate"><span class="pre">long_context_reorder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.postprocessor.sentence_embedding_optimizer"><code class="docutils literal notranslate"><span class="pre">sentence_embedding_optimizer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.postprocessor.similarity_postprocessor"><code class="docutils literal notranslate"><span class="pre">similarity_postprocessor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.postprocessor.transformer_rerank"><code class="docutils literal notranslate"><span class="pre">transformer_rerank()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.process.html#module-ragx.process.query_transform">ragx.process.query_transform module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.CustomSubQuestionQueryEngine"><code class="docutils literal notranslate"><span class="pre">CustomSubQuestionQueryEngine</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.hyde"><code class="docutils literal notranslate"><span class="pre">hyde()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.hyde_fewshot"><code class="docutils literal notranslate"><span class="pre">hyde_fewshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.hyde_zeroshot"><code class="docutils literal notranslate"><span class="pre">hyde_zeroshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.stepback"><code class="docutils literal notranslate"><span class="pre">stepback()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.stepback_fewshot"><code class="docutils literal notranslate"><span class="pre">stepback_fewshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.stepback_zeroshot"><code class="docutils literal notranslate"><span class="pre">stepback_zeroshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.subquery"><code class="docutils literal notranslate"><span class="pre">subquery()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.subquery_fewshot"><code class="docutils literal notranslate"><span class="pre">subquery_fewshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.subquery_zeroshot"><code class="docutils literal notranslate"><span class="pre">subquery_zeroshot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.transform"><code class="docutils literal notranslate"><span class="pre">transform()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html#ragx.process.query_transform.transform_and_query"><code class="docutils literal notranslate"><span class="pre">transform_and_query()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.process.html#module-ragx.process">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ragx.retrievers.html">ragx.retrievers package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ragx.retrievers.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.retrievers.html#module-ragx.retrievers.retriever">ragx.retrievers.retriever module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.AllRetriever"><code class="docutils literal notranslate"><span class="pre">AllRetriever</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.AllRetriever.get_response_mode"><code class="docutils literal notranslate"><span class="pre">AllRetriever.get_response_mode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.AllRetriever.query_expansion"><code class="docutils literal notranslate"><span class="pre">AllRetriever.query_expansion()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.CustomRetriever"><code class="docutils literal notranslate"><span class="pre">CustomRetriever</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.auto_merging_retriever"><code class="docutils literal notranslate"><span class="pre">auto_merging_retriever()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.bm25_retriever"><code class="docutils literal notranslate"><span class="pre">bm25_retriever()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.custom_retriever"><code class="docutils literal notranslate"><span class="pre">custom_retriever()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.document_summary_retrievers"><code class="docutils literal notranslate"><span class="pre">document_summary_retrievers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.get_query_engine_by_router"><code class="docutils literal notranslate"><span class="pre">get_query_engine_by_router()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.get_retriver"><code class="docutils literal notranslate"><span class="pre">get_retriver()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.keyword_retriever"><code class="docutils literal notranslate"><span class="pre">keyword_retriever()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.query_expansion"><code class="docutils literal notranslate"><span class="pre">query_expansion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.query_fusion_retriever"><code class="docutils literal notranslate"><span class="pre">query_fusion_retriever()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.recursive_retriever"><code class="docutils literal notranslate"><span class="pre">recursive_retriever()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.response_synthesizer"><code class="docutils literal notranslate"><span class="pre">response_synthesizer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.sentence_window_retriever"><code class="docutils literal notranslate"><span class="pre">sentence_window_retriever()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.summary_retriever"><code class="docutils literal notranslate"><span class="pre">summary_retriever()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.tree_retriever"><code class="docutils literal notranslate"><span class="pre">tree_retriever()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html#ragx.retrievers.retriever.vector_retriever"><code class="docutils literal notranslate"><span class="pre">vector_retriever()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.retrievers.html#module-ragx.retrievers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ragx.webui.html">ragx.webui package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ragx.webui.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.webui.html#module-ragx.webui.app">ragx.webui.app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.webui.html#ragx.webui.app.display_results"><code class="docutils literal notranslate"><span class="pre">display_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.webui.html#ragx.webui.app.get_index"><code class="docutils literal notranslate"><span class="pre">get_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.webui.html#ragx.webui.app.get_qa_dataset_"><code class="docutils literal notranslate"><span class="pre">get_qa_dataset_()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.webui.html#ragx.webui.app.get_query"><code class="docutils literal notranslate"><span class="pre">get_query()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.webui.html#ragx.webui.app.get_query_engine"><code class="docutils literal notranslate"><span class="pre">get_query_engine()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.webui.html#ragx.webui.app.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.webui.html#module-ragx.webui.run">ragx.webui.run module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ragx.webui.html#ragx.webui.run.run_web_ui"><code class="docutils literal notranslate"><span class="pre">run_web_ui()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.webui.html#module-ragx.webui">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-ragx.cli">
+<span id="ragx-cli-module"></span><h2>ragx.cli module<a class="headerlink" href="#module-ragx.cli" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ragx.cli.Command">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ragx.cli.</span></span><span class="sig-name descname"><span class="pre">Command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/cli.html#Command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.cli.Command" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ragx.cli.Command.HELP">
+<span class="sig-name descname"><span class="pre">HELP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'help'</span></em><a class="headerlink" href="#ragx.cli.Command.HELP" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ragx.cli.Command.RUN">
+<span class="sig-name descname"><span class="pre">RUN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'run'</span></em><a class="headerlink" href="#ragx.cli.Command.RUN" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ragx.cli.Command.VER">
+<span class="sig-name descname"><span class="pre">VER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'version'</span></em><a class="headerlink" href="#ragx.cli.Command.VER" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ragx.cli.Command.WEBUI">
+<span class="sig-name descname"><span class="pre">WEBUI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'webui'</span></em><a class="headerlink" href="#ragx.cli.Command.WEBUI" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ragx.cli.main">
+<span class="sig-prename descclassname"><span class="pre">ragx.cli.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/cli.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.cli.main" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-ragx.config">
+<span id="ragx-config-module"></span><h2>ragx.config module<a class="headerlink" href="#module-ragx.config" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ragx.config.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ragx.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/config.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.config.Config" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ragx.config.Config.update_config">
+<span class="sig-name descname"><span class="pre">update_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">overrides</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/config.html#Config.update_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.config.Config.update_config" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ragx.config.GlobalVar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ragx.config.</span></span><span class="sig-name descname"><span class="pre">GlobalVar</span></span><a class="reference internal" href="_modules/ragx/config.html#GlobalVar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.config.GlobalVar" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ragx.config.GlobalVar.get_query_number">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_query_number</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/config.html#GlobalVar.get_query_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.config.GlobalVar.get_query_number" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ragx.config.GlobalVar.query_number">
+<span class="sig-name descname"><span class="pre">query_number</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#ragx.config.GlobalVar.query_number" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ragx.config.GlobalVar.set_query_number">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_query_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/config.html#GlobalVar.set_query_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.config.GlobalVar.set_query_number" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ragx">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ragx" title="Link to this heading">#</a></h2>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="modules.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">src</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ragx.data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">ragx.data package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subpackages">Subpackages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.cli">ragx.cli module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.Command"><code class="docutils literal notranslate"><span class="pre">Command</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.Command.HELP"><code class="docutils literal notranslate"><span class="pre">Command.HELP</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.Command.RUN"><code class="docutils literal notranslate"><span class="pre">Command.RUN</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.Command.VER"><code class="docutils literal notranslate"><span class="pre">Command.VER</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.Command.WEBUI"><code class="docutils literal notranslate"><span class="pre">Command.WEBUI</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.config">ragx.config module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.Config.update_config"><code class="docutils literal notranslate"><span class="pre">Config.update_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar"><code class="docutils literal notranslate"><span class="pre">GlobalVar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.get_query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.get_query_number()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.query_number</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.set_query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.set_query_number()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx">Module contents</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By HZT
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, HZT.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

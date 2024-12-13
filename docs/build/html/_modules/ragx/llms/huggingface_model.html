@@ -1,0 +1,577 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ragx.llms.huggingface_model &#8212; RAGX 1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=a681ed88"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/ragx/llms/huggingface_model';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">RAGX 1.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../modules.html">src</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../ragx.html">ragx package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.data.html">ragx.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.embs.html">ragx.embs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.eval.html">ragx.eval package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.index.html">ragx.index package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.launcher.html">ragx.launcher package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.llms.html">ragx.llms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.process.html">ragx.process package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.retrievers.html">ragx.retrievers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.webui.html">ragx.webui package</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for ragx.llms.huggingface_model</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoModel</span>
+<span class="kn">from</span> <span class="nn">transformers.generation.utils</span> <span class="kn">import</span> <span class="n">GenerationConfig</span>
+<span class="kn">from</span> <span class="nn">llama_index.llms.huggingface</span> <span class="kn">import</span> <span class="n">HuggingFaceLLM</span>
+<span class="c1"># pip install llama-index-llms-huggingface</span>
+<span class="kn">from</span> <span class="nn">..config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+
+<span class="n">load_tokenizer</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="llama_model_and_tokenizer">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.llama_model_and_tokenizer">[docs]</a>
+<span class="k">def</span> <span class="nf">llama_model_and_tokenizer</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">auth_token</span><span class="p">):</span>
+    <span class="c1"># Create tokenizer</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">auth_token</span><span class="p">)</span>
+
+    <span class="c1"># Create model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">auth_token</span><span class="p">,</span> <span class="n">torch_dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+                                                 <span class="n">rope_scaling</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;dynamic&quot;</span><span class="p">,</span> <span class="s2">&quot;factor&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+                                                 <span class="n">load_in_8bit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">model</span></div>
+
+
+
+<div class="viewcode-block" id="llama_completion_to_prompt">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.llama_completion_to_prompt">[docs]</a>
+<span class="k">def</span> <span class="nf">llama_completion_to_prompt</span><span class="p">(</span><span class="n">completion</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;s&gt;[INST] &lt;&lt;SYS&gt;&gt;</span>
+<span class="s2">        You are a helpful, respectful and honest assistant. Always answer as </span>
+<span class="s2">        helpfully as possible, while being safe. Your answers should not include</span>
+<span class="s2">        any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.</span>
+<span class="s2">        Please ensure that your responses are socially unbiased and positive in nature.</span>
+
+<span class="s2">        If a question does not make any sense, or is not factually coherent, explain </span>
+<span class="s2">        why instead of answering something not correct. If you don&#39;t know the answer </span>
+<span class="s2">        to a question, please don&#39;t share false information.</span>
+
+<span class="s2">        Your goal is to provide answers relating to the financial performance of </span>
+<span class="s2">        the company.&lt;&lt;/SYS&gt;&gt;</span>
+<span class="s2">        </span><span class="si">{</span><span class="n">completion</span><span class="si">}</span><span class="s2"> [/INST]&quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="chatglm_model_and_tokenizer">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.chatglm_model_and_tokenizer">[docs]</a>
+<span class="k">def</span> <span class="nf">chatglm_model_and_tokenizer</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="c1"># Create tokenizer</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">load_tokenizer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+    <span class="c1"># Create model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">half</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">model</span></div>
+
+
+
+<div class="viewcode-block" id="chatglm_completion_to_prompt">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.chatglm_completion_to_prompt">[docs]</a>
+<span class="k">def</span> <span class="nf">chatglm_completion_to_prompt</span><span class="p">(</span><span class="n">completion</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;&lt;|user|&gt;</span><span class="se">\n</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">completion</span> <span class="o">+</span> <span class="s2">&quot;&lt;|assistant|&gt;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="qwen_model_and_tokenizer">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.qwen_model_and_tokenizer">[docs]</a>
+<span class="k">def</span> <span class="nf">qwen_model_and_tokenizer</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="c1"># Create tokenizer</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">load_tokenizer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+    <span class="c1"># Create model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
+                                                 <span class="n">torch_dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+                                                 <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">model</span></div>
+
+
+
+<div class="viewcode-block" id="qwen_completion_to_prompt">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.qwen_completion_to_prompt">[docs]</a>
+<span class="k">def</span> <span class="nf">qwen_completion_to_prompt</span><span class="p">(</span><span class="n">completion</span><span class="p">):</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">load_tokenizer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">completion</span><span class="p">}</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">apply_chat_template</span><span class="p">(</span>
+        <span class="n">messages</span><span class="p">,</span>
+        <span class="n">tokenize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">add_generation_prompt</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="baichuan_model_and_tokenizer">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.baichuan_model_and_tokenizer">[docs]</a>
+<span class="k">def</span> <span class="nf">baichuan_model_and_tokenizer</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="c1"># Create tokenizer</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">use_fast</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">load_tokenizer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+    <span class="c1"># Create model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">torch_dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">generation_config</span> <span class="o">=</span> <span class="n">GenerationConfig</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;baichuan-inc/Baichuan2-7B-Chat&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">model</span></div>
+
+
+
+<div class="viewcode-block" id="baichuan_completion_to_prompt">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.baichuan_completion_to_prompt">[docs]</a>
+<span class="k">def</span> <span class="nf">baichuan_completion_to_prompt</span><span class="p">(</span><span class="n">completion</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;&lt;reserved_106&gt;&quot;</span> <span class="o">+</span> <span class="n">completion</span> <span class="o">+</span> <span class="s2">&quot;&lt;reserved_107&gt;&quot;</span>  <span class="c1"># &quot;You are a helpful assistant.&lt;reserved_106&gt;&quot; + completion + &quot;&lt;reserved_107&gt;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="falcon_model_and_tokenizer">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.falcon_model_and_tokenizer">[docs]</a>
+<span class="k">def</span> <span class="nf">falcon_model_and_tokenizer</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="c1"># Create tokenizer</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">load_tokenizer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+    <span class="c1"># Create model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">model</span></div>
+
+
+
+<div class="viewcode-block" id="falcon_completion_to_prompt">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.falcon_completion_to_prompt">[docs]</a>
+<span class="k">def</span> <span class="nf">falcon_completion_to_prompt</span><span class="p">(</span><span class="n">completion</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">completion</span></div>
+
+
+
+<div class="viewcode-block" id="mpt_model_and_tokenizer">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.mpt_model_and_tokenizer">[docs]</a>
+<span class="k">def</span> <span class="nf">mpt_model_and_tokenizer</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="c1"># Create tokenizer</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;EleutherAI/gpt-neox-20b&quot;</span><span class="p">)</span>
+    <span class="n">load_tokenizer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+    <span class="c1"># Create model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">trust_remote_code</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">model</span></div>
+
+
+
+<div class="viewcode-block" id="mpt_completion_to_prompt">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.mpt_completion_to_prompt">[docs]</a>
+<span class="k">def</span> <span class="nf">mpt_completion_to_prompt</span><span class="p">(</span><span class="n">completion</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">completion</span></div>
+
+
+
+<div class="viewcode-block" id="yi_model_and_tokenizer">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.yi_model_and_tokenizer">[docs]</a>
+<span class="k">def</span> <span class="nf">yi_model_and_tokenizer</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="c1"># Create tokenizer</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">use_fast</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">load_tokenizer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+
+    <span class="c1"># Create model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">torch_dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span>
+        <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">model</span></div>
+
+
+
+<div class="viewcode-block" id="yi_completion_to_prompt">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.yi_completion_to_prompt">[docs]</a>
+<span class="k">def</span> <span class="nf">yi_completion_to_prompt</span><span class="p">(</span><span class="n">completion</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;&lt;|im_start|&gt; user</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">completion</span> <span class="o">+</span> <span class="s2">&quot;&lt;|im_end|&gt; </span><span class="se">\n</span><span class="s2">&lt;|im_start|&gt;assistant</span><span class="se">\n</span><span class="s2">&quot;</span></div>
+
+
+
+<span class="n">tokenizer_and_model_fn_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;meta-llama/Llama-2-7b-chat-hf&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">llama_model_and_tokenizer</span><span class="p">,</span> <span class="n">auth_token</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">auth_token</span><span class="p">),</span>
+    <span class="s2">&quot;THUDM/chatglm3-6b&quot;</span><span class="p">:</span> <span class="n">chatglm_model_and_tokenizer</span><span class="p">,</span>
+    <span class="s2">&quot;Qwen/Qwen1.5-7B-Chat&quot;</span><span class="p">:</span> <span class="n">qwen_model_and_tokenizer</span><span class="p">,</span>
+    <span class="s2">&quot;Qwen/Qwen1.5-7B-Chat-GPTQ-Int8&quot;</span><span class="p">:</span> <span class="n">qwen_model_and_tokenizer</span><span class="p">,</span>
+    <span class="s2">&quot;baichuan-inc/Baichuan2-7B-Chat&quot;</span><span class="p">:</span> <span class="n">baichuan_model_and_tokenizer</span><span class="p">,</span>
+    <span class="s2">&quot;tiiuae/falcon-7b-instruct&quot;</span><span class="p">:</span> <span class="n">falcon_model_and_tokenizer</span><span class="p">,</span>
+    <span class="s2">&quot;mosaicml/mpt-7b-chat&quot;</span><span class="p">:</span> <span class="n">mpt_model_and_tokenizer</span><span class="p">,</span>
+    <span class="s2">&quot;01-ai/Yi-6B-Chat&quot;</span><span class="p">:</span> <span class="n">yi_model_and_tokenizer</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">completion_to_prompt_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;meta-llama/Llama-2-7b-chat-hf&quot;</span><span class="p">:</span> <span class="n">llama_completion_to_prompt</span><span class="p">,</span>
+    <span class="s2">&quot;THUDM/chatglm3-6b&quot;</span><span class="p">:</span> <span class="n">chatglm_completion_to_prompt</span><span class="p">,</span>
+    <span class="s2">&quot;Qwen/Qwen1.5-7B-Chat&quot;</span><span class="p">:</span> <span class="n">qwen_completion_to_prompt</span><span class="p">,</span>
+    <span class="s2">&quot;Qwen/Qwen1.5-7B-Chat-GPTQ-Int8&quot;</span><span class="p">:</span> <span class="n">qwen_completion_to_prompt</span><span class="p">,</span>
+    <span class="s2">&quot;baichuan-inc/Baichuan2-7B-Chat&quot;</span><span class="p">:</span> <span class="n">baichuan_completion_to_prompt</span><span class="p">,</span>
+    <span class="s2">&quot;tiiuae/falcon-7b-instruct&quot;</span><span class="p">:</span> <span class="n">falcon_completion_to_prompt</span><span class="p">,</span>
+    <span class="s2">&quot;mosaicml/mpt-7b-chat&quot;</span><span class="p">:</span> <span class="n">mpt_completion_to_prompt</span><span class="p">,</span>
+    <span class="s2">&quot;01-ai/Yi-6B-Chat&quot;</span><span class="p">:</span> <span class="n">yi_completion_to_prompt</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># llm_argument_dict = {</span>
+<span class="c1">#     &quot;meta-llama/Llama-2-7b-chat-hf&quot;: {&quot;context_window&quot;: 4096, &quot;max_new_tokens&quot;: 256,</span>
+<span class="c1">#                                       &quot;generate_kwargs&quot;: {&quot;temperature&quot;: 0.7, &quot;top_k&quot;: 50, &quot;top_p&quot;: 0.95}},</span>
+<span class="c1">#     &quot;THUDM/chatglm3-6b&quot;: {&quot;context_window&quot;: 4096, &quot;max_new_tokens&quot;: 256,</span>
+<span class="c1">#                           &quot;generate_kwargs&quot;: {&quot;do_sample&quot;: True, &quot;temperature&quot;: 0.7, &quot;top_k&quot;: 50, &quot;top_p&quot;: 0.95,</span>
+<span class="c1">#                                               &quot;eos_token_id&quot;: [2, 64795, 64797]}},</span>
+<span class="c1">#     &quot;Qwen/Qwen1.5-7B-Chat&quot;: {&quot;context_window&quot;: 4096, &quot;max_new_tokens&quot;: 256,</span>
+<span class="c1">#                              &quot;generate_kwargs&quot;: {&quot;temperature&quot;: 0.7, &quot;top_k&quot;: 50, &quot;top_p&quot;: 0.95}},</span>
+<span class="c1">#     &quot;Qwen/Qwen1.5-7B-Chat-GPTQ-Int8&quot;: {&quot;context_window&quot;: 4096, &quot;max_new_tokens&quot;: 256,</span>
+<span class="c1">#                              &quot;generate_kwargs&quot;: {&quot;temperature&quot;: 0.7, &quot;top_k&quot;: 50, &quot;top_p&quot;: 0.95}},</span>
+<span class="c1">#     &quot;baichuan-inc/Baichuan2-7B-Chat&quot;: {&quot;context_window&quot;: 4096, &quot;max_new_tokens&quot;: 256, &quot;generate_kwargs&quot;: None},</span>
+<span class="c1">#     &quot;tiiuae/falcon-7b-instruct&quot;: {&quot;context_window&quot;: 4096, &quot;max_new_tokens&quot;: 256,</span>
+<span class="c1">#                                   &quot;generate_kwargs&quot;: {&quot;do_sample&quot;: True, &quot;temperature&quot;: 0.7, &quot;top_k&quot;: 50,</span>
+<span class="c1">#                                                       &quot;top_p&quot;: 0.95}},</span>
+<span class="c1">#     &quot;mosaicml/mpt-7b-chat&quot;: {&quot;context_window&quot;: 4096, &quot;max_new_tokens&quot;: 256,</span>
+<span class="c1">#                              &quot;generate_kwargs&quot;: {&quot;do_sample&quot;: True, &quot;temperature&quot;: 0.7, &quot;top_k&quot;: 50, &quot;top_p&quot;: 0.95}},</span>
+<span class="c1">#     &quot;01-ai/Yi-6B-Chat&quot;: {&quot;context_window&quot;: 4096, &quot;max_new_tokens&quot;: 256,</span>
+<span class="c1">#                          &quot;generate_kwargs&quot;: {&quot;temperature&quot;: 0.7, &quot;top_k&quot;: 50, &quot;top_p&quot;: 0.95}},</span>
+<span class="c1"># }</span>
+
+<span class="n">llm_argument_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;meta-llama/Llama-2-7b-chat-hf&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;context_window&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span> <span class="s2">&quot;generate_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}},</span>
+    <span class="s2">&quot;THUDM/chatglm3-6b&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;context_window&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span> <span class="s2">&quot;generate_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;eos_token_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">64795</span><span class="p">,</span> <span class="mi">64797</span><span class="p">]}},</span>
+    <span class="s2">&quot;Qwen/Qwen1.5-7B-Chat&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;context_window&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span> <span class="s2">&quot;generate_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}},</span>
+    <span class="s2">&quot;Qwen/Qwen1.5-7B-Chat-GPTQ-Int8&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;context_window&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span> <span class="s2">&quot;generate_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}},</span>
+    <span class="s2">&quot;baichuan-inc/Baichuan2-7B-Chat&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;context_window&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span> <span class="s2">&quot;generate_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}},</span>
+    <span class="s2">&quot;tiiuae/falcon-7b-instruct&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;context_window&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span> <span class="s2">&quot;generate_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}},</span>
+    <span class="s2">&quot;mosaicml/mpt-7b-chat&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;context_window&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span> <span class="s2">&quot;generate_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}},</span>
+    <span class="s2">&quot;01-ai/Yi-6B-Chat&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;context_window&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span> <span class="s2">&quot;generate_kwargs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}},</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="get_huggingfacellm">
+<a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.get_huggingfacellm">[docs]</a>
+<span class="k">def</span> <span class="nf">get_huggingfacellm</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;name is &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">tokenizer</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">tokenizer_and_model_fn_dict</span><span class="p">[</span><span class="n">name</span><span class="p">](</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Create a HF LLM using the llama index wrapper</span>
+    <span class="n">llm</span> <span class="o">=</span> <span class="n">HuggingFaceLLM</span><span class="p">(</span><span class="n">context_window</span><span class="o">=</span><span class="n">llm_argument_dict</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;context_window&quot;</span><span class="p">],</span>
+                         <span class="n">max_new_tokens</span><span class="o">=</span><span class="n">llm_argument_dict</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;max_new_tokens&quot;</span><span class="p">],</span>
+                         <span class="n">completion_to_prompt</span><span class="o">=</span><span class="n">completion_to_prompt_dict</span><span class="p">[</span><span class="n">name</span><span class="p">],</span>
+                         <span class="n">generate_kwargs</span><span class="o">=</span><span class="n">llm_argument_dict</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;generate_kwargs&quot;</span><span class="p">],</span>
+                         <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+                         <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+                         <span class="n">device_map</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">llm</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By HZT
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, HZT.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
