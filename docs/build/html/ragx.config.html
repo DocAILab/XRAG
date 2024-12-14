@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>ragx.webui package &#8212; RAGX 1.0 documentation</title>
+    <title>ragx.config module &#8212; RAGX 1.0 documentation</title>
   
   
   
@@ -43,11 +43,10 @@
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'ragx.webui';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ragx.config';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="ragx.cli module" href="ragx.cli.html" />
-    <link rel="prev" title="ragx.retrievers package" href="ragx.retrievers.html" />
+    <link rel="prev" title="ragx.cli module" href="ragx.cli.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -148,9 +147,9 @@
 <li class="toctree-l2"><a class="reference internal" href="ragx.llms.html">ragx.llms package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ragx.process.html">ragx.process package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ragx.retrievers.html">ragx.retrievers package</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">ragx.webui package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ragx.webui.html">ragx.webui package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ragx.cli.html">ragx.cli module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ragx.config.html">ragx.config module</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">ragx.config module</a></li>
 </ul>
 </details></li>
 </ul>
@@ -207,7 +206,7 @@
       
       
       
-      <li><a href="_sources/ragx.webui.rst" target="_blank"
+      <li><a href="_sources/ragx.config.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -283,7 +282,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>ragx.webui package</h1>
+    <h1>ragx.config module</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -293,21 +292,19 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.webui.app">ragx.webui.app module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.display_results"><code class="docutils literal notranslate"><span class="pre">display_results()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.get_index"><code class="docutils literal notranslate"><span class="pre">get_index()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.get_qa_dataset_"><code class="docutils literal notranslate"><span class="pre">get_qa_dataset_()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.get_query"><code class="docutils literal notranslate"><span class="pre">get_query()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.get_query_engine"><code class="docutils literal notranslate"><span class="pre">get_query_engine()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.config">ragx.config</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.Config.update_config"><code class="docutils literal notranslate"><span class="pre">Config.update_config()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.webui.run">ragx.webui.run module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.run.run_web_ui"><code class="docutils literal notranslate"><span class="pre">run_web_ui()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar"><code class="docutils literal notranslate"><span class="pre">GlobalVar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.get_query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.get_query_number()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.query_number</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.set_query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.set_query_number()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.webui">Module contents</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -319,54 +316,42 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="ragx-webui-package">
-<h1>ragx.webui package<a class="headerlink" href="#ragx-webui-package" title="Link to this heading">#</a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
-</section>
-<section id="module-ragx.webui.app">
-<span id="ragx-webui-app-module"></span><h2>ragx.webui.app module<a class="headerlink" href="#module-ragx.webui.app" title="Link to this heading">#</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="ragx.webui.app.display_results">
-<span class="sig-prename descclassname"><span class="pre">ragx.webui.app.</span></span><span class="sig-name descname"><span class="pre">display_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/webui/app.html#display_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.webui.app.display_results" title="Link to this definition">#</a></dt>
+  <section id="ragx-config-module">
+<h1>ragx.config module<a class="headerlink" href="#ragx-config-module" title="Link to this heading">#</a></h1>
+<section id="module-ragx.config">
+<span id="ragx-config"></span><h2>ragx.config<a class="headerlink" href="#module-ragx.config" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ragx.config.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ragx.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/config.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.config.Config" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ragx.config.Config.update_config">
+<span class="sig-name descname"><span class="pre">update_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">overrides</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/config.html#Config.update_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.config.Config.update_config" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ragx.webui.app.get_index">
-<span class="sig-prename descclassname"><span class="pre">ragx.webui.app.</span></span><span class="sig-name descname"><span class="pre">get_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/webui/app.html#get_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.webui.app.get_index" title="Link to this definition">#</a></dt>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ragx.config.GlobalVar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ragx.config.</span></span><span class="sig-name descname"><span class="pre">GlobalVar</span></span><a class="reference internal" href="_modules/ragx/config.html#GlobalVar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.config.GlobalVar" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ragx.config.GlobalVar.get_query_number">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_query_number</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/config.html#GlobalVar.get_query_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.config.GlobalVar.get_query_number" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ragx.webui.app.get_qa_dataset_">
-<span class="sig-prename descclassname"><span class="pre">ragx.webui.app.</span></span><span class="sig-name descname"><span class="pre">get_qa_dataset_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/webui/app.html#get_qa_dataset_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.webui.app.get_qa_dataset_" title="Link to this definition">#</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ragx.config.GlobalVar.query_number">
+<span class="sig-name descname"><span class="pre">query_number</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#ragx.config.GlobalVar.query_number" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ragx.webui.app.get_query">
-<span class="sig-prename descclassname"><span class="pre">ragx.webui.app.</span></span><span class="sig-name descname"><span class="pre">get_query</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/webui/app.html#get_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.webui.app.get_query" title="Link to this definition">#</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="ragx.config.GlobalVar.set_query_number">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_query_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/config.html#GlobalVar.set_query_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.config.GlobalVar.set_query_number" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ragx.webui.app.get_query_engine">
-<span class="sig-prename descclassname"><span class="pre">ragx.webui.app.</span></span><span class="sig-name descname"><span class="pre">get_query_engine</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/webui/app.html#get_query_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.webui.app.get_query_engine" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+</dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ragx.webui.app.main">
-<span class="sig-prename descclassname"><span class="pre">ragx.webui.app.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/webui/app.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.webui.app.main" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</section>
-<section id="module-ragx.webui.run">
-<span id="ragx-webui-run-module"></span><h2>ragx.webui.run module<a class="headerlink" href="#module-ragx.webui.run" title="Link to this heading">#</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="ragx.webui.run.run_web_ui">
-<span class="sig-prename descclassname"><span class="pre">ragx.webui.run.</span></span><span class="sig-name descname"><span class="pre">run_web_ui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/webui/run.html#run_web_ui"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.webui.run.run_web_ui" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-
-</section>
-<section id="module-ragx.webui">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ragx.webui" title="Link to this heading">#</a></h2>
 </section>
 </section>
 
@@ -382,22 +367,13 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="ragx.retrievers.html"
+       href="ragx.cli.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">ragx.retrievers package</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="ragx.cli.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">ragx.cli module</p>
       </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -416,21 +392,19 @@
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.webui.app">ragx.webui.app module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.display_results"><code class="docutils literal notranslate"><span class="pre">display_results()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.get_index"><code class="docutils literal notranslate"><span class="pre">get_index()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.get_qa_dataset_"><code class="docutils literal notranslate"><span class="pre">get_qa_dataset_()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.get_query"><code class="docutils literal notranslate"><span class="pre">get_query()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.get_query_engine"><code class="docutils literal notranslate"><span class="pre">get_query_engine()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.app.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.config">ragx.config</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.Config.update_config"><code class="docutils literal notranslate"><span class="pre">Config.update_config()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.webui.run">ragx.webui.run module</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.webui.run.run_web_ui"><code class="docutils literal notranslate"><span class="pre">run_web_ui()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar"><code class="docutils literal notranslate"><span class="pre">GlobalVar</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.get_query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.get_query_number()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.query_number</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ragx.config.GlobalVar.set_query_number"><code class="docutils literal notranslate"><span class="pre">GlobalVar.set_query_number()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-ragx.webui">Module contents</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

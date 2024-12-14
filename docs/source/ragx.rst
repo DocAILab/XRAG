@@ -1,11 +1,13 @@
 ragx package
 ============
+ 
+
 
 Subpackages
 -----------
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 5
 
    ragx.data
    ragx.embs
@@ -17,24 +19,16 @@ Subpackages
    ragx.retrievers
    ragx.webui
 
+
 Submodules
 ----------
 
-ragx.cli module
----------------
+.. toctree::
+   :maxdepth: 2
 
-.. automodule:: ragx.cli
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   ragx.cli
+   ragx.config
 
-ragx.config module
-------------------
-
-.. automodule:: ragx.config
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 Module contents
 ---------------

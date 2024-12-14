@@ -138,19 +138,18 @@
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../modules.html">ragx</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../ragx.html">ragx package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../ragx.data.html">ragx.data package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ragx.embs.html">ragx.embs package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ragx.eval.html">ragx.eval package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ragx.index.html">ragx.index package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ragx.launcher.html">ragx.launcher package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ragx.llms.html">ragx.llms package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ragx.process.html">ragx.process package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ragx.retrievers.html">ragx.retrievers package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ragx.webui.html">ragx.webui package</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../ragx.html">ragx package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.data.html">ragx.data package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.embs.html">ragx.embs package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.eval.html">ragx.eval package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.index.html">ragx.index package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.launcher.html">ragx.launcher package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.llms.html">ragx.llms package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.process.html">ragx.process package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.retrievers.html">ragx.retrievers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.webui.html">ragx.webui package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.cli.html">ragx.cli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ragx.config.html">ragx.config module</a></li>
 </ul>
 </details></li>
 </ul>
@@ -253,7 +252,7 @@
 
 
 <div class="viewcode-block" id="Config">
-<a class="viewcode-back" href="../../ragx.html#ragx.config.Config">[docs]</a>
+<a class="viewcode-back" href="../../ragx.config.html#ragx.config.Config">[docs]</a>
 <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Singleton instance</span>
 
@@ -272,7 +271,7 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span>
 
 <div class="viewcode-block" id="Config.update_config">
-<a class="viewcode-back" href="../../ragx.html#ragx.config.Config.update_config">[docs]</a>
+<a class="viewcode-back" href="../../ragx.config.html#ragx.config.Config.update_config">[docs]</a>
     <span class="k">def</span> <span class="nf">update_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overrides</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">overrides</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
@@ -302,19 +301,19 @@
 
 
 <div class="viewcode-block" id="GlobalVar">
-<a class="viewcode-back" href="../../ragx.html#ragx.config.GlobalVar">[docs]</a>
+<a class="viewcode-back" href="../../ragx.config.html#ragx.config.GlobalVar">[docs]</a>
 <span class="k">class</span> <span class="nc">GlobalVar</span><span class="p">:</span>
     <span class="n">query_number</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="GlobalVar.set_query_number">
-<a class="viewcode-back" href="../../ragx.html#ragx.config.GlobalVar.set_query_number">[docs]</a>
+<a class="viewcode-back" href="../../ragx.config.html#ragx.config.GlobalVar.set_query_number">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">set_query_number</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
         <span class="n">GlobalVar</span><span class="o">.</span><span class="n">query_number</span> <span class="o">=</span> <span class="n">num</span></div>
 
 
 <div class="viewcode-block" id="GlobalVar.get_query_number">
-<a class="viewcode-back" href="../../ragx.html#ragx.config.GlobalVar.get_query_number">[docs]</a>
+<a class="viewcode-back" href="../../ragx.config.html#ragx.config.GlobalVar.get_query_number">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_query_number</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">GlobalVar</span><span class="o">.</span><span class="n">query_number</span></div>
