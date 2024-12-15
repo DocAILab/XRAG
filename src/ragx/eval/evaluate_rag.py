@@ -135,18 +135,25 @@ class EvaluationResult:
 
     def get_results_str(self):
         ans = ''
+        cur = 0
         for key, value in self.results.items():
             if key in self.metrics:
                 if key == 'n':
-                    ans += f"{key}: {value}"+ "\n"
+                    ans += f"{key}: {value}"+ ",\t"
                 else:
-                    ans += f"{key}: {value/self.results['n']}"+ "\n"
+                    ans += f"{key}: {value/self.results['n']:.2f}"+ ",\t"
+                cur += 1
+                if cur % 5 == 0:
+                    ans += "\n"
         for key, value in self.metrics_results.items():
             if key in self.metrics:
                 if value['count'] == 0:
-                    ans += f"{key}: 0, valid number : {value['count']}"+"\n"
+                    ans += f"{key}: 0, valid number : {value['count']}"+",\t"
                 else:
-                    ans += f"{key}: {value['score']/value['count']}, valid number : {value['count']}"+"\n"
+                    ans += f"{key}: {value['score']/value['count']:.2f}, valid number : {value['count']}"+",\t"
+                cur += 1
+                if cur % 5 == 0:
+                    ans += "\n"
         return ans
 
 

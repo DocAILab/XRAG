@@ -47,7 +47,7 @@ def build_split(answers, questions, supporting_facts, title2id, title2sentences)
     print("questions:", len(questions))
     print("filter_questions:", len(filter_questions))
     return filter_questions,filter_answers, golden_ids, golden_sentences
-def get_qa_dataset(dataset_name:str):
+def get_qa_dataset(dataset_name:str,files=None):
     if dataset_name == "rmanluo/RoG-webqsp":
         dataset =  load_dataset("rmanluo/RoG-webqsp")
         questions = dataset['train']['question'] + dataset['test']['question'] + dataset['validation']['question']

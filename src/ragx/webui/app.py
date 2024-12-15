@@ -1,5 +1,5 @@
 import warnings
-
+from streamlit_card import card
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -41,6 +41,61 @@ DATASET_DISPLAY_MAP = {
     "natural_questions": "NaturalQA"
     # remain for other options
 }
+
+DATASETS_INFO = {
+    "HotpotQA": {
+        "size": {
+            "train": "86,830",
+            "validation": "8,680",
+            "test": "968"
+        },
+        "corpus": {
+            "documents": "508,826",
+            "source": "Wikipedia"
+        },
+        "features": {
+            "Multi-hop": True,
+            "Constrained": False,
+            "Numerical": True,
+            "Set-logical": False
+        }
+    },
+    "DropQA": {
+        "size": {
+            "train": "78,241",
+            "validation": "7,824",
+            "test": "870"
+        },
+        "corpus": {
+            "documents": "6,147",
+            "source": "Wikipedia"
+        },
+        "features": {
+            "Multi-hop": True,
+            "Constrained": False,
+            "Numerical": True,
+            "Set-logical": True
+        }
+    },
+    "NaturalQA": {
+        "size": {
+            "train": "100,093",
+            "validation": "10,010",
+            "test": "1,112"
+        },
+        "corpus": {
+            "documents": "49,815",
+            "source": "Wikipedia"
+        },
+        "features": {
+            "Multi-hop": True,
+            "Constrained": True,
+            "Numerical": True,
+            "Set-logical": False
+        }
+    }
+}
+
 # frontend dataset options
 FRONTEND_DATASET_OPTIONS = [DATASET_DISPLAY_MAP.get(ds, ds) for ds in DATASET_OPTIONS]
 RETRIEVER_OPTIONS = ["BM25", "Vector", "Summary", "Tree", "Keyword", "Custom", "QueryFusion", "AutoMerging", "Recursive", "SentenceWindow"]  # Add more as needed
@@ -107,8 +162,8 @@ def get_query():
     return run(cli=False)
 
 @st.cache_resource(show_spinner=False)
-def get_qa_dataset_(dataset):
-    return get_qa_dataset(dataset)
+def get_qa_dataset_(dataset,files=None):
+    return get_qa_dataset(dataset,files=files)
 
 @st.cache_resource(show_spinner=False)
 def get_index():
@@ -136,22 +191,115 @@ def main():
         frontend_dataset = DATASET_DISPLAY_MAP.get(backend_dataset, backend_dataset)
         frontend_index = FRONTEND_DATASET_OPTIONS.index(frontend_dataset)
 
-        selected_frontend_dataset = st.selectbox(
-            "Dataset", 
-            options=FRONTEND_DATASET_OPTIONS, 
-            index=frontend_index,
-            key="dataset"
-        )
+        # selected_frontend_dataset = st.selectbox(
+        #     "Dataset",
+        #     options=FRONTEND_DATASET_OPTIONS,
+        #     index=frontend_index,
+        #     key="dataset"
+        # )
+        if 'dataset' not in st.session_state:
+            st.session_state.dataset = "HotpotQA"
+
+        cols = st.columns(3)
+        st.markdown("""
+        <style>
+            .stCard {
+                background-color: white !important;
+            }
+            .card-body {
+                background-color: white !important;
+            }
+            .card {
+                background-color: white !important;
+            }
+            /* 修改 iframe 的高度 */
+            iframe.stCustomComponentV1 {
+                height: 400px !important;  /* 调整这个值来改变卡片高度 */
+            }
+            /* 减少卡片之间的间距 */
+            div[data-testid="column"] {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+            .block-container {
+                padding-top: 2rem !important;
+                padding-bottom: 2rem !important;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+
+        for i, (dataset_name, info) in enumerate(DATASETS_INFO.items()):
+            with cols[i]:
+                is_selected = st.session_state.dataset == dataset_name
+
+                features_text = "\n".join([
+                    f"• {k}: {'✓' if v else '✗'}"
+                    for k, v in info['features'].items()
+                ])
+
+                size_text = (
+                    f"Train: {info['size']['train']}\n"
+                    f"Val: {info['size']['validation']}\n"
+                    f"Test: {info['size']['test']}"
+                )
+
+                clicked = card(
+                    title=dataset_name,
+                    text=(
+                        f"📊 Dataset Size:\n{size_text}\n"
+                        f"📚 Corpus:\n"
+                        f"• Documents: {info['corpus']['documents']}"
+                        # f"✨ Features:\n{features_text}"
+                    ),
+                    image="https://hotpotqa.github.io/img/home-bg.jpg",
+                    styles={
+                        "card": {
+                            "width": "100%",
+                            "height": "300px",
+                            "border-radius": "10px",
+                            "box-shadow": "0 0 10px rgba(0,0,0,0.1)",
+                            "background-color": "#ffffff",  # 设置背景色为白色
+                            "border": "4px solid #2E86C1" if is_selected else "1px solid #e0e0e0",
+                        },
+                        "title": {
+                            "font-size": "20px",
+                            "font-weight": "bold",
+                            "color": "#ffffff",  # 标题改为黑色
+                            "margin-bottom": "10px"
+                        },
+                        "text": {
+                            "font-size": "14px",
+                            "line-height": "1.5",
+                            "white-space": "pre-line",
+                            "color": "#ffffff"  # 文本改为黑色
+                        }
+                    }
+                )
+
+                if clicked:
+                    st.session_state.dataset = dataset_name
+                    st.rerun()
+
+        selected_frontend_dataset = st.session_state.dataset
 
         # reverse map: from the frontend dataset to the backend dataset
         DISPLAY_TO_BACKEND_MAP = {v: k for k, v in DATASET_DISPLAY_MAP.items()}
         chosen_backend_dataset = DISPLAY_TO_BACKEND_MAP.get(selected_frontend_dataset, selected_frontend_dataset)
         cfg.dataset = chosen_backend_dataset
+        # custom dataset
+        st.markdown("---")
+        # st.markdown("Or upload your own dataset")
+        files = st.file_uploader("Or upload your own dataset", type=["json"])
 
         if st.button("Load Dataset"):
             st.session_state.step = 2
             with st.spinner("Loading Dataset..."):
-                st.session_state.qa_dataset = get_qa_dataset_(cfg.dataset)
+                if files:
+                    # load to json
+                    files = [pd.read_json(file) for file in files]
+                    st.session_state.qa_dataset = get_qa_dataset_("custom",files)
+                else:
+                    st.session_state.qa_dataset = get_qa_dataset_(cfg.dataset)
             st.rerun()
 
     if st.session_state.step == 2:
@@ -175,7 +323,7 @@ def main():
             cfg.embeddings = st.selectbox("Embeddings", options=EMBEDDING_OPTIONS, index=EMBEDDING_OPTIONS.index(cfg.embeddings) if cfg.embeddings in EMBEDDING_OPTIONS else 0)
             cfg.split_type = st.selectbox("Split Type", options=SPLIT_TYPE_OPTIONS, index=SPLIT_TYPE_OPTIONS.index(cfg.split_type))
             cfg.chunk_size = st.number_input("Chunk Size", min_value=1, value=cfg.chunk_size, step=1)
-            cfg.source_dir = st.text_input("Source Directory", value=cfg.source_dir)
+            # cfg.source_dir = st.text_input("Source Directory", value=cfg.source_dir)
             cfg.persist_dir = st.text_input("Persist Directory", value=cfg.persist_dir)
 
         # 返回或者继续
@@ -256,9 +404,7 @@ def main():
         # 将前端选择的显示名称映射回后端的真实名称
         selected_backend_metrics = [DISPLAY_TO_BACKEND_METRIC_MAP.get(metric, metric) for metric in selected_frontend_metrics]
         cfg.metrics = selected_backend_metrics
-        
-        # 显示选中的评测指标（仅用于调试，可移除）
-        st.write("Selected Metrics (Backend):", cfg.metrics)
+
         
         # 其他输入
         cfg.test_init_total_number_documents = st.number_input(
@@ -275,54 +421,55 @@ def main():
                 st.rerun()
 
         with c2:
-            if st.button("Evaluate Your Dataset"):
-                all_num = 0
-                metrics = cfg.metrics.copy()
-                evaluateResults = EvaluationResult(metrics=metrics)
-                evalAgent = EvalModelAgent(cfg)
-                if cfg.experiment_1:
-                    if len(st.session_state.qa_dataset) < cfg.test_init_total_number_documents:
-                        warnings.filterwarnings('default')
-                        warnings.warn("使用的数据集长度大于数据集本身的最大长度，请修改。 本轮代码无法运行", UserWarning)
-                else:
-                    cfg.test_init_total_number_documents = cfg.n
-                for question, expected_answer, golden_context, golden_context_ids in zip(
-                        st.session_state.qa_dataset['test_data']['question'][:cfg.test_init_total_number_documents],
-                        st.session_state.qa_dataset['test_data']['expected_answer'][:cfg.test_init_total_number_documents],
-                        st.session_state.qa_dataset['test_data']['golden_context'][:cfg.test_init_total_number_documents],
-                        st.session_state.qa_dataset['test_data']['golden_context_ids'][:cfg.test_init_total_number_documents]
-                ):
-                    response = transform_and_query(question, cfg, st.session_state.query_engine)
-                    # 返回node节点
-                    retrieval_ids = []
-                    retrieval_context = []
-                    for source_node in response.source_nodes:
-                        retrieval_ids.append(source_node.metadata['id'])
-                        retrieval_context.append(source_node.get_content())
-                    actual_response = response.response
-                    eval_result = evaluating(
-                        question, response, actual_response, retrieval_context, retrieval_ids,
-                        expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
-                        evalAgent
-                    )
-                    with st.expander(question):
-                        st.markdown("### Answer")
-                        st.markdown(response.response)
-                        st.markdown('### Retrieval context')
-                        st.markdown('\n\n'.join(retrieval_context))
-                        st.markdown('### Expected answer')
-                        st.markdown(expected_answer)
-                        st.markdown('### Golden context')
-                        st.markdown('\n\n'.join(golden_context))
+            start_evaluation = st.button("Start Evaluation")
+        if start_evaluation:
+            all_num = 0
+            metrics = cfg.metrics.copy()
+            evaluateResults = EvaluationResult(metrics=metrics)
+            evalAgent = EvalModelAgent(cfg)
+            if cfg.experiment_1:
+                if len(st.session_state.qa_dataset) < cfg.test_init_total_number_documents:
+                    warnings.filterwarnings('default')
+                    warnings.warn("使用的数据集长度大于数据集本身的最大长度，请修改。 本轮代码无法运行", UserWarning)
+            else:
+                cfg.test_init_total_number_documents = cfg.n
+            for question, expected_answer, golden_context, golden_context_ids in zip(
+                    st.session_state.qa_dataset['test_data']['question'][:cfg.test_init_total_number_documents],
+                    st.session_state.qa_dataset['test_data']['expected_answer'][:cfg.test_init_total_number_documents],
+                    st.session_state.qa_dataset['test_data']['golden_context'][:cfg.test_init_total_number_documents],
+                    st.session_state.qa_dataset['test_data']['golden_context_ids'][:cfg.test_init_total_number_documents]
+            ):
+                response = transform_and_query(question, cfg, st.session_state.query_engine)
+                # 返回node节点
+                retrieval_ids = []
+                retrieval_context = []
+                for source_node in response.source_nodes:
+                    retrieval_ids.append(source_node.metadata['id'])
+                    retrieval_context.append(source_node.get_content())
+                actual_response = response.response
+                eval_result = evaluating(
+                    question, response, actual_response, retrieval_context, retrieval_ids,
+                    expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
+                    evalAgent
+                )
+                with st.expander(question):
+                    st.markdown("### Answer")
+                    st.markdown(response.response)
+                    st.markdown('### Retrieval context')
+                    st.markdown('\n\n'.join(retrieval_context))
+                    st.markdown('### Expected answer')
+                    st.markdown(expected_answer)
+                    st.markdown('### Golden context')
+                    st.markdown('\n\n'.join(golden_context))
 
-                    print(eval_result)
+                print(eval_result)
 
-                    evaluateResults.add(eval_result)
-                    all_num += 1
-                    st.markdown(evaluateResults.get_results_str())
+                evaluateResults.add(eval_result)
+                all_num += 1
+                st.markdown(evaluateResults.get_results_str())
 
-                st.success("Evaluation complete!")
-                st.session_state.evaluation_results = evaluateResults
+            st.success("Evaluation complete!")
+            st.session_state.evaluation_results = evaluateResults
 
     # if st.session_state.step == 5:
     #     st.header("Evaluation Results")
