@@ -48,6 +48,109 @@ def build_split(answers, questions, supporting_facts, title2id, title2sentences)
     print("filter_questions:", len(filter_questions))
     return filter_questions,filter_answers, golden_ids, golden_sentences
 def get_qa_dataset(dataset_name:str,files=None):
+    if files is not None:
+        # files is a json file, containing a list of {question, answer, documents}
+        questions = []
+        answers = []
+        golden_sources = []  # 每个问题对应的所有文档
+        source_sentences = []
+        title2sentences = {}
+        titles = []
+        title2start = {}
+        title2id = {}
+
+        # 读取JSON文件
+        with open(files, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+            # 处理每个样本
+            for item in data:
+                questions.append(item['question'])
+                answers.append(item['answer'])
+
+                # 处理多个文档
+                if isinstance(item['documents'], list):
+                    # 如果每个文档是字符串
+                    if all(isinstance(doc, str) for doc in item['documents']):
+                        golden_sources.append(item['documents'])
+                    # 如果每个文档是句子列表
+                    elif all(isinstance(doc, list) for doc in item['documents']):
+                        golden_sources.append([' '.join(doc) for doc in item['documents']])
+                else:
+                    # 如果只有一个文档
+                    golden_sources.append([item['documents']])
+
+        # 处理文档，构建索引
+        cur = 0
+        doc_id = 0
+        for qa_idx, docs in enumerate(golden_sources):
+            doc_ids = []
+            for doc in docs:
+                # 为每个文档创建一个唯一的标题
+                title = f"doc_{doc_id}"
+                doc_id += 1
+
+                # 将文档分割成句子
+                sentences = [doc]
+
+                # 更新数据结构
+                title2sentences[title] = sentences
+                title2start[title] = cur
+                titles.append(title)
+                source_sentences.extend(sentences)
+                cur += len(sentences)
+                title2id[title] = doc_id - 1
+                doc_ids.append(doc_id - 1)
+
+            # 更新golden_sources为对应的文档ID列表
+            golden_sources[qa_idx] = doc_ids
+
+        # 划分数据集
+        indexes = list(range(len(questions)))
+        random.shuffle(indexes)
+
+        # 按8:1:1的比例划分
+        train_size = int(len(indexes) * 0.9)
+        valid_size = int(len(indexes) * 0.09)
+
+        train_indexes = indexes[:train_size]
+        valid_indexes = indexes[train_size:train_size + valid_size]
+        test_indexes = indexes[train_size + valid_size:]
+
+        # 构建数据集
+        train_data = {
+            'question': [questions[i] for i in train_indexes],
+            'expected_answer': [answers[i] for i in train_indexes],
+            'golden_context': [golden_sources[i] for i in train_indexes],
+            'golden_context_ids': [[title2id[f"doc_{i}"]] for i in train_indexes]
+        }
+
+        valid_data = {
+            'question': [questions[i] for i in valid_indexes],
+            'expected_answer': [answers[i] for i in valid_indexes],
+            'golden_context': [golden_sources[i] for i in valid_indexes],
+            'golden_context_ids': [[title2id[f"doc_{i}"]] for i in valid_indexes]
+        }
+
+        test_data = {
+            'question': [questions[i] for i in test_indexes],
+            'expected_answer': [answers[i] for i in test_indexes],
+            'golden_context': [golden_sources[i] for i in test_indexes],
+            'golden_context_ids': [[title2id[f"doc_{i}"]] for i in test_indexes]
+        }
+
+        return dict(
+            train_data=train_data,
+            valid_data=valid_data,
+            test_data=test_data,
+            sources=source_sentences,
+            titles=titles,
+            title2sentences=title2sentences,
+            title2start=title2start,
+            title2id=title2id,
+            dataset=files)
+
+
     if dataset_name == "rmanluo/RoG-webqsp":
         dataset =  load_dataset("rmanluo/RoG-webqsp")
         questions = dataset['train']['question'] + dataset['test']['question'] + dataset['validation']['question']
