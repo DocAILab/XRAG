@@ -1,8 +1,9 @@
+**XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation**
+
+
 <img src="img.png" width="100%" align="center" alt="XRAG">
 
-# XRAG
-
-**XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation**
+---
 
 [![PyPI version](https://badge.fury.io/py/examinationrag.svg)](https://badge.fury.io/py/examinationrag)
 [![Python](https://img.shields.io/pypi/pyversions/examinationrag)](https://pypi.org/project/examinationrag/)
@@ -49,12 +50,8 @@ conda activate xrag
 You can install XRAG directly using `pip`:
 
 ```bash
-# Clone the repository
-git clone https://github.com/DocAILab/xrag.git
-cd xrag
-
 # Install XRAG
-pip install .
+pip install examinationrag
 
 # Install 'jury' without dependencies to avoid conflicts
 pip install jury --no-deps
