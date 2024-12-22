@@ -48,4 +48,5 @@ html_theme = 'sphinx_book_theme'
 
 html_static_path = ['_static']
 # autodoc_mock_imports = ['xrag.config', 'xrag.llms']
+html_baseurl = "https://docailab.github.io/XRAG/"
 
