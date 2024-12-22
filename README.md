@@ -4,10 +4,10 @@
 
 **XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation**
 
-[![PyPI version](https://badge.fury.io/py/x-rag.svg)](https://badge.fury.io/py/x-rag)
-[![Python](https://img.shields.io/pypi/pyversions/x-rag)](https://pypi.org/project/x-rag/)
+[![PyPI version](https://badge.fury.io/py/x-r-a-g.svg)](https://badge.fury.io/py/x-r-a-g)
+[![Python](https://img.shields.io/pypi/pyversions/x-r-a-g)](https://pypi.org/project/x-r-a-g/)
 [![License](https://img.shields.io/github/license/DocAILab/XRAG)](https://github.com/DocAILab/XRAG/blob/main/LICENSE)
-[![Downloads](https://static.pepy.tech/badge/x-rag)](https://pepy.tech/project/x-rag)
+[![Downloads](https://static.pepy.tech/badge/x-r-a-g)](https://pepy.tech/project/x-r-a-g)
 [![GitHub stars](https://img.shields.io/github/stars/DocAILab/XRAG)](https://github.com/DocAILab/XRAG/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/DocAILab/XRAG)](https://github.com/DocAILab/XRAG/issues)
 
