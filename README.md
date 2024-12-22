@@ -1,4 +1,7 @@
-**XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation**
+<div align="center" style="font-size: 48px;">
+  XRAG: eXamining the Core - Benchmarking Foundational Component Modules in<br>
+  Advanced Retrieval-Augmented Generation
+</div>
 
 
 <img src="img.png" width="100%" align="center" alt="XRAG">
