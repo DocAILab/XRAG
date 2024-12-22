@@ -1,0 +1,1071 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ragx.data.qa_loader &#8212; RAGX 1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=a681ed88"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/ragx/data/qa_loader';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">RAGX 1.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../modules.html">ragx</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../ragx.html">ragx package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.data.html">ragx.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.embs.html">ragx.embs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.eval.html">ragx.eval package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.index.html">ragx.index package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.launcher.html">ragx.launcher package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.llms.html">ragx.llms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.process.html">ragx.process package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.retrievers.html">ragx.retrievers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.webui.html">ragx.webui package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.cli.html">ragx.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.config.html">ragx.config module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for ragx.data.qa_loader</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;HF_ENDPOINT&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;https://hf-mirror.com&#39;</span>
+<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="c1"># pip install datasets</span>
+<span class="c1"># from huggingface_hub import login</span>
+<span class="c1"># login(token=&#39;xxxxxx&#39;)</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">..config</span> <span class="kn">import</span> <span class="n">GlobalVar</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">..config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+
+<span class="n">test_init_total_number_documents</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">test_init_total_number_documents</span>
+<span class="n">extra_number_documents</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">extra_number_documents</span>
+<span class="n">test_all_number_documents</span> <span class="o">=</span> <span class="n">test_init_total_number_documents</span> <span class="o">+</span> <span class="n">extra_number_documents</span>
+<span class="n">experiment_1</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">experiment_1</span>
+
+
+<div class="viewcode-block" id="build_split">
+<a class="viewcode-back" href="../../../ragx.data.html#ragx.data.qa_loader.build_split">[docs]</a>
+<span class="k">def</span> <span class="nf">build_split</span><span class="p">(</span><span class="n">answers</span><span class="p">,</span> <span class="n">questions</span><span class="p">,</span> <span class="n">supporting_facts</span><span class="p">,</span> <span class="n">title2id</span><span class="p">,</span> <span class="n">title2sentences</span><span class="p">):</span>
+    <span class="n">golden_ids</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">golden_sentences</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">filter_questions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">filter_answers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">sup</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">supporting_facts</span><span class="p">,</span> <span class="n">questions</span><span class="p">,</span> <span class="n">answers</span><span class="p">):</span>
+        <span class="c1"># i = i + 1</span>
+        <span class="c1"># if i == 300:</span>
+        <span class="c1">#     break</span>
+        <span class="c1"># if len(sup[&#39;sent_id&#39;]) == 0:</span>
+        <span class="c1">#     continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sup_title</span> <span class="o">=</span> <span class="n">sup</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+            <span class="c1"># send_id = sup[&#39;sent_id&#39;]</span>
+            <span class="c1"># golden_id = [title2start[t]+i for i,t in zip(send_id,sup_title)]</span>
+            <span class="n">sup_titles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">sup_title</span><span class="p">)</span>
+            <span class="n">golden_id</span> <span class="o">=</span> <span class="p">[</span><span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">sup_titles</span><span class="p">]</span>
+
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">golden_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">golden_id</span><span class="p">)</span>
+        <span class="n">golden_sentences</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">sup_titles</span><span class="p">])</span>
+        <span class="n">filter_questions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+        <span class="n">filter_answers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;questions:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;filter_questions:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">filter_questions</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">filter_questions</span><span class="p">,</span><span class="n">filter_answers</span><span class="p">,</span> <span class="n">golden_ids</span><span class="p">,</span> <span class="n">golden_sentences</span></div>
+
+<div class="viewcode-block" id="get_qa_dataset">
+<a class="viewcode-back" href="../../../ragx.data.html#ragx.data.qa_loader.get_qa_dataset">[docs]</a>
+<span class="k">def</span> <span class="nf">get_qa_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;rmanluo/RoG-webqsp&quot;</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span>  <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;rmanluo/RoG-webqsp&quot;</span><span class="p">)</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span>
+        <span class="n">golden_sources</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;graph&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;graph&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;graph&#39;</span><span class="p">]</span>
+    
+    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;hotpot_qa&quot;</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;hotpot_qa&quot;</span><span class="p">,</span> <span class="s2">&quot;fullwiki&quot;</span><span class="p">)</span>
+
+        <span class="n">questions</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span>
+        <span class="n">golden_sources</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;context&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;context&#39;</span><span class="p">]</span>
+        <span class="n">supporting_facts</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;supporting_facts&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;supporting_facts&#39;</span><span class="p">]</span>
+        <span class="n">source_sentences</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">title2sentences</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">titles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">title2start</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">title2id</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">sup</span><span class="p">,</span><span class="n">source</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">supporting_facts</span><span class="p">,</span> <span class="n">golden_sources</span><span class="p">):</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+            <span class="n">sentence</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="s1">&#39;sentences&#39;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">experiment_1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">id</span> <span class="o">&lt;</span> <span class="n">test_all_number_documents</span><span class="p">:</span>
+                    <span class="n">GlobalVar</span><span class="o">.</span><span class="n">set_query_number</span><span class="p">(</span><span class="n">GlobalVar</span><span class="o">.</span><span class="n">get_query_number</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">t</span><span class="p">,</span><span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">sentence</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">title2sentences</span><span class="p">:</span>
+                    <span class="n">title2sentences</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
+                    <span class="n">title2start</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">cur</span>
+                    <span class="n">titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                    <span class="n">source_sentences</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                    <span class="n">cur</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                    <span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+                    <span class="nb">id</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># else:</span>
+                    <span class="c1"># print(&quot;title already exists, skip.&quot;)</span>
+
+        <span class="n">indexes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">)))</span>
+        <span class="c1"># split the dataset 8:1:1</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indexes</span><span class="p">)</span>
+        <span class="n">train_indexes</span> <span class="o">=</span> <span class="n">indexes</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexes</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span><span class="p">)]</span>
+        <span class="n">valid_indexes</span> <span class="o">=</span> <span class="n">indexes</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexes</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexes</span><span class="p">)</span><span class="o">*</span><span class="mf">0.99</span><span class="p">)]</span>
+        <span class="n">test_indexes</span> <span class="o">=</span> <span class="n">indexes</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexes</span><span class="p">)</span><span class="o">*</span><span class="mf">0.99</span><span class="p">):]</span>
+        <span class="n">train_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">valid_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">test_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">],</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">],</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">],</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">build_split</span><span class="p">([</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexes</span><span class="p">],</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexes</span><span class="p">],</span> <span class="p">[</span><span class="n">supporting_facts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexes</span><span class="p">],</span> <span class="n">title2id</span><span class="p">,</span> <span class="n">title2sentences</span><span class="p">)</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">],</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">],</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">],</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">build_split</span><span class="p">([</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexes</span><span class="p">],</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexes</span><span class="p">],</span> <span class="p">[</span><span class="n">supporting_facts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexes</span><span class="p">],</span> <span class="n">title2id</span><span class="p">,</span> <span class="n">title2sentences</span><span class="p">)</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">],</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">],</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">],</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">build_split</span><span class="p">([</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexes</span><span class="p">],</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexes</span><span class="p">],</span> <span class="p">[</span><span class="n">supporting_facts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexes</span><span class="p">],</span> <span class="n">title2id</span><span class="p">,</span> <span class="n">title2sentences</span><span class="p">)</span>
+
+
+        <span class="c1"># train_data = {}</span>
+        <span class="c1"># train_data[&#39;question&#39;] , train_data[&#39;answers&#39;], train_data[&#39;golden_ids&#39;], train_data[&#39;golden_sentences&#39;] = build_split(dataset[&#39;train&#39;][&#39;answer&#39;], dataset[&#39;train&#39;][&#39;question&#39;], dataset[&#39;train&#39;][&#39;context&#39;], title2id, title2sentences)</span>
+        <span class="c1"># valid_data = {}</span>
+        <span class="c1"># valid_data[&#39;question&#39;] , valid_data[&#39;answers&#39;], valid_data[&#39;golden_ids&#39;], valid_data[&#39;golden_sentences&#39;] = build_split(dataset[&#39;validation&#39;][&#39;answer&#39;], dataset[&#39;validation&#39;][&#39;question&#39;], dataset[&#39;validation&#39;][&#39;context&#39;], title2id, title2sentences)</span>
+        <span class="c1"># test_data = {}</span>
+        <span class="c1"># test_data[&#39;question&#39;] , test_data[&#39;answers&#39;], test_data[&#39;golden_ids&#39;], test_data[&#39;golden_sentences&#39;] = build_split(dataset[&#39;test&#39;][&#39;answer&#39;], dataset[&#39;test&#39;][&#39;question&#39;], dataset[&#39;test&#39;][&#39;context&#39;], title2id, title2sentences)</span>
+        <span class="c1"># filter_answers, filter_questions, golden_ids, golden_sentences = build_split(answers, questions,</span>
+        <span class="c1">#                                                                              supporting_facts, title2id,</span>
+        <span class="c1">#                                                                              title2sentences)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span>
+            <span class="n">valid_data</span><span class="o">=</span><span class="n">valid_data</span><span class="p">,</span>
+            <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="p">,</span>
+            <span class="n">sources</span><span class="o">=</span><span class="n">source_sentences</span><span class="p">,</span>
+            <span class="n">titles</span><span class="o">=</span><span class="n">titles</span><span class="p">,</span>
+            <span class="n">title2sentences</span><span class="o">=</span><span class="n">title2sentences</span><span class="p">,</span>
+            <span class="n">title2start</span><span class="o">=</span><span class="n">title2start</span><span class="p">,</span>
+            <span class="n">title2id</span><span class="o">=</span><span class="n">title2id</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+    
+    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;drop&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;answers_spans&quot;: [{</span>
+<span class="sd">                &quot;spans&quot;: [&quot;Chaz Schilens&quot;]</span>
+<span class="sd">            }],</span>
+<span class="sd">            &quot;passage&quot;: &quot;\&quot; Hoping to rebound from their loss to the Patriots, the Raiders stayed at home for a Week 16 duel with the Houston Texans.  Oak...&quot;,</span>
+<span class="sd">            &quot;question&quot;: &quot;Who scored the first touchdown of the game?&quot;</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;drop&quot;</span><span class="p">)</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;answers_spans&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;answers_spans&#39;</span><span class="p">]</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;spans&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">answers</span><span class="p">]</span>
+        <span class="n">sections</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;section_id&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;section_id&#39;</span><span class="p">]</span>
+        <span class="c1"># query_ids = dataset[&#39;train&#39;][&#39;query_id&#39;] + dataset[&#39;validation&#39;][&#39;query_id&#39;]</span>
+        <span class="n">golden_sources</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;passage&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;passage&#39;</span><span class="p">]</span>
+        <span class="c1"># split 8/1/1</span>
+        <span class="n">train_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">valid_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">test_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">indexs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">experiment_1</span><span class="p">:</span>
+            <span class="n">indexs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">test_all_number_documents</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">test_all_number_documents</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">):</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;使用的数据集长度大于数据集本身的最大长度，请修改。 本轮使用数据集的最大长度运行&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+                <span class="n">indexes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">)))</span>
+
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span>
+        <span class="n">train_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span><span class="p">)]</span>
+        <span class="n">valid_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.99</span><span class="p">)]</span>
+        <span class="n">test_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.99</span><span class="p">):]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">golden_sources</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+        <span class="c1"># train_data[&#39;query_ids&#39;] = [query_ids[i] for i in train_indexs]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">golden_sources</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="c1"># valid_data[&#39;query_ids&#39;] = [query_ids[i] for i in valid_indexs]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">golden_sources</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+        <span class="c1"># test_data[&#39;query_ids&#39;] = [query_ids[i] for i in test_indexs]</span>
+
+        <span class="n">source_sentences</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">title2sentences</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">titles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># title2start = {}</span>
+        <span class="n">title2id</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># cur = 0</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">sec</span><span class="p">,</span> <span class="n">source</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sections</span><span class="p">,</span> <span class="n">golden_sources</span><span class="p">):</span>
+            <span class="c1"># i = i + 1</span>
+            <span class="c1"># if i == 300:</span>
+            <span class="c1">#     break</span>
+            <span class="k">if</span> <span class="n">sec</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">title2sentences</span><span class="p">:</span>
+                <span class="n">title2sentences</span><span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="p">]</span>
+                <span class="n">titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sec</span><span class="p">)</span>
+                <span class="n">source_sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+                <span class="n">title2id</span><span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+                <span class="nb">id</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># else:</span>
+            <span class="c1">#     print(&quot;title already exists, skip.&quot;)</span>
+
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">sec</span><span class="p">]]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">sec</span><span class="p">]]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">sec</span><span class="p">]]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]]</span>
+
+        <span class="k">del</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;sections&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span>
+            <span class="n">valid_data</span><span class="o">=</span><span class="n">valid_data</span><span class="p">,</span>
+            <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="p">,</span>
+            <span class="n">sources</span><span class="o">=</span><span class="n">source_sentences</span><span class="p">,</span>
+            <span class="n">titles</span><span class="o">=</span><span class="n">titles</span><span class="p">,</span>
+            <span class="n">title2sentences</span><span class="o">=</span><span class="n">title2sentences</span><span class="p">,</span>
+            <span class="n">title2id</span><span class="o">=</span><span class="n">title2id</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+
+
+
+
+
+
+    
+    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;natural_questions&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;id&quot;: &quot;797803103760793766&quot;,</span>
+<span class="sd">            &quot;document&quot;: {</span>
+<span class="sd">                &quot;title&quot;: &quot;Google&quot;,</span>
+<span class="sd">                &quot;url&quot;: &quot;http://www.wikipedia.org/Google&quot;,</span>
+<span class="sd">                &quot;html&quot;: &quot;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Google Inc.&lt;/h1&gt;&lt;p&gt;Google was founded in 1998 By:&lt;ul&gt;&lt;li&gt;Larry&lt;/li&gt;&lt;li&gt;Sergey&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;,</span>
+<span class="sd">                &quot;tokens&quot;: [</span>
+<span class="sd">                    {&quot;token&quot;: &quot;&lt;h1&gt;&quot;, &quot;start_byte&quot;: 12, &quot;end_byte&quot;: 16, &quot;is_html&quot;: True},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;Google&quot;, &quot;start_byte&quot;: 16, &quot;end_byte&quot;: 22, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;inc&quot;, &quot;start_byte&quot;: 23, &quot;end_byte&quot;: 26, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;.&quot;, &quot;start_byte&quot;: 26, &quot;end_byte&quot;: 27, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;&lt;/h1&gt;&quot;, &quot;start_byte&quot;: 27, &quot;end_byte&quot;: 32, &quot;is_html&quot;: True},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;&lt;p&gt;&quot;, &quot;start_byte&quot;: 32, &quot;end_byte&quot;: 35, &quot;is_html&quot;: True},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;Google&quot;, &quot;start_byte&quot;: 35, &quot;end_byte&quot;: 41, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;was&quot;, &quot;start_byte&quot;: 42, &quot;end_byte&quot;: 45, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;founded&quot;, &quot;start_byte&quot;: 46, &quot;end_byte&quot;: 53, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;in&quot;, &quot;start_byte&quot;: 54, &quot;end_byte&quot;: 56, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;1998&quot;, &quot;start_byte&quot;: 57, &quot;end_byte&quot;: 61, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;by&quot;, &quot;start_byte&quot;: 62, &quot;end_byte&quot;: 64, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;:&quot;, &quot;start_byte&quot;: 64, &quot;end_byte&quot;: 65, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;&lt;ul&gt;&quot;, &quot;start_byte&quot;: 65, &quot;end_byte&quot;: 69, &quot;is_html&quot;: True},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;&lt;li&gt;&quot;, &quot;start_byte&quot;: 69, &quot;end_byte&quot;: 73, &quot;is_html&quot;: True},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;Larry&quot;, &quot;start_byte&quot;: 73, &quot;end_byte&quot;: 78, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;&lt;/li&gt;&quot;, &quot;start_byte&quot;: 78, &quot;end_byte&quot;: 83, &quot;is_html&quot;: True},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;&lt;li&gt;&quot;, &quot;start_byte&quot;: 83, &quot;end_byte&quot;: 87, &quot;is_html&quot;: True},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;Sergey&quot;, &quot;start_byte&quot;: 87, &quot;end_byte&quot;: 92, &quot;is_html&quot;: False},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;&lt;/li&gt;&quot;, &quot;start_byte&quot;: 92, &quot;end_byte&quot;: 97, &quot;is_html&quot;: True},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;&lt;/ul&gt;&quot;, &quot;start_byte&quot;: 97, &quot;end_byte&quot;: 102, &quot;is_html&quot;: True},</span>
+<span class="sd">                    {&quot;token&quot;: &quot;&lt;/p&gt;&quot;, &quot;start_byte&quot;: 102, &quot;end_byte&quot;: 106, &quot;is_html&quot;: True}</span>
+<span class="sd">                ],</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;question&quot;: {</span>
+<span class="sd">                &quot;text&quot;: &quot;who founded google&quot;,</span>
+<span class="sd">                &quot;tokens&quot;: [&quot;who&quot;, &quot;founded&quot;, &quot;google&quot;]</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;long_answer_candidates&quot;: [</span>
+<span class="sd">                {&quot;start_byte&quot;: 32, &quot;end_byte&quot;: 106, &quot;start_token&quot;: 5, &quot;end_token&quot;: 22, &quot;top_level&quot;: True},</span>
+<span class="sd">                {&quot;start_byte&quot;: 65, &quot;end_byte&quot;: 102, &quot;start_token&quot;: 13, &quot;end_token&quot;: 21, &quot;top_level&quot;: False},</span>
+<span class="sd">                {&quot;start_byte&quot;: 69, &quot;end_byte&quot;: 83, &quot;start_token&quot;: 14, &quot;end_token&quot;: 17, &quot;top_level&quot;: False},</span>
+<span class="sd">                {&quot;start_byte&quot;: 83, &quot;end_byte&quot;: 92, &quot;start_token&quot;: 17, &quot;end_token&quot;: 20, &quot;top_level&quot;: False}</span>
+<span class="sd">            ],</span>
+<span class="sd">            &quot;annotations&quot;: [{</span>
+<span class="sd">                &quot;id&quot;: &quot;6782080525527814293&quot;,</span>
+<span class="sd">                &quot;long_answer&quot;: {&quot;start_byte&quot;: 32, &quot;end_byte&quot;: 106, &quot;start_token&quot;: 5, &quot;end_token&quot;: 22,</span>
+<span class="sd">                                &quot;candidate_index&quot;: 0},</span>
+<span class="sd">                &quot;short_answers&quot;: [</span>
+<span class="sd">                    {&quot;start_byte&quot;: 73, &quot;end_byte&quot;: 78, &quot;start_token&quot;: 15, &quot;end_token&quot;: 16, &quot;text&quot;: &quot;Larry&quot;},</span>
+<span class="sd">                    {&quot;start_byte&quot;: 87, &quot;end_byte&quot;: 92, &quot;start_token&quot;: 18, &quot;end_token&quot;: 19, &quot;text&quot;: &quot;Sergey&quot;}</span>
+<span class="sd">                ],</span>
+<span class="sd">                &quot;yes_no_answer&quot;: -1</span>
+<span class="sd">            }]</span>
+<span class="sd">        }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;natural_questions&quot;</span><span class="p">,</span> <span class="n">cache_dir</span><span class="o">=</span><span class="s1">&#39;../data&#39;</span><span class="p">)</span>
+        <span class="c1"># load from pickle if exists</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;../data/natural_questions.pkl&#39;</span><span class="p">):</span>
+            <span class="kn">import</span> <span class="nn">pickle</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;../data/natural_questions.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+
+<span class="w">            </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Dataset({</span>
+<span class="sd">        features: [&#39;id&#39;, &#39;document&#39;, &#39;question&#39;, &#39;long_answer_candidates&#39;, &#39;annotations&#39;],</span>
+<span class="sd">        num_rows: 7830</span>
+<span class="sd">    })</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">source_sentences</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">title2sentences</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="c1"># title2start = {}</span>
+            <span class="n">title2id</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">documents</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">questions</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">answers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">titles</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">texts</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]):</span>
+                <span class="c1"># del if short_answers is empty</span>
+
+                <span class="n">short_answers</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;short_answers&#39;</span><span class="p">]</span>
+                <span class="n">answer</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">short_answers</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">answer</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="n">answer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">q</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+                <span class="n">questions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+                <span class="n">answers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;document&#39;</span><span class="p">][</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+                <span class="n">documents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span><span class="p">,</span><span class="n">is_html</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;document&#39;</span><span class="p">][</span><span class="s1">&#39;tokens&#39;</span><span class="p">][</span><span class="s1">&#39;token&#39;</span><span class="p">],</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;document&#39;</span><span class="p">][</span><span class="s1">&#39;tokens&#39;</span><span class="p">][</span><span class="s1">&#39;is_html&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_html</span><span class="p">]</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">title2sentences</span><span class="p">:</span>
+                    <span class="n">title2sentences</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>
+                    <span class="n">titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+                    <span class="n">source_sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                    <span class="n">title2id</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+                    <span class="nb">id</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># else:</span>
+                <span class="c1">#     print(&quot;title already exists, skip.&quot;)</span>
+
+                <span class="c1"># mermory will be out of use ,so do memory optimization</span>
+
+
+
+
+            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">]:</span>
+                <span class="c1"># del if short_answers is empty</span>
+
+                <span class="n">short_answers</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;annotations&#39;</span><span class="p">][</span><span class="s1">&#39;short_answers&#39;</span><span class="p">]</span>
+                <span class="n">answer</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">short_answers</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">answer</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="n">answer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">q</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+                <span class="n">questions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+                <span class="n">answers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;document&#39;</span><span class="p">][</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+                <span class="n">documents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">is_html</span> <span class="ow">in</span>
+                        <span class="nb">zip</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;document&#39;</span><span class="p">][</span><span class="s1">&#39;tokens&#39;</span><span class="p">][</span><span class="s1">&#39;token&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;document&#39;</span><span class="p">][</span><span class="s1">&#39;tokens&#39;</span><span class="p">][</span><span class="s1">&#39;is_html&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_html</span><span class="p">]</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">title2sentences</span><span class="p">:</span>
+                    <span class="n">title2sentences</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span><span class="p">]</span>
+                    <span class="n">titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+                    <span class="n">source_sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                    <span class="n">title2id</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+                    <span class="nb">id</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># else:</span>
+                <span class="c1">#     print(&quot;title already exists, skip.&quot;)</span>
+
+            <span class="c1"># questions = dataset[&#39;validation&#39;][&#39;question&#39;] + dataset[&#39;train&#39;][&#39;question&#39;]</span>
+            <span class="c1"># questions = [x[&#39;text&#39;] for x in questions]</span>
+            <span class="c1"># answers = [&#39; &#39;.join([i[&#39;text&#39;] for i in x[&#39;short_answers&#39;]]) for x in dataset[&#39;validation&#39;][&#39;annotations&#39;] + dataset[&#39;train&#39;][&#39;annotations&#39;]]</span>
+            <span class="c1"># document = dataset[&#39;validation&#39;][&#39;document&#39;] + dataset[&#39;train&#39;][&#39;document&#39;]</span>
+            <span class="n">train_data</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">valid_data</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">test_data</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">indexs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">)))</span>
+
+            <span class="k">if</span> <span class="n">experiment_1</span><span class="p">:</span>
+                <span class="n">indexs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">test_all_number_documents</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">test_all_number_documents</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">):</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;使用的数据集长度大于数据集本身的最大长度，请修改。 本轮使用数据集的最大长度运行&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+                    <span class="n">indexes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">)))</span>
+
+            <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span>
+            <span class="n">train_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)]</span>
+            <span class="n">valid_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.99</span><span class="p">)]</span>
+            <span class="n">test_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.99</span><span class="p">):]</span>
+            <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+            <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+            <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">documents</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+            <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+            <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+            <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">documents</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+            <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+            <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+            <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">documents</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+
+
+            <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">title2id</span><span class="p">[</span><span class="n">doc</span><span class="p">]</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+            <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">title2id</span><span class="p">[</span><span class="n">doc</span><span class="p">]</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+            <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">title2id</span><span class="p">[</span><span class="n">doc</span><span class="p">]</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+            <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">doc</span><span class="p">]</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+            <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">doc</span><span class="p">]</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+            <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">doc</span><span class="p">]</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+            <span class="k">del</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;questions:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;train_questions:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;valid_questions:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;test_questions:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span>
+                <span class="n">valid_data</span><span class="o">=</span><span class="n">valid_data</span><span class="p">,</span>
+                <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="p">,</span>
+                <span class="n">sources</span><span class="o">=</span><span class="n">source_sentences</span><span class="p">,</span>
+                <span class="n">titles</span><span class="o">=</span><span class="n">titles</span><span class="p">,</span>
+                <span class="n">title2sentences</span><span class="o">=</span><span class="n">title2sentences</span><span class="p">,</span>
+                <span class="n">title2id</span><span class="o">=</span><span class="n">title2id</span><span class="p">)</span>
+            <span class="kn">import</span> <span class="nn">pickle</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;../data/natural_questions.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;data loaded&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;documents:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;train_questions:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;train_data&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;valid_questions:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;valid_data&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;test_questions:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;test_data&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+
+
+    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;trivia_qa&quot;</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;mandarjoshi/trivia_qa&quot;</span><span class="p">,</span> <span class="s2">&quot;rc&quot;</span><span class="p">)</span>
+
+        <span class="n">questions</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span>
+        <span class="c1"># question_sources = dataset[&#39;train&#39;][&#39;question_source&#39;] + dataset[&#39;validation&#39;][&#39;question_source&#39;] # url</span>
+        <span class="c1"># entity_pages = dataset[&#39;train&#39;][&#39;entity_pages&#39;] + dataset[&#39;validation&#39;][&#39;entity_pages&#39;]</span>
+        <span class="n">search_results</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;search_results&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;search_results&#39;</span><span class="p">]</span>
+        <span class="c1"># delete the search results with empty search context</span>
+        <span class="c1"># filter out the search results with empty search context</span>
+        <span class="n">questions_</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">answers_</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">search_results_</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">questions</span><span class="p">,</span> <span class="n">answers</span><span class="p">,</span> <span class="n">search_results</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;search_context&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">questions_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+                <span class="n">answers_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+                <span class="n">search_results_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="n">questions_</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="n">answers_</span>
+        <span class="n">search_results</span> <span class="o">=</span> <span class="n">search_results_</span>
+        <span class="n">source_sentences</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">title2sentences</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">titles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># title2start = {}</span>
+        <span class="n">title2id</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">search_results</span><span class="p">:</span>
+            <span class="c1"># print(source)</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+            <span class="n">sentence</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="s1">&#39;search_context&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">t</span><span class="p">,</span><span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">sentence</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">title2sentences</span><span class="p">:</span>
+                    <span class="n">title2sentences</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">]</span>
+                    <span class="n">titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                    <span class="n">source_sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                    <span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+                    <span class="nb">id</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># else:</span>
+                <span class="c1">#     print(&quot;title already exists, skip.&quot;)</span>
+        <span class="c1"># split the dataset 8:1:1</span>
+        <span class="n">train_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">valid_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">test_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">indexs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">experiment_1</span><span class="p">:</span>
+            <span class="n">indexs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">test_all_number_documents</span><span class="p">))</span>
+
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span>
+        <span class="n">train_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span><span class="p">)]</span>
+        <span class="n">valid_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.99</span><span class="p">)]</span>
+        <span class="n">test_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.99</span><span class="p">):]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">search_results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">search_results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">search_results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">sec</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">sec</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">sec</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sec</span><span class="p">[</span><span class="s1">&#39;search_context&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sec</span><span class="p">[</span><span class="s1">&#39;search_context&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sec</span><span class="p">[</span><span class="s1">&#39;search_context&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]]</span>
+        <span class="k">del</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span>
+            <span class="n">valid_data</span><span class="o">=</span><span class="n">valid_data</span><span class="p">,</span>
+            <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="p">,</span>
+            <span class="n">sources</span><span class="o">=</span><span class="n">source_sentences</span><span class="p">,</span>
+            <span class="n">titles</span><span class="o">=</span><span class="n">titles</span><span class="p">,</span>
+            <span class="n">title2sentences</span><span class="o">=</span><span class="n">title2sentences</span><span class="p">,</span>
+            <span class="n">title2id</span><span class="o">=</span><span class="n">title2id</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;search_qa&quot;</span><span class="p">:</span>
+<span class="c1">#         dataset = load_dataset(&quot;search_qa&quot;,&quot;train_test_val&quot;,cache_dir=&#39;../data&#39;)</span>
+<span class="c1">#         &#39;&#39;&#39;</span>
+<span class="c1">#         Dataset({</span>
+<span class="c1">#     features: [&#39;category&#39;, &#39;air_date&#39;, &#39;question&#39;, &#39;value&#39;, &#39;answer&#39;, &#39;round&#39;, &#39;show_number&#39;, &#39;search_results&#39;],</span>
+<span class="c1">#     num_rows: 151295</span>
+<span class="c1"># })&#39;&#39;&#39;</span>
+<span class="c1">#         questions = dataset[&#39;train&#39;][&#39;question&#39;] + dataset[&#39;validation&#39;][&#39;question&#39;] + dataset[&#39;test&#39;][&#39;question&#39;]</span>
+<span class="c1">#         answers = dataset[&#39;train&#39;][&#39;answer&#39;] + dataset[&#39;validation&#39;][&#39;answer&#39;] + dataset[&#39;test&#39;][&#39;answer&#39;]</span>
+<span class="c1">#         golden_sources = dataset[&#39;train&#39;][&#39;search_results&#39;] + dataset[&#39;validation&#39;][&#39;search_results&#39;] + dataset[&#39;test&#39;][&#39;search_results&#39;]</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;dataset </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s1"> not implemented! Search QA is not supported yet! As its search_results is really searched and each question has a lot of search results. It is not suitable for the RAG system.&#39;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;finqa&quot;</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;dreamerdeo/finqa&quot;</span><span class="p">)</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="n">pre_text</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;pre_text&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;pre_text&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;pre_text&#39;</span><span class="p">]</span>
+        <span class="n">post_text</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;post_text&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;post_text&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;post_text&#39;</span><span class="p">]</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;table&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;table&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;table&#39;</span><span class="p">]</span>
+        <span class="n">golden_sources</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pre_text</span><span class="p">)):</span>
+            <span class="n">golden_sources</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">pre_text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">t</span> <span class="o">!=</span><span class="s1">&#39;.&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="n">t_</span> <span class="k">for</span> <span class="n">t_</span> <span class="ow">in</span> <span class="n">post_text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">t_</span> <span class="o">!=</span> <span class="s1">&#39;.&#39;</span><span class="p">])</span>
+
+        <span class="n">source_sentences</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">title2sentences</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">titles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># title2start = {}</span>
+        <span class="n">title2id</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span><span class="n">source</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span><span class="n">golden_sources</span><span class="p">):</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">t</span>
+            <span class="n">sentence</span> <span class="o">=</span> <span class="n">source</span>
+            <span class="k">if</span> <span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">title2sentences</span><span class="p">:</span>
+                <span class="n">title2sentences</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="n">sentence</span>
+                <span class="n">titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+                <span class="n">source_sentences</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+                <span class="n">title2id</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+                <span class="nb">id</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># else:</span>
+            <span class="c1">#     print(&quot;title already exists, skip.&quot;)</span>
+
+        <span class="n">train_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">valid_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">test_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">t</span><span class="p">])]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+        <span class="c1"># remove the empty answer</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="p">,</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">],</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">],</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[(</span><span class="n">q</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">gid</span><span class="p">,</span><span class="n">gs</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">gid</span><span class="p">,</span><span class="n">gs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">],</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">],</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">],</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">experiment_1</span><span class="p">:</span>
+            <span class="n">indexs</span> <span class="o">=</span> <span class="n">test_all_number_documents</span>
+            <span class="n">indexs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">indexs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]),</span>
+                         <span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]))</span>
+
+            <span class="c1"># 再执行上述截断操作</span>
+            <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+            <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+            <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+            <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+
+
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">t</span><span class="p">])]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="p">,</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">],</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">],</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[(</span><span class="n">q</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">gid</span><span class="p">,</span><span class="n">gs</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">gid</span><span class="p">,</span><span class="n">gs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">],</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">],</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">],</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">experiment_1</span><span class="p">:</span>
+            <span class="n">indexs</span> <span class="o">=</span> <span class="n">test_all_number_documents</span>
+            <span class="n">indexs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">indexs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]),</span>
+                         <span class="nb">len</span><span class="p">(</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]))</span>
+
+            <span class="c1"># 再执行上述截断操作</span>
+            <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+            <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+            <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+            <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;question&#39;</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">t</span><span class="p">])]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="p">,</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">],</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">],</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[(</span><span class="n">q</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">gid</span><span class="p">,</span><span class="n">gs</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">gid</span><span class="p">,</span><span class="n">gs</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">],</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">],</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">],</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">experiment_1</span><span class="p">:</span>
+            <span class="n">indexs</span> <span class="o">=</span> <span class="n">test_all_number_documents</span>
+            <span class="n">indexs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">indexs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]),</span>
+                         <span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]))</span>
+
+            <span class="c1"># 再执行上述截断操作</span>
+            <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+            <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+            <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+            <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">][:</span><span class="n">indexs</span><span class="p">]</span>
+
+
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span>
+            <span class="n">valid_data</span><span class="o">=</span><span class="n">valid_data</span><span class="p">,</span>
+            <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="p">,</span>
+            <span class="n">sources</span><span class="o">=</span><span class="n">source_sentences</span><span class="p">,</span>
+            <span class="n">titles</span><span class="o">=</span><span class="n">titles</span><span class="p">,</span>
+            <span class="n">title2sentences</span><span class="o">=</span><span class="n">title2sentences</span><span class="p">,</span>
+            <span class="n">title2id</span><span class="o">=</span><span class="n">title2id</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;law&quot;</span><span class="p">:</span>
+        <span class="n">law</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./data/law.json&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="n">law_qa_test</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data/law_qa_test.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="n">law_qa_train</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data/law_qa_train.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">law</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">law_qa_train</span><span class="p">))</span>
+        <span class="n">title2sentences</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">source_sentences</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">titles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># title2start = {}</span>
+        <span class="n">title2id</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">law</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;-&#39;</span><span class="o">+</span><span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">sentences</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">title2sentences</span><span class="p">:</span>
+                <span class="n">title2sentences</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">titles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+                <span class="n">title2id</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+                <span class="nb">id</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">source_sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
+            <span class="n">title2sentences</span><span class="p">[</span><span class="n">title</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">law_qa_test</span><span class="p">:</span>
+            <span class="n">qa</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qa</span><span class="p">[</span><span class="s1">&#39;reference&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">qa</span><span class="p">[</span><span class="s1">&#39;reference&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="n">qa</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">title2sentences</span>
+            <span class="n">qa</span><span class="p">[</span><span class="s1">&#39;sentences&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">qa</span><span class="p">[</span><span class="s1">&#39;reference&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">law_qa_train</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">qa</span><span class="p">[</span><span class="s1">&#39;reference&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">qa</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qa</span><span class="p">[</span><span class="s1">&#39;reference&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">qa</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">title2sentences</span><span class="p">:</span>
+                <span class="c1"># delete the qa with no title</span>
+                <span class="k">continue</span>
+            <span class="n">qa</span><span class="p">[</span><span class="s1">&#39;sentences&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">qa</span><span class="p">[</span><span class="s1">&#39;reference&#39;</span><span class="p">]]</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="p">[</span><span class="n">qa</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">law_qa_train</span> <span class="k">if</span> <span class="s1">&#39;sentences&#39;</span> <span class="ow">in</span> <span class="n">qa</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">qa</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">law_qa_test</span><span class="p">]</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="p">[</span><span class="n">qa</span><span class="p">[</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">law_qa_train</span> <span class="k">if</span> <span class="s1">&#39;sentences&#39;</span> <span class="ow">in</span> <span class="n">qa</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">qa</span><span class="p">[</span><span class="s1">&#39;answer&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">law_qa_test</span><span class="p">]</span>
+        <span class="n">golden_sources</span> <span class="o">=</span> <span class="p">[</span><span class="n">qa</span><span class="p">[</span><span class="s1">&#39;sentences&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">law_qa_train</span> <span class="k">if</span> <span class="s1">&#39;sentences&#39;</span> <span class="ow">in</span> <span class="n">qa</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">qa</span><span class="p">[</span><span class="s1">&#39;sentences&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">law_qa_test</span><span class="p">]</span>
+        <span class="n">golden_titles</span> <span class="o">=</span> <span class="p">[</span><span class="n">qa</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">law_qa_train</span> <span class="k">if</span> <span class="s1">&#39;sentences&#39;</span> <span class="ow">in</span> <span class="n">qa</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">qa</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">law_qa_test</span><span class="p">]</span>
+
+        <span class="c1"># split the dataset 9:0.5:0.5</span>
+        <span class="n">train_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">valid_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">test_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">indexs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">questions</span><span class="p">)))</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span>
+        <span class="n">train_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span><span class="p">)]</span>
+        <span class="n">valid_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.99</span><span class="p">)]</span>
+        <span class="n">test_indexs</span> <span class="o">=</span> <span class="n">indexs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indexs</span><span class="p">)</span><span class="o">*</span><span class="mf">0.99</span><span class="p">):]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">golden_sources</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">golden_titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">train_indexs</span><span class="p">]</span>
+
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">golden_sources</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">golden_titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">valid_indexs</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">questions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;expected_answer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">answers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">golden_sources</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">golden_titles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">test_indexs</span><span class="p">]</span>
+
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">title2id</span><span class="p">[</span><span class="n">t</span><span class="p">]]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]]</span>
+        <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">t</span><span class="p">])]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]]</span>
+        <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">t</span><span class="p">])]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]]</span>
+        <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_context&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">title2sentences</span><span class="p">[</span><span class="n">t</span><span class="p">])]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]]</span>
+        <span class="k">del</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;titles&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">train_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">valid_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">test_data</span><span class="p">[</span><span class="s1">&#39;golden_sources&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">train_data</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span>
+            <span class="n">valid_data</span><span class="o">=</span><span class="n">valid_data</span><span class="p">,</span>
+            <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="p">,</span>
+            <span class="n">sources</span><span class="o">=</span><span class="n">source_sentences</span><span class="p">,</span>
+            <span class="n">titles</span><span class="o">=</span><span class="n">titles</span><span class="p">,</span>
+            <span class="n">title2sentences</span><span class="o">=</span><span class="n">title2sentences</span><span class="p">,</span>
+            <span class="n">title2id</span><span class="o">=</span><span class="n">title2id</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;law&#39;</span><span class="p">:</span><span class="n">law</span><span class="p">,</span><span class="s1">&#39;law_qa_train&#39;</span><span class="p">:</span><span class="n">law_qa_train</span><span class="p">,</span><span class="s1">&#39;law_qa_test&#39;</span><span class="p">:</span><span class="n">law_qa_test</span><span class="p">})</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;dataset </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s1"> not implemented!&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">question</span><span class="o">=</span><span class="n">questions</span><span class="p">,</span> 
+        <span class="n">answers</span><span class="o">=</span><span class="n">answers</span><span class="p">,</span> 
+        <span class="n">golden_sources</span><span class="o">=</span><span class="n">golden_sources</span><span class="p">,</span>
+        <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span></div>
+
+
+
+
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;hotpot_qa&#39;</span> <span class="c1"># drop, natural_questions, hotpot_qa</span>
+    <span class="c1"># ex_data = get_qa_dataset(&#39;hotpot_qa&#39;)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">get_qa_dataset</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By HZT
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, HZT.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
