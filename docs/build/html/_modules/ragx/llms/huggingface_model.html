@@ -138,18 +138,21 @@
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../ragx.html">ragx package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.data.html">ragx.data package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.embs.html">ragx.embs package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.eval.html">ragx.eval package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.index.html">ragx.index package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.launcher.html">ragx.launcher package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.llms.html">ragx.llms package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.process.html">ragx.process package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.retrievers.html">ragx.retrievers package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.webui.html">ragx.webui package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.cli.html">ragx.cli module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ragx.config.html">ragx.config module</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../modules.html">ragx</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../ragx.html">ragx package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.data.html">ragx.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.embs.html">ragx.embs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.eval.html">ragx.eval package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.index.html">ragx.index package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.launcher.html">ragx.launcher package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.llms.html">ragx.llms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.process.html">ragx.process package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.retrievers.html">ragx.retrievers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.webui.html">ragx.webui package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.cli.html">ragx.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../ragx.config.html">ragx.config module</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 </ul>
@@ -263,6 +266,16 @@
 <div class="viewcode-block" id="llama_model_and_tokenizer">
 <a class="viewcode-back" href="../../../ragx.llms.html#ragx.llms.huggingface_model.llama_model_and_tokenizer">[docs]</a>
 <span class="k">def</span> <span class="nf">llama_model_and_tokenizer</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">auth_token</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads a tokenizer and a causal language model from Hugging Face&#39;s model hub.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name or path of the pre-trained model.</span>
+<span class="sd">        auth_token (str): The authentication token for accessing the model.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: A tuple containing the tokenizer and the model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Create tokenizer</span>
     <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">auth_token</span><span class="p">)</span>
 

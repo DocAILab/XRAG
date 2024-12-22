@@ -12,6 +12,16 @@ load_tokenizer = []
 
 
 def llama_model_and_tokenizer(name, auth_token):
+    """
+    Loads a tokenizer and a causal language model from Hugging Face's model hub.
+
+    Args:
+        name (str): The name or path of the pre-trained model.
+        auth_token (str): The authentication token for accessing the model.
+
+    Returns:
+        tuple: A tuple containing the tokenizer and the model.
+    """
     # Create tokenizer
     tokenizer = AutoTokenizer.from_pretrained(name, token=auth_token)
 

@@ -139,18 +139,21 @@
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="ragx.html">ragx package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="ragx.data.html">ragx.data package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ragx.embs.html">ragx.embs package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ragx.eval.html">ragx.eval package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ragx.index.html">ragx.index package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ragx.launcher.html">ragx.launcher package</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">ragx.llms package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ragx.process.html">ragx.process package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ragx.retrievers.html">ragx.retrievers package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ragx.webui.html">ragx.webui package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ragx.cli.html">ragx.cli module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ragx.config.html">ragx.config module</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="modules.html">ragx</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="ragx.html">ragx package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ragx.data.html">ragx.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.embs.html">ragx.embs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.eval.html">ragx.eval package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.index.html">ragx.index package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.launcher.html">ragx.launcher package</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">ragx.llms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.process.html">ragx.process package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.retrievers.html">ragx.retrievers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.webui.html">ragx.webui package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.cli.html">ragx.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ragx.config.html">ragx.config module</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 </ul>
@@ -609,7 +612,22 @@ for response in gen:</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ragx.llms.huggingface_model.llama_model_and_tokenizer">
 <span class="sig-prename descclassname"><span class="pre">ragx.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">llama_model_and_tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_token</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ragx/llms/huggingface_model.html#llama_model_and_tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ragx.llms.huggingface_model.llama_model_and_tokenizer" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Loads a tokenizer and a causal language model from Hugging Face’s model hub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name or path of the pre-trained model.</p></li>
+<li><p><strong>auth_token</strong> (<em>str</em>) – The authentication token for accessing the model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the tokenizer and the model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ragx.llms.huggingface_model.mpt_completion_to_prompt">
