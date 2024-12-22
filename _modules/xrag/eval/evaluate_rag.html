@@ -1,0 +1,944 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>xrag.eval.evaluate_rag &#8212; XRAG 1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=a681ed88"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/xrag/eval/evaluate_rag';</script>
+    <link rel="canonical" href="https://docailab.github.io/XRAG/_modules/xrag/eval/evaluate_rag.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">XRAG 1.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../modules.html">xrag</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../xrag.html">xrag package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.data.html">xrag.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.embs.html">xrag.embs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.eval.html">xrag.eval package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.index.html">xrag.index package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.launcher.html">xrag.launcher package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.llms.html">xrag.llms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.process.html">xrag.process package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.retrievers.html">xrag.retrievers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.webui.html">xrag.webui package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.cli.html">xrag.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.config.html">xrag.config module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for xrag.eval.evaluate_rag</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">deepeval.metrics</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ContextualPrecisionMetric</span><span class="p">,</span>
+    <span class="n">ContextualRecallMetric</span><span class="p">,</span>
+    <span class="n">ContextualRelevancyMetric</span><span class="p">,</span>
+    <span class="n">FaithfulnessMetric</span><span class="p">,</span>
+    <span class="n">AnswerRelevancyMetric</span><span class="p">,</span>
+    <span class="n">HallucinationMetric</span><span class="p">,</span>
+    <span class="n">BiasMetric</span><span class="p">,</span>
+    <span class="n">ToxicityMetric</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">deepeval.test_case</span> <span class="kn">import</span> <span class="n">LLMTestCase</span>
+<span class="kn">from</span> <span class="nn">llama_index.core</span> <span class="kn">import</span> <span class="n">PromptTemplate</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.schema</span> <span class="kn">import</span> <span class="n">NodeWithScore</span><span class="p">,</span> <span class="n">TextNode</span>
+<span class="kn">from</span> <span class="nn">uptrain</span> <span class="kn">import</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">Evals</span><span class="p">,</span> <span class="n">EvalLlamaIndex</span><span class="p">,</span> <span class="n">operators</span>
+<span class="kn">from</span> <span class="nn">uptrain.framework</span> <span class="kn">import</span> <span class="n">DataSchema</span>
+
+<span class="kn">from</span> <span class="nn">jury</span> <span class="kn">import</span> <span class="n">Jury</span>
+<span class="kn">import</span> <span class="nn">jury</span>
+<span class="kn">import</span> <span class="nn">evaluate</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.evaluation</span> <span class="kn">import</span> <span class="n">FaithfulnessEvaluator</span><span class="p">,</span> <span class="n">CorrectnessEvaluator</span><span class="p">,</span> <span class="n">GuidelineEvaluator</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.evaluation</span> <span class="kn">import</span> <span class="n">BaseEvaluator</span><span class="p">,</span> <span class="n">EvaluationResult</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.evaluation</span> <span class="kn">import</span> <span class="n">AnswerRelevancyEvaluator</span><span class="p">,</span> <span class="n">RelevancyEvaluator</span><span class="p">,</span> <span class="n">SemanticSimilarityEvaluator</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">from</span> <span class="nn">uptrain.framework.evals</span> <span class="kn">import</span> <span class="n">ParametricEval</span><span class="p">,</span> <span class="n">ResponseMatching</span>
+<span class="kn">from</span> <span class="nn">uptrain.framework.evalllm</span> <span class="kn">import</span> <span class="n">EvalLLM</span>
+
+<span class="kn">import</span> <span class="nn">nest_asyncio</span>
+
+<span class="n">ppl_bug_number</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">LLAMA_CUSTOM_FAITHFULNESS_TEMPLATE</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="p">(</span>
+    <span class="s2">&quot;Please tell if the context supports the given information related to the question.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;You need to answer with either YES or NO.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Answer YES if the context supports the information related to the question, even if most of the context is unrelated. </span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;See the examples below.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Question: Is apple pie usually double-crusted?</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Information: Apple pie is generally double-crusted.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Context: An apple pie is a fruit pie in which the principal filling ingredient is apples. </span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Apple pie is often served with whipped cream, ice cream (&#39;apple pie à la mode&#39;), custard or cheddar cheese.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;It is generally double-crusted, with pastry both above and below the filling; the upper crust may be solid or latticed (woven of crosswise strips).</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Answer: YES</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Question: Does apple pie usually taste bad?</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Information: Apple pies tastes bad.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Context: An apple pie is a fruit pie in which the principal filling ingredient is apples. </span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Apple pie is often served with whipped cream, ice cream (&#39;apple pie à la mode&#39;), custard or cheddar cheese.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;It is generally double-crusted, with pastry both above and below the filling; the upper crust may be solid or latticed (woven of crosswise strips).</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Answer: NO</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Question and Information: </span><span class="si">{query_str}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Context: </span><span class="si">{context_str}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;Answer: &quot;</span>
+<span class="p">)</span>
+<div class="viewcode-block" id="EvaluationResult">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.EvaluationResult">[docs]</a>
+<span class="k">class</span> <span class="nc">EvaluationResult</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;n&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;F1&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;em&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;mrr&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;hit1&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;hit10&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;MAP&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;NDCG&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;DCG&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s2">&quot;IDCG&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="c1"># 初始化用于评估的指标，每一个指标都是一个包含score和count的字典</span>
+        <span class="n">evaluation_metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Llama_retrieval_Faithfulness&quot;</span><span class="p">,</span> <span class="s2">&quot;Llama_retrieval_Relevancy&quot;</span><span class="p">,</span> <span class="s2">&quot;Llama_response_correctness&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;Llama_response_semanticSimilarity&quot;</span><span class="p">,</span> <span class="s2">&quot;Llama_response_answerRelevancy&quot;</span><span class="p">,</span><span class="s2">&quot;Llama_retrieval_RelevancyG&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;Llama_retrieval_FaithfulnessG&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;DeepEval_retrieval_contextualPrecision&quot;</span><span class="p">,</span><span class="s2">&quot;DeepEval_retrieval_contextualRecall&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;DeepEval_retrieval_contextualRelevancy&quot;</span><span class="p">,</span><span class="s2">&quot;DeepEval_retrieval_faithfulness&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;DeepEval_response_answerRelevancy&quot;</span><span class="p">,</span><span class="s2">&quot;DeepEval_response_hallucination&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;DeepEval_response_bias&quot;</span><span class="p">,</span><span class="s2">&quot;DeepEval_response_toxicity&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;UpTrain_Response_Completeness&quot;</span><span class="p">,</span><span class="s2">&quot;UpTrain_Response_Conciseness&quot;</span><span class="p">,</span><span class="s2">&quot;UpTrain_Response_Relevance&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;UpTrain_Response_Valid&quot;</span><span class="p">,</span><span class="s2">&quot;UpTrain_Response_Consistency&quot;</span><span class="p">,</span><span class="s2">&quot;UpTrain_Response_Response_Matching&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;UpTrain_Retrieval_Context_Relevance&quot;</span><span class="p">,</span><span class="s2">&quot;UpTrain_Retrieval_Context_Utilization&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;UpTrain_Retrieval_Factual_Accuracy&quot;</span><span class="p">,</span><span class="s2">&quot;UpTrain_Retrieval_Context_Conciseness&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;UpTrain_Retrieval_Code_Hallucination&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;NLG_chrf&quot;</span><span class="p">,</span> <span class="s2">&quot;NLG_meteor&quot;</span><span class="p">,</span> <span class="s2">&quot;NLG_rouge&quot;</span><span class="p">,</span> <span class="s2">&quot;NLG_wer&quot;</span><span class="p">,</span> <span class="s2">&quot;NLG_cer&quot;</span><span class="p">,</span> <span class="s2">&quot;NLG_chrf_pp&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;NLG_perplexity&quot;</span><span class="p">,</span>
+                               <span class="s2">&quot;NLG_rouge_rouge1&quot;</span><span class="p">,</span> <span class="s2">&quot;NLG_rouge_rouge2&quot;</span><span class="p">,</span> <span class="s2">&quot;NLG_rouge_rougeL&quot;</span><span class="p">,</span> <span class="s2">&quot;NLG_rouge_rougeLsum&quot;</span>
+                              <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evaluationName</span> <span class="o">=</span> <span class="n">evaluation_metrics</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Map_Uptrain_metrics_truth_val</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">evaluation_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">evaluation_metrics_rev</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">evaluation_metrics</span><span class="p">:</span>
+            <span class="n">evaluation_metrics_rev</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="s2">&quot;_rev&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metrics_results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">evaluation_metrics</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">metric</span><span class="o">+</span><span class="s2">&quot;_rev&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">metrics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">metrics</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;F1&quot;</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;em&quot;</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;mrr&quot;</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;hit1&quot;</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;hit10&quot;</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;MAP&quot;</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;NDCG&quot;</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;DCG&quot;</span><span class="p">)</span>
+        <span class="n">metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;IDCG&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span>
+
+<div class="viewcode-block" id="EvaluationResult.add">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.EvaluationResult.add">[docs]</a>
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evaluate_result</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">evaluate_result</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics_results</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">evaluate_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">evaluate_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">evaluate_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;count&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="EvaluationResult.print_results">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.EvaluationResult.print_results">[docs]</a>
+    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics_results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: 0, valid number : </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, valid number : </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EvaluationResult.get_results_str">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.EvaluationResult.get_results_str">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_results_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span>
+                    <span class="n">ans</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">+</span> <span class="s2">&quot;,</span><span class="se">\t</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ans</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">+</span> <span class="s2">&quot;,</span><span class="se">\t</span><span class="s2">&quot;</span>
+                <span class="n">cur</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">cur</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">ans</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics_results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">ans</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: 0, valid number : </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">+</span><span class="s2">&quot;,</span><span class="se">\t</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ans</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, valid number : </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">+</span><span class="s2">&quot;,</span><span class="se">\t</span><span class="s2">&quot;</span>
+                <span class="n">cur</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">cur</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">ans</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">ans</span></div>
+
+
+
+<div class="viewcode-block" id="EvaluationResult.print_results_to_path">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.EvaluationResult.print_results_to_path">[docs]</a>
+    <span class="k">def</span> <span class="nf">print_results_to_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">sample_arr</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;save data to &quot;</span> <span class="o">+</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="s2">&quot;=========================== begin ==================</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="s2">&quot;database: &quot;</span> <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="n">dataset</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="s2">&quot;sample_arr: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sample_arr</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics_results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: 0, valid number : </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, valid number : </span><span class="si">{</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</div>
+
+
+<span class="c1"># 在使用uptrain本地模型前，请下载ollama</span>
+<div class="viewcode-block" id="upTrain_evaluate_self">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.upTrain_evaluate_self">[docs]</a>
+<span class="k">def</span> <span class="nf">upTrain_evaluate_self</span><span class="p">(</span>
+    <span class="n">settings</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span>
+    <span class="n">checks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Evals</span><span class="p">,</span> <span class="n">ParametricEval</span><span class="p">]],</span>
+    <span class="n">project_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="n">DataSchema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">EvalLLM</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+
+    <span class="n">nest_asyncio</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">checks</span><span class="o">=</span><span class="n">checks</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+<span class="c1"># 咱们定义的指标对应Uptrain中的指标</span>
+<span class="n">Map_Uptrain_metrics_truth_val</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;UpTrain_Response_Completeness&quot;</span><span class="p">:</span> <span class="n">Evals</span><span class="o">.</span><span class="n">RESPONSE_COMPLETENESS</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Response_Conciseness&quot;</span><span class="p">:</span> <span class="n">Evals</span><span class="o">.</span><span class="n">RESPONSE_CONCISENESS</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Response_Relevance&quot;</span><span class="p">:</span> <span class="n">Evals</span><span class="o">.</span><span class="n">RESPONSE_RELEVANCE</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Response_Valid&quot;</span><span class="p">:</span> <span class="n">Evals</span><span class="o">.</span><span class="n">VALID_RESPONSE</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Response_Consistency&quot;</span><span class="p">:</span> <span class="n">Evals</span><span class="o">.</span><span class="n">RESPONSE_CONSISTENCY</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Response_Response_Matching&quot;</span><span class="p">:</span><span class="n">ResponseMatching</span><span class="p">(</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;llm&#39;</span><span class="p">),</span>
+
+    <span class="s2">&quot;UpTrain_Retrieval_Context_Relevance&quot;</span><span class="p">:</span><span class="n">Evals</span><span class="o">.</span><span class="n">CONTEXT_RELEVANCE</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Retrieval_Context_Utilization&quot;</span><span class="p">:</span><span class="n">Evals</span><span class="o">.</span><span class="n">RESPONSE_COMPLETENESS_WRT_CONTEXT</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Retrieval_Factual_Accuracy&quot;</span><span class="p">:</span><span class="n">Evals</span><span class="o">.</span><span class="n">FACTUAL_ACCURACY</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Retrieval_Context_Conciseness&quot;</span><span class="p">:</span><span class="n">Evals</span><span class="o">.</span><span class="n">CONTEXT_CONCISENESS</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Retrieval_Code_Hallucination&quot;</span><span class="p">:</span><span class="n">Evals</span><span class="o">.</span><span class="n">CODE_HALLUCINATION</span><span class="p">,</span>
+
+<span class="p">}</span>
+<span class="c1"># 指标对应得分的名字</span>
+<span class="n">Map_Uptrain_metrics_score_name</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;UpTrain_Response_Completeness&quot;</span><span class="p">:</span>        <span class="s2">&quot;score_response_completeness&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Response_Conciseness&quot;</span><span class="p">:</span>         <span class="s2">&quot;score_response_conciseness&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Response_Relevance&quot;</span><span class="p">:</span>           <span class="s2">&quot;score_response_relevance&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Response_Valid&quot;</span><span class="p">:</span>               <span class="s2">&quot;score_valid_response&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Response_Consistency&quot;</span><span class="p">:</span>         <span class="s2">&quot;score_response_consistency&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Response_Response_Matching&quot;</span><span class="p">:</span>   <span class="s2">&quot;score_response_match_recall&quot;</span><span class="p">,</span>
+
+    <span class="s2">&quot;UpTrain_Retrieval_Context_Relevance&quot;</span><span class="p">:</span>  <span class="s2">&quot;score_context_relevance&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Retrieval_Context_Utilization&quot;</span><span class="p">:</span><span class="s2">&quot;score_response_completeness_wrt_context&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Retrieval_Factual_Accuracy&quot;</span><span class="p">:</span>   <span class="s2">&quot;score_factual_accuracy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Retrieval_Context_Conciseness&quot;</span><span class="p">:</span><span class="s2">&quot;score_context_conciseness&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UpTrain_Retrieval_Code_Hallucination&quot;</span><span class="p">:</span> <span class="s2">&quot;score_code_hallucination&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1">#</span>
+
+<span class="n">NLG_EVALUATION_METRICS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;chrf&quot;</span><span class="p">,</span> <span class="s2">&quot;meteor&quot;</span><span class="p">,</span> <span class="s2">&quot;wer&quot;</span><span class="p">,</span> <span class="s2">&quot;cer&quot;</span><span class="p">,</span> <span class="s2">&quot;chrf_pp&quot;</span><span class="p">,</span> <span class="s2">&quot;perplexity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rouge_rouge1&quot;</span><span class="p">,</span> <span class="s2">&quot;rouge_rouge2&quot;</span><span class="p">,</span> <span class="s2">&quot;rouge_rougeL&quot;</span><span class="p">,</span> <span class="s2">&quot;rouge_rougeLsum&quot;</span>
+<span class="p">]</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="NLGEvaluate">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.NLGEvaluate">[docs]</a>
+<span class="k">def</span> <span class="nf">NLGEvaluate</span><span class="p">(</span><span class="n">questions</span><span class="p">,</span> <span class="n">actual_responses</span><span class="p">,</span> <span class="n">expect_answers</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+    <span class="c1"># omit_metrics = []</span>
+    <span class="c1"># for metric in NLG_EVALUATION_METRICS:</span>
+    <span class="c1">#     if metric not in metrics:</span>
+    <span class="c1">#         omit_metrics.append(metric)</span>
+
+
+    <span class="c1"># n = NLGEval(metrics_to_omit=omit_metrics)</span>
+    <span class="n">references</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">expect_answers</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">references</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">expect_answers</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">expect_answers</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">references</span> <span class="o">=</span> <span class="p">[</span><span class="n">expect_answers</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">actual_responses</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">actual_responses</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">actual_responses</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="p">[</span><span class="n">actual_responses</span><span class="p">]</span>
+
+    <span class="c1"># Individual Metrics</span>
+    <span class="c1"># scores = n.compute_individual_metrics(ref=reference, hyp=hypothesis)</span>
+    <span class="n">scorer</span> <span class="o">=</span> <span class="n">Jury</span><span class="p">(</span><span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;chrf&quot;</span><span class="p">,</span> <span class="s2">&quot;meteor&quot;</span><span class="p">,</span> <span class="s2">&quot;rouge&quot;</span><span class="p">,</span> <span class="s2">&quot;wer&quot;</span><span class="p">,</span> <span class="s2">&quot;cer&quot;</span><span class="p">])</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># chrf++</span>
+    <span class="n">chrf_plus</span> <span class="o">=</span> <span class="n">evaluate</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;chrf&quot;</span><span class="p">)</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">chrf_plus</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">predictions</span><span class="o">=</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="o">=</span><span class="p">[</span><span class="n">references</span><span class="p">],</span> <span class="n">word_order</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;chrf_pp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span>
+    <span class="c1"># perplexity:model id are needed</span>
+    <span class="n">perplexity</span> <span class="o">=</span> <span class="n">jury</span><span class="o">.</span><span class="n">load_metric</span><span class="p">(</span><span class="s2">&quot;perplexity&quot;</span><span class="p">)</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">perplexity</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">predictions</span><span class="o">=</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="o">=</span><span class="n">references</span><span class="p">,</span> <span class="n">model_id</span><span class="o">=</span><span class="s2">&quot;openai-community/gpt2&quot;</span><span class="p">)</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;perplexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="s2">&quot;mean_perplexity&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="s2">&quot;perplexity&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1600</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">ppl_bug_number</span>
+        <span class="n">ppl_bug_number</span> <span class="o">=</span> <span class="n">ppl_bug_number</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;ppl_bug_number:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ppl_bug_number</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;perplexity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">scorer</span><span class="p">(</span><span class="n">predictions</span><span class="o">=</span><span class="n">predictions</span><span class="p">,</span> <span class="n">references</span><span class="o">=</span><span class="p">[</span><span class="n">references</span><span class="p">])</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;chrf&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="s2">&quot;chrf&quot;</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;meteor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="s2">&quot;meteor&quot;</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span>
+    <span class="c1">#&#39;rouge1&#39;: 0.6666666666666665, &#39;rouge2&#39;: 0.5714285714285715, &#39;rougeL&#39;: 0.6666666666666665, &#39;rougeLsum&#39;: 0.6666666666666665</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;rouge_rouge1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="s2">&quot;rouge&quot;</span><span class="p">][</span><span class="s2">&quot;rouge1&quot;</span><span class="p">]</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;rouge_rouge2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="s2">&quot;rouge&quot;</span><span class="p">][</span><span class="s2">&quot;rouge2&quot;</span><span class="p">]</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;rouge_rougeL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="s2">&quot;rouge&quot;</span><span class="p">][</span><span class="s2">&quot;rougeL&quot;</span><span class="p">]</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;rouge_rougeLsum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="s2">&quot;rouge&quot;</span><span class="p">][</span><span class="s2">&quot;rougeLsum&quot;</span><span class="p">]</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;wer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="s2">&quot;wer&quot;</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span>
+    <span class="n">scores</span><span class="p">[</span><span class="s2">&quot;cer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span><span class="p">[</span><span class="s2">&quot;cer&quot;</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">scores</span></div>
+
+
+<div class="viewcode-block" id="UptrainEvaluate">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.UptrainEvaluate">[docs]</a>
+<span class="k">def</span> <span class="nf">UptrainEvaluate</span><span class="p">(</span><span class="n">evalModelAgent</span><span class="p">,</span><span class="n">question</span><span class="p">,</span> <span class="n">actual_response</span><span class="p">,</span> <span class="n">retrieval_context</span><span class="p">,</span> <span class="n">expected_answer</span><span class="p">,</span> <span class="n">gold_context</span><span class="p">,</span> <span class="n">checks</span><span class="p">,</span> <span class="n">local_model</span><span class="o">=</span><span class="s2">&quot;qwen:7b-chat-v1.5-q8_0&quot;</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="c1"># 这块我把Uptrain里面的评测函数提取出来了，retrieval_context是拼接成字符串作为参数的</span>
+    <span class="n">retrieval_context_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">retrieval_context</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">golden_context_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">gold_context</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="n">question</span><span class="p">,</span>
+                 <span class="s2">&quot;response&quot;</span><span class="p">:</span><span class="n">actual_response</span><span class="p">,</span>
+                 <span class="s2">&quot;context&quot;</span><span class="p">:</span><span class="n">retrieval_context_str</span><span class="p">,</span>
+                 <span class="s2">&quot;concise_context&quot;</span><span class="p">:</span><span class="n">golden_context_str</span><span class="p">,</span>
+                 <span class="s2">&quot;ground_truth&quot;</span><span class="p">:</span><span class="n">expected_answer</span>
+                 <span class="p">})</span>
+    <span class="c1"># 指标所需要的变量会在实现中自己取得</span>
+    <span class="c1"># settings是使用model的设置， data是指标所需的数据， checks 是需要检测的指标的list</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">upTrain_evaluate_self</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">uptrainSetting</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">checks</span><span class="o">=</span><span class="n">checks</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="get_DeepEval_Metrices">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.get_DeepEval_Metrices">[docs]</a>
+<span class="k">def</span> <span class="nf">get_DeepEval_Metrices</span><span class="p">(</span><span class="n">evalModelAgent</span><span class="p">,</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;DeepEval_retrieval_contextualPrecision&quot;</span><span class="p">):</span>
+    <span class="k">match</span> <span class="n">model_name</span><span class="p">:</span>
+        <span class="k">case</span> <span class="s2">&quot;DeepEval_retrieval_contextualPrecision&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ContextualPrecisionMetric</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">deepEvalModel</span><span class="p">,</span><span class="n">include_reason</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;DeepEval_retrieval_contextualRecall&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ContextualRecallMetric</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">deepEvalModel</span><span class="p">,</span><span class="n">include_reason</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;DeepEval_retrieval_contextualRelevancy&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ContextualRelevancyMetric</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">deepEvalModel</span><span class="p">,</span><span class="n">include_reason</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;DeepEval_retrieval_faithfulness&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">FaithfulnessMetric</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">deepEvalModel</span><span class="p">,</span><span class="n">include_reason</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;DeepEval_response_answerRelevancy&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">AnswerRelevancyMetric</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">deepEvalModel</span><span class="p">,</span><span class="n">include_reason</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;DeepEval_response_hallucination&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HallucinationMetric</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">deepEvalModel</span><span class="p">,</span><span class="n">include_reason</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;DeepEval_response_bias&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">BiasMetric</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">deepEvalModel</span><span class="p">,</span><span class="n">include_reason</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;DeepEval_response_toxicity&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ToxicityMetric</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">deepEvalModel</span><span class="p">,</span><span class="n">include_reason</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<span class="c1"># todo: ours evaluator</span>
+<span class="c1"># class Evaluator(BaseEvaluator):</span>
+<div class="viewcode-block" id="get_llama_evaluator">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.get_llama_evaluator">[docs]</a>
+<span class="k">def</span> <span class="nf">get_llama_evaluator</span><span class="p">(</span><span class="n">evalModelAgent</span><span class="p">,</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;Llama_retrieval_Faithfulness&quot;</span><span class="p">):</span>
+    <span class="k">match</span> <span class="n">model_name</span><span class="p">:</span>
+        <span class="k">case</span> <span class="s2">&quot;Llama_retrieval_Faithfulness&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">FaithfulnessEvaluator</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">llamaModel</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;Llama_retrieval_FaithfulnessG&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">FaithfulnessEvaluator</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">llamaModel</span><span class="p">,</span> <span class="n">eval_template</span><span class="o">=</span><span class="n">LLAMA_CUSTOM_FAITHFULNESS_TEMPLATE</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;Llama_retrieval_Relevancy&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">RelevancyEvaluator</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">llamaModel</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;Llama_retrieval_RelevancyG&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">RelevancyEvaluator</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">llamaModel</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;Llama_response_correctness&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CorrectnessEvaluator</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">llamaModel</span><span class="p">)</span>
+        <span class="k">case</span> <span class="s2">&quot;Llama_response_semanticSimilarity&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SemanticSimilarityEvaluator</span><span class="p">()</span>
+        <span class="k">case</span> <span class="s2">&quot;Llama_response_answerRelevancy&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">AnswerRelevancyEvaluator</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">evalModelAgent</span><span class="o">.</span><span class="n">llamaModel</span><span class="p">)</span></div>
+
+
+<span class="c1"># response evaluate</span>
+<div class="viewcode-block" id="evaluating">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.evaluating">[docs]</a>
+<span class="k">def</span> <span class="nf">evaluating</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">actual_response</span><span class="p">,</span> <span class="n">retrieval_context</span><span class="p">,</span> <span class="n">retrieval_ids</span><span class="p">,</span> <span class="n">expected_answer</span><span class="p">,</span> <span class="n">golden_context</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">evalModelAgent</span><span class="p">):</span>
+
+    <span class="c1"># 创建一个新类，主要是用来记录各个指标有效的个数以及得分</span>
+    <span class="n">eval_result</span> <span class="o">=</span> <span class="n">EvaluationResult</span><span class="p">()</span>
+    <span class="c1"># region 常规指标</span>
+    <span class="n">eval_result</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;F1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">F1</span><span class="p">(</span><span class="n">retrieval_ids</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">)</span>
+    <span class="n">eval_result</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;em&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Em</span><span class="p">(</span><span class="n">retrieval_ids</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">)</span>
+    <span class="n">eval_result</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;mrr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Mrr</span><span class="p">(</span><span class="n">retrieval_ids</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">)</span>
+    <span class="n">eval_result</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;hit1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Hit</span><span class="p">(</span><span class="n">retrieval_ids</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">eval_result</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;hit10&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Hit</span><span class="p">(</span><span class="n">retrieval_ids</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+    <span class="n">eval_result</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;MAP&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MAP</span><span class="p">(</span><span class="n">retrieval_ids</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">)</span>
+    <span class="n">eval_result</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;NDCG&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NDCG</span><span class="p">(</span><span class="n">retrieval_ids</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">)</span>
+    <span class="n">eval_result</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;DCG&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DCG</span><span class="p">(</span><span class="n">retrieval_ids</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">)</span>
+    <span class="n">eval_result</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;IDCG&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">IDCG</span><span class="p">(</span><span class="n">retrieval_ids</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">)</span>
+    <span class="c1"># endregion</span>
+    <span class="c1"># 由于upTrain可以一次计算多个指标，所以这个变量之后会从upTrain的多个指标</span>
+    <span class="n">upTrain_metrics</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="c1"># region llama_index evaluation</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">eval_result</span><span class="o">.</span><span class="n">evaluationName</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metrics</span> <span class="ow">and</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;DeepEval&quot;</span> <span class="ow">and</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;UpTrain&quot;</span> <span class="ow">and</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;NLG&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;now run &quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">)</span>
+
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">evaluator</span> <span class="o">=</span> <span class="n">get_llama_evaluator</span><span class="p">(</span><span class="n">evalModelAgent</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="n">EvaluationResult</span><span class="p">()</span>
+                    <span class="n">res</span><span class="o">.</span><span class="n">passing</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;Llama_retrieval_FaithfulnessG&quot;</span><span class="p">:</span>
+                        <span class="c1"># 这块跟prompt相关（LLAMA_CUSTOM_FAITHFULNESS_TEMPLATE）</span>
+                        <span class="n">query_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Question: </span><span class="si">{</span><span class="n">question</span><span class="si">}</span><span class="se">\n</span><span class="s2">Information: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="c1"># Faithfulness.evaluate_response的实现中会把query的值传给上面prompt的query_str</span>
+                        <span class="c1"># 实现的功能和文档中相同，这里试用了一下gpt生成的prompt</span>
+                        <span class="n">res</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate_response</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query_str</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;Llama_retrieval_RelevancyG&quot;</span><span class="p">:</span>
+                        <span class="c1"># 这块要评测golden_context和其他的关系，相当于在原基础上更换retrieval_context</span>
+                        <span class="c1"># 在Relevancy的实现中，会取出node里面的文本，所以我们构建的时候只传文本就好</span>
+                        <span class="c1"># 这块语义差不多所以就没更换prompt</span>
+                        <span class="n">response</span><span class="o">.</span><span class="n">source_nodes</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                        <span class="k">for</span> <span class="n">context</span> <span class="ow">in</span> <span class="n">golden_context</span><span class="p">:</span>
+                            <span class="n">node</span> <span class="o">=</span> <span class="n">TextNode</span><span class="p">()</span>
+                            <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">context</span>
+                            <span class="n">temp</span> <span class="o">=</span> <span class="n">NodeWithScore</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+                            <span class="n">response</span><span class="o">.</span><span class="n">source_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+                        <span class="n">res</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate_response</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># 这里的传参主要是想要使用系统自带的函数，在实现中会自动提取所需的内容</span>
+                        <span class="n">res</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate_response</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">expected_answer</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">passing</span><span class="p">:</span>
+                        <span class="n">eval_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">elif</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">res</span><span class="o">.</span><span class="n">score</span> <span class="ow">and</span> <span class="n">res</span><span class="o">.</span><span class="n">score</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">eval_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">score</span>
+                    <span class="c1"># 这里要记录一下数量，因为由于种种原因这个过程会报错，就会导致无效的记录</span>
+                    <span class="n">eval_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">break</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">-</span> <span class="mi">1</span>
+
+                    <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error &quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="s2">&quot; error&quot;</span><span class="p">)</span>
+                        <span class="k">break</span>
+    <span class="c1"># endregion</span>
+    <span class="c1"># region uptrain evaluation</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Map_Uptrain_metrics_truth_val</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">upTrain_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">upTrain_metrics</span><span class="o">.</span><span class="fm">__len__</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># upTrain 可以进行多个指标的评测（传入要评测指标的list）,因此我们将要测的指标封装成一个list</span>
+        <span class="n">upTrain_metrics_val</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">upTrain_metrics</span><span class="p">:</span>
+            <span class="n">upTrain_metrics_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Map_Uptrain_metrics_truth_val</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">UptrainEvaluate</span><span class="p">(</span><span class="n">evalModelAgent</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span><span class="n">actual_response</span><span class="p">,</span><span class="n">retrieval_context</span><span class="p">,</span><span class="n">expected_answer</span><span class="p">,</span><span class="n">golden_context</span><span class="p">,</span><span class="n">upTrain_metrics_val</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">upTrain_metrics</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="c1">#TODO: fix NONETYPE</span>
+                        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">Map_Uptrain_metrics_score_name</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">Map_Uptrain_metrics_score_name</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">eval_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">Map_Uptrain_metrics_score_name</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                            <span class="n">eval_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+    <span class="c1"># endregion</span>
+    <span class="c1"># region deepEval evaluation</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">eval_result</span><span class="o">.</span><span class="n">evaluationName</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metrics</span> <span class="ow">and</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;DeepEval&quot;</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># 构建评测的参数</span>
+                    <span class="n">test_case</span> <span class="o">=</span> <span class="n">LLMTestCase</span><span class="p">(</span>
+                        <span class="nb">input</span><span class="o">=</span><span class="n">question</span><span class="p">,</span>
+                        <span class="n">actual_output</span><span class="o">=</span><span class="n">actual_response</span><span class="p">,</span>
+                        <span class="n">retrieval_context</span><span class="o">=</span><span class="n">retrieval_context</span><span class="p">,</span>
+                        <span class="n">expected_output</span><span class="o">=</span><span class="n">expected_answer</span><span class="p">,</span>
+                        <span class="n">context</span><span class="o">=</span><span class="n">golden_context</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">deepeval_metric</span> <span class="o">=</span> <span class="n">get_DeepEval_Metrices</span><span class="p">(</span><span class="n">evalModelAgent</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                    <span class="n">deepeval_metric</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">test_case</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">deepeval_metric</span><span class="o">.</span><span class="n">verdicts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;deepeval verdicts is zero&quot;</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">deepeval_metric</span><span class="o">.</span><span class="n">score</span><span class="p">:</span>
+                        <span class="n">eval_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="n">eval_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">break</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">-</span> <span class="mi">1</span>
+
+                    <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="c1">#   file2.write(traceback.format_exc())</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;error &quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="s2">&quot; error&quot;</span><span class="p">)</span>
+                        <span class="k">break</span>
+    <span class="c1"># region NLG evaluation</span>
+    <span class="n">NLG_metrics</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NLG&quot;</span><span class="p">:</span>
+            <span class="n">NLG_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">4</span><span class="p">:])</span>
+    <span class="k">if</span> <span class="n">NLG_metrics</span><span class="o">.</span><span class="fm">__len__</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">NLGEvaluate</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">actual_response</span><span class="p">,</span> <span class="n">expected_answer</span><span class="p">,</span> <span class="n">golden_context_ids</span><span class="p">,</span> <span class="n">NLG_metrics</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">NLG_EVALUATION_METRICS</span><span class="p">:</span>
+            <span class="n">eval_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="s2">&quot;NLG_&quot;</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">eval_result</span><span class="o">.</span><span class="n">metrics_results</span><span class="p">[</span><span class="s2">&quot;NLG_&quot;</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># endregion</span>
+    <span class="k">return</span> <span class="n">eval_result</span></div>
+
+
+<span class="c1"># region commonly used indicators</span>
+<div class="viewcode-block" id="Mrr">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.Mrr">[docs]</a>
+<span class="k">def</span> <span class="nf">Mrr</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">retrieved_ids</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">expected_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Retrieved ids and expected ids must be provided&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">expected_ids</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">score</span>
+    <span class="k">return</span> <span class="mf">0.0</span></div>
+
+<div class="viewcode-block" id="Hit">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.Hit">[docs]</a>
+<span class="k">def</span> <span class="nf">Hit</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">retrieved_ids</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">expected_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Retrieved ids and expected ids must be provided&quot;</span><span class="p">)</span>
+    <span class="n">is_hit</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="nb">id</span> <span class="ow">in</span> <span class="n">expected_ids</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">retrieved_ids</span><span class="p">)</span>
+    <span class="n">score</span><span class="o">=</span><span class="mf">1.0</span> <span class="k">if</span> <span class="n">is_hit</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">score</span></div>
+
+
+<div class="viewcode-block" id="F1">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.F1">[docs]</a>
+<span class="k">def</span> <span class="nf">F1</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">):</span>
+    <span class="c1"># 转换为集合进行交集和差集运算</span>
+    <span class="n">retrieved_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">)</span>
+    <span class="n">expected_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">expected_ids</span><span class="p">)</span>
+
+    <span class="c1"># 计算TP、FP和FN</span>
+    <span class="n">TP</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">retrieved_set</span> <span class="o">&amp;</span> <span class="n">expected_set</span><span class="p">)</span>  <span class="c1"># 预测为正且实际为正的</span>
+    <span class="n">FP</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">retrieved_set</span> <span class="o">-</span> <span class="n">expected_set</span><span class="p">)</span>  <span class="c1"># 预测为正但实际为负的</span>
+    <span class="n">FN</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_set</span> <span class="o">-</span> <span class="n">retrieved_set</span><span class="p">)</span>  <span class="c1"># 实际为正但预测为负的</span>
+
+    <span class="c1"># 计算精确率（Precision）和召回率（Recall）</span>
+    <span class="n">Precision</span> <span class="o">=</span> <span class="n">TP</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FP</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FP</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">Recall</span> <span class="o">=</span> <span class="n">TP</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FN</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">FN</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="c1"># 计算F1分数</span>
+    <span class="n">F1_score</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Precision</span> <span class="o">*</span> <span class="n">Recall</span> <span class="o">/</span> <span class="p">(</span><span class="n">Precision</span> <span class="o">+</span> <span class="n">Recall</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">Precision</span> <span class="o">+</span> <span class="n">Recall</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">F1_score</span></div>
+
+<div class="viewcode-block" id="Em">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.Em">[docs]</a>
+<span class="k">def</span> <span class="nf">Em</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">):</span>
+    <span class="n">retrieved_ids</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">expected_ids</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">expected_ids</span> <span class="o">==</span> <span class="n">retrieved_ids</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+
+<div class="viewcode-block" id="MAP">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.MAP">[docs]</a>
+<span class="k">def</span> <span class="nf">MAP</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">retrieved_ids</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">expected_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Retrieved ids and expected ids must be provided&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">expected_ids</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">retrieved_ids</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">+=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">retrieved_ids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">score</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_ids</span><span class="p">)</span></div>
+
+
+
+
+
+<div class="viewcode-block" id="DCG">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.DCG">[docs]</a>
+<span class="k">def</span> <span class="nf">DCG</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">retrieved_ids</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">expected_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Retrieved ids and expected ids must be provided&quot;</span><span class="p">)</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">expected_ids</span><span class="p">:</span>
+            <span class="c1"># index starts at 0, so add 1 to the index</span>
+            <span class="n">score</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">score</span></div>
+
+
+<div class="viewcode-block" id="IDCG">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.IDCG">[docs]</a>
+<span class="k">def</span> <span class="nf">IDCG</span><span class="p">(</span><span class="n">retreived_ids</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">):</span>
+    <span class="n">temp_1</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">temp_2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">retreived_ids</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">expected_ids</span><span class="p">:</span>
+            <span class="n">temp_1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">temp_2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">temp_1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_2</span><span class="p">)</span>
+    <span class="n">idcg</span> <span class="o">=</span> <span class="n">DCG</span><span class="p">(</span><span class="n">temp_1</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">idcg</span></div>
+
+<div class="viewcode-block" id="NDCG">
+<a class="viewcode-back" href="../../../xrag.eval.html#xrag.eval.evaluate_rag.NDCG">[docs]</a>
+<span class="k">def</span> <span class="nf">NDCG</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">):</span>
+    <span class="n">dcg</span> <span class="o">=</span> <span class="n">DCG</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">)</span>
+    <span class="n">idcg</span> <span class="o">=</span> <span class="n">IDCG</span><span class="p">(</span><span class="n">retrieved_ids</span><span class="p">,</span> <span class="n">expected_ids</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">idcg</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">dcg</span> <span class="o">/</span> <span class="n">idcg</span></div>
+
+<span class="c1"># endregion</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By XRAG
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, xrag.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
