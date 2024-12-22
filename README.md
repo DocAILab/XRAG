@@ -1,30 +1,28 @@
-<img src="img.png" width="300" align="center" alt="XRAG">
+<img src="img.png" width="100%" align="center" alt="XRAG">
 
 # XRAG
-
-![img_1.png](img_1.png)
 
 **XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation**
 
 ---
 
-## Introduction
+## 📖 Introduction
 
 XRAG is a benchmarking framework designed to evaluate the foundational components of advanced Retrieval-Augmented Generation (RAG) systems. By dissecting and analyzing each core module, XRAG provides insights into how different configurations and components impact the overall performance of RAG systems.
 
 ---
 
-## Features
+## ✨ Features
 
-- **Modular Benchmarking**: Evaluate individual components such as retrievers, readers, and rankers independently.
-- **Configurable Pipelines**: Easily modify configurations to test various setups and components.
-- **Extensive Metrics**: Utilize a range of evaluation metrics for comprehensive assessment.
-- **Dataset Support**: Built-in support for popular datasets like HotpotQA, with the ability to add custom datasets.
-- **Integration with LLMs**: Seamless integration with large language models for generation tasks.
+- **🔍 Modular Benchmarking**: Evaluate individual components such as retrievers, readers, and rankers independently.
+- **⚙️ Configurable Pipelines**: Easily modify configurations to test various setups and components.
+- **📊 Extensive Metrics**: Utilize a range of evaluation metrics for comprehensive assessment.
+- **📚 Dataset Support**: Built-in support for popular datasets like HotpotQA, with the ability to add custom datasets.
+- **🤖 Integration with LLMs**: Seamless integration with large language models for generation tasks.
 
 ---
 
-## Installation
+## 🛠️ Installation
 
 Before installing XRAG, ensure that you have Python 3.11 or later installed.
 
@@ -56,7 +54,7 @@ pip install jury --no-deps
 ```
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 Here's how you can get started with XRAG:
 
@@ -110,7 +108,7 @@ xrag-cli run --override embeddings="new-embedding-model"
 
 ---
 
-## Configuration
+## ⚙️ Configuration
 
 XRAG uses a `config.toml` file for configuration management. Below is a sample of the configuration file:
 
@@ -134,7 +132,7 @@ persist_dir = "storage"
 
 ---
 
-## Troubleshooting
+## ❗ Troubleshooting
 
 - **Dependency Conflicts**: If you encounter dependency issues, ensure that you have the correct versions specified in `requirements.txt` and consider using a virtual environment.
 
@@ -144,7 +142,7 @@ persist_dir = "storage"
 
 ---
 
-## Changelog
+## 📝 Changelog
 
 ### Version 0.1.0
 
@@ -155,7 +153,7 @@ persist_dir = "storage"
 
 ---
 
-## Feedback and Support
+## 💬 Feedback and Support
 
 We value feedback from our users. If you have suggestions, feature requests, or encounter issues:
 
@@ -165,6 +163,6 @@ We value feedback from our users. If you have suggestions, feature requests, or 
 
 ---
 
-## Thank You
+## 🙏 Thank You
 
 Thank you for using XRAG! We hope it proves valuable in your research and development efforts in the field of Retrieval-Augmented Generation.
