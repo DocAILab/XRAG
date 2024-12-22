@@ -17,7 +17,7 @@ extra_require = {
 
 def main():
     setup(
-        name="xrag",
+        name="x-rag",
         version='0.1.0',
         author="DocAILab",
         author_email="luoyangyifei@buaa.edu.cn",
