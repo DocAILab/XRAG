@@ -1,7 +1,13 @@
-<div align="center" style="font-size: 48px;">
-  XRAG: eXamining the Core - Benchmarking Foundational Component Modules in<br>
-  Advanced Retrieval-Augmented Generation
+<div style="display: flex; justify-content: center; align-items: center; height: 100px;">
+  <h1 style="font-size: 48px;">
+    XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation
+  </h1>
 </div>
+
+
+
+
+
 
 
 <img src="img.png" width="100%" align="center" alt="XRAG">
