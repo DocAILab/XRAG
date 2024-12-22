@@ -1,12 +1,16 @@
-# RAGX
+<img src="img.png" width="300" align="center" alt="XRAG">
 
-**RAGX: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation**
+# XRAG
+
+![img_1.png](img_1.png)
+
+**XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation**
 
 ---
 
 ## Introduction
 
-RAGX is a benchmarking framework designed to evaluate the foundational components of advanced Retrieval-Augmented Generation (RAG) systems. By dissecting and analyzing each core module, RAGX provides insights into how different configurations and components impact the overall performance of RAG systems.
+XRAG is a benchmarking framework designed to evaluate the foundational components of advanced Retrieval-Augmented Generation (RAG) systems. By dissecting and analyzing each core module, XRAG provides insights into how different configurations and components impact the overall performance of RAG systems.
 
 ---
 
@@ -22,29 +26,29 @@ RAGX is a benchmarking framework designed to evaluate the foundational component
 
 ## Installation
 
-Before installing RAGX, ensure that you have Python 3.11 or later installed.
+Before installing XRAG, ensure that you have Python 3.11 or later installed.
 
 ### Create a Virtual Environment via conda(Recommended)
 
 ```bash
   
 # Create a new conda environment
-conda create -n ragx python=3.11
+conda create -n xrag python=3.11
 
 # Activate the environment
-conda activate ragx
+conda activate xrag
 ```
 
 ### **Install via pip**
 
-You can install RAGX directly using `pip`:
+You can install XRAG directly using `pip`:
 
 ```bash
 # Clone the repository
-git clone https://github.com/DocAILab/ragx.git
-cd ragx
+git clone https://github.com/DocAILab/xrag.git
+cd xrag
 
-# Install RAGX
+# Install XRAG
 pip install .
 
 # Install 'jury' without dependencies to avoid conflicts
@@ -54,20 +58,20 @@ pip install jury --no-deps
 
 ## Quick Start
 
-Here's how you can get started with RAGX:
+Here's how you can get started with XRAG:
 
 ### 1. **Prepare Configuration**: 
 
 Modify the `config.toml` file to set up your desired configurations.
 
-### 2. Using `ragx-cli`
+### 2. Using `xrag-cli`
 
-After installing RAGX, the `ragx-cli` command becomes available in your environment. This command provides a convenient way to interact with RAGX without needing to call Python scripts directly.
+After installing XRAG, the `xrag-cli` command becomes available in your environment. This command provides a convenient way to interact with XRAG without needing to call Python scripts directly.
 
 ### **Command Structure**
 
 ```bash
-ragx-cli [command] [options]
+xrag-cli [command] [options]
 ```
 
 ### **Commands and Options**
@@ -75,25 +79,25 @@ ragx-cli [command] [options]
 - **run**: Runs the benchmarking process.
 
   ```bash
-  ragx-cli run [--override key=value ...]
+  xrag-cli run [--override key=value ...]
   ```
 
 - **webui**: Launches the web-based user interface.
 
   ```bash
-  ragx-cli webui
+  xrag-cli webui
   ```
 
-- **ver**: Displays the current version of RAGX.
+- **ver**: Displays the current version of XRAG.
 
   ```bash
-  ragx-cli version
+  xrag-cli version
   ```
 
 - **help**: Displays help information.
 
   ```bash
-  ragx-cli help
+  xrag-cli help
   ```
 
 ### **Overriding Configuration Parameters**
@@ -101,14 +105,14 @@ ragx-cli [command] [options]
 Use the `--override` flag followed by key-value pairs to override configuration settings:
 
 ```bash
-ragx-cli run --override embeddings="new-embedding-model"
+xrag-cli run --override embeddings="new-embedding-model"
 ```
 
 ---
 
 ## Configuration
 
-RAGX uses a `config.toml` file for configuration management. Below is a sample of the configuration file:
+XRAG uses a `config.toml` file for configuration management. Below is a sample of the configuration file:
 
 ```toml
 [api_keys]
@@ -147,7 +151,7 @@ persist_dir = "storage"
 - Initial release with core benchmarking functionality.
 - Support for HotpotQA dataset.
 - Command-line configuration overrides.
-- Introduction of the `ragx-cli` command-line tool.
+- Introduction of the `xrag-cli` command-line tool.
 
 ---
 
@@ -155,7 +159,7 @@ persist_dir = "storage"
 
 We value feedback from our users. If you have suggestions, feature requests, or encounter issues:
 
-- **Open an Issue**: Submit an issue on our [GitHub repository](https://github.com/DocAILab/ragx/issues).
+- **Open an Issue**: Submit an issue on our [GitHub repository](https://github.com/DocAILab/xrag/issues).
 - **Email Us**: Reach out at [luoyangyifei@buaa.edu.cn](mailto:luoyangyifei@buaa.edu.cn).
 - **Join the Discussion**: Participate in discussions and share your insights.
 
@@ -163,4 +167,4 @@ We value feedback from our users. If you have suggestions, feature requests, or 
 
 ## Thank You
 
-Thank you for using RAGX! We hope it proves valuable in your research and development efforts in the field of Retrieval-Augmented Generation.
+Thank you for using XRAG! We hope it proves valuable in your research and development efforts in the field of Retrieval-Augmented Generation.

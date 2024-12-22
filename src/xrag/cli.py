@@ -9,21 +9,21 @@ USAGE = (
     "-" * 70
     + "\n"
     + "| Usage:                                                             |\n"
-    + "|   ragx-cli run -h: launch an eval experiment       |\n"
-    + "|   ragx-cli webui: launch RAGXBoard                        |\n"
-    + "|   ragx-cli version: show version info                      |\n"
+    + "|   xrag-cli run -h: launch an eval experiment       |\n"
+    + "|   xrag-cli webui: launch XRAGBoard                        |\n"
+    + "|   xrag-cli version: show version info                      |\n"
     + "-" * 70
 )
 
 WELCOME = (
     "-" * 58
     + "\n"
-    + "| Welcome to RAGX, version {}".format(VERSION)
+    + "| Welcome to XRAG, version {}".format(VERSION)
     + " " * (21 - len(VERSION))
     + "|\n|"
     + " " * 56
     + "|\n"
-    + "| Project page: https://github.com/DocAILab/RAGX |\n"
+    + "| Project page: https://github.com/DocAILab/xrag |\n"
     + "-" * 58
 )
 
@@ -36,7 +36,7 @@ class Command(str, Enum):
 
 def main():
     # Initialize the argument parser
-    parser = argparse.ArgumentParser(description='RAGX CLI Tool')
+    parser = argparse.ArgumentParser(description='XRAG CLI Tool')
 
     # Define the subcommands
     subparsers = parser.add_subparsers(dest='command', help='Subcommands')

@@ -17,22 +17,22 @@ extra_require = {
 
 def main():
     setup(
-        name="ragx",
+        name="xrag",
         version='0.1.0',
         author="DocAILab",
         author_email="luoyangyifei@buaa.edu.cn",
-        description="RAGX: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation",
+        description="XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation",
         long_description=open("README.md", "r", encoding="utf-8").read(),
         long_description_content_type="text/markdown",
         keywords=["RAG", "LLM", "ChatGPT", "LLamaIndex", "Benchmarking"],
         license="Apache 2.0 License",
-        url="https://github.com/DocAILab/RAGX",
+        url="https://github.com/DocAILab/XRAG",
         package_dir={"": "src"},
         packages=find_packages("src"),
         python_requires=">=3.9.0",
         install_requires=get_requires(),
         extras_require=extra_require,
-        entry_points={"console_scripts": ["ragx-cli = ragx.cli:main"]},
+        entry_points={"console_scripts": ["xrag-cli = xrag.cli:main"]},
         classifiers=[
             "Development Status :: 4 - Beta",
             "Intended Audience :: Developers",

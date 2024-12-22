@@ -3,14 +3,14 @@ from streamlit_card import card
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from ragx.config import Config
-from ragx.eval.EvalModelAgent import EvalModelAgent
-from ragx.eval.evaluate_rag import evaluating
-from ragx.launcher import run
-from ragx.eval.evaluate_rag import EvaluationResult
-from ragx.process.query_transform import transform_and_query
-from ragx.launcher import build_index, build_query_engine
-from ragx.data.qa_loader import get_qa_dataset
+from xrag.config import Config
+from xrag.eval.EvalModelAgent import EvalModelAgent
+from xrag.eval.evaluate_rag import evaluating
+from xrag.launcher import run
+from xrag.eval.evaluate_rag import EvaluationResult
+from xrag.process.query_transform import transform_and_query
+from xrag.launcher import build_index, build_query_engine
+from xrag.data.qa_loader import get_qa_dataset
 
 AVAILABLE_METRICS = [
     "NLG_chrf", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp",
