@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'RAGX'
-copyright = '2024, HZT'
-author = 'HZT'
+project = 'XRAG'
+copyright = '2024, xrag'
+author = 'XRAG'
 release = '1.0'
 
 
@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../../src'))
 print(sys.path)
 
 # 手动 Mock Config 类或提供 config.toml 路径
-from ragx.config import Config
+from xrag.config import Config
 
 config_path = os.path.abspath('../../config.toml')
 Config(config_file_path=config_path)
@@ -47,5 +47,5 @@ exclude_patterns = []
 html_theme = 'sphinx_book_theme'
 
 html_static_path = ['_static']
-# autodoc_mock_imports = ['ragx.config', 'ragx.llms']
+# autodoc_mock_imports = ['xrag.config', 'xrag.llms']
 

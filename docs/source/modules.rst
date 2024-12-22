@@ -1,7 +1,7 @@
-ragx
+xrag
 ====
 
 .. toctree::
    :maxdepth: 4
 
-   ragx
+   xrag

@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>xrag.process.postprocessor &#8212; XRAG 1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=a681ed88"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/xrag/process/postprocessor';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">XRAG 1.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../modules.html">xrag</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../xrag.html">xrag package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.data.html">xrag.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.embs.html">xrag.embs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.eval.html">xrag.eval package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.index.html">xrag.index package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.launcher.html">xrag.launcher package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.llms.html">xrag.llms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.process.html">xrag.process package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.retrievers.html">xrag.retrievers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.webui.html">xrag.webui package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.cli.html">xrag.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.config.html">xrag.config module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for xrag.process.postprocessor</h1><div class="highlight"><pre>
+<span></span><span class="c1"># pip install -U sentence-transformers</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">llama_index.core</span> <span class="kn">import</span> <span class="n">SimpleDirectoryReader</span><span class="p">,</span> <span class="n">VectorStoreIndex</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.node_parser</span> <span class="kn">import</span> <span class="n">SentenceSplitter</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.postprocessor</span> <span class="kn">import</span> <span class="n">SimilarityPostprocessor</span><span class="p">,</span> <span class="n">KeywordNodePostprocessor</span><span class="p">,</span> <span class="n">LongContextReorder</span><span class="p">,</span> \
+    <span class="n">SentenceEmbeddingOptimizer</span><span class="p">,</span> <span class="n">SentenceTransformerRerank</span><span class="p">,</span> <span class="n">LLMRerank</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.data_structs</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.query_engine</span> <span class="kn">import</span> <span class="n">RetrieverQueryEngine</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.schema</span> <span class="kn">import</span> <span class="n">NodeWithScore</span>
+<span class="kn">from</span> <span class="nn">llama_index.legacy.postprocessor</span> <span class="kn">import</span> <span class="n">CohereRerank</span><span class="p">,</span> <span class="n">RankGPTRerank</span>
+<span class="kn">from</span> <span class="nn">llama_index.llms.openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
+<span class="kn">from</span> <span class="nn">llama_index.retrievers.bm25</span> <span class="kn">import</span> <span class="n">BM25Retriever</span>
+<span class="kn">from</span> <span class="nn">llama_index.core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SimpleDirectoryReader</span><span class="p">,</span>
+    <span class="n">VectorStoreIndex</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">SummaryIndex</span><span class="p">,</span> <span class="n">TreeIndex</span><span class="p">,</span> <span class="n">QueryBundle</span><span class="p">,</span> <span class="n">StorageContext</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># from transformers import AutoTokenizer, AutoModelForSequenceClassification</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">handlers</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="bm25_retriever">
+<a class="viewcode-back" href="../../../xrag.process.html#xrag.process.postprocessor.bm25_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">bm25_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+    <span class="n">retriever_bm25</span> <span class="o">=</span> <span class="n">BM25Retriever</span><span class="o">.</span><span class="n">from_defaults</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">similarity_top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">retriever_bm25</span></div>
+
+
+
+<div class="viewcode-block" id="similarity_postprocessor">
+<a class="viewcode-back" href="../../../xrag.process.html#xrag.process.postprocessor.similarity_postprocessor">[docs]</a>
+<span class="k">def</span> <span class="nf">similarity_postprocessor</span><span class="p">(</span><span class="n">similarity_cutoff</span><span class="o">=</span><span class="mf">0.7</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">SimilarityPostprocessor</span><span class="p">(</span><span class="n">similarity_cutoff</span><span class="o">=</span><span class="n">similarity_cutoff</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="keyword_node_postprocessor">
+<a class="viewcode-back" href="../../../xrag.process.html#xrag.process.postprocessor.keyword_node_postprocessor">[docs]</a>
+<span class="k">def</span> <span class="nf">keyword_node_postprocessor</span><span class="p">(</span><span class="n">required_keywords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_keywords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">exclude_keywords</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exclude_keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;word3&quot;</span><span class="p">,</span> <span class="s2">&quot;word4&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">required_keywords</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">required_keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;word1&quot;</span><span class="p">,</span> <span class="s2">&quot;word2&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">KeywordNodePostprocessor</span><span class="p">(</span><span class="n">required_keywords</span><span class="o">=</span><span class="n">required_keywords</span><span class="p">,</span> <span class="n">exclude_keywords</span><span class="o">=</span><span class="n">exclude_keywords</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="long_context_reorder">
+<a class="viewcode-back" href="../../../xrag.process.html#xrag.process.postprocessor.long_context_reorder">[docs]</a>
+<span class="k">def</span> <span class="nf">long_context_reorder</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">LongContextReorder</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="sentence_embedding_optimizer">
+<a class="viewcode-back" href="../../../xrag.process.html#xrag.process.postprocessor.sentence_embedding_optimizer">[docs]</a>
+<span class="k">def</span> <span class="nf">sentence_embedding_optimizer</span><span class="p">(</span><span class="n">percentile_cutoff</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">SentenceEmbeddingOptimizer</span><span class="p">(</span>
+        <span class="n">embed_model</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">embed_model</span><span class="p">,</span>
+        <span class="n">percentile_cutoff</span><span class="o">=</span><span class="n">percentile_cutoff</span><span class="p">,</span>
+        <span class="c1"># threshold_cutoff=0.7</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="llm_rerank">
+<a class="viewcode-back" href="../../../xrag.process.html#xrag.process.postprocessor.llm_rerank">[docs]</a>
+<span class="k">def</span> <span class="nf">llm_rerank</span><span class="p">():</span>
+    <span class="n">postprocessor</span> <span class="o">=</span> <span class="n">LLMRerank</span><span class="p">(</span><span class="n">top_n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">service_context</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">postprocessor</span></div>
+
+
+
+<div class="viewcode-block" id="transformer_rerank">
+<a class="viewcode-back" href="../../../xrag.process.html#xrag.process.postprocessor.transformer_rerank">[docs]</a>
+<span class="k">def</span> <span class="nf">transformer_rerank</span><span class="p">(</span><span class="n">top_n</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">SentenceTransformerRerank</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;cross-encoder/stsb-distilroberta-base&quot;</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="n">top_n</span>
+    <span class="p">)</span></div>
+
+    <span class="c1"># pip install -U sentence-transformers</span>
+
+
+<div class="viewcode-block" id="gpt_rerank">
+<a class="viewcode-back" href="../../../xrag.process.html#xrag.process.postprocessor.gpt_rerank">[docs]</a>
+<span class="k">def</span> <span class="nf">gpt_rerank</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">RankGPTRerank</span><span class="p">(</span><span class="n">top_n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">llm</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">llm</span><span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;HF_ENDPOINT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;https://hf-mirror.com&#39;</span>
+    <span class="n">Settings</span><span class="o">.</span><span class="n">llm</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">)</span>
+    <span class="c1"># 需要一个直接放文件的本地目录</span>
+    <span class="n">documents</span> <span class="o">=</span> <span class="n">SimpleDirectoryReader</span><span class="p">(</span><span class="s2">&quot;D:\RAG_benchmark\doc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+    <span class="n">splitter</span> <span class="o">=</span> <span class="n">SentenceSplitter</span><span class="p">(</span>
+        <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+        <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">get_nodes_from_documents</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span>
+    <span class="n">index_</span> <span class="o">=</span> <span class="n">VectorStoreIndex</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">retriever</span> <span class="o">=</span> <span class="n">bm25_retriever</span><span class="p">(</span><span class="n">index_</span><span class="p">)</span>  <span class="c1"># 可用</span>
+
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">retriever</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="s2">&quot;请用中文回答我的毕业设计题目是什么&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+
+    <span class="n">processor</span> <span class="o">=</span> <span class="n">transformer_rerank</span><span class="p">()</span>
+    <span class="n">filtered_nodes</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">postprocess_nodes</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">query_str</span><span class="o">=</span><span class="s2">&quot;请用中文回答我的毕业设计题目是什么&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">filtered_nodes</span><span class="p">)</span>
+
+    <span class="n">query_engine</span> <span class="o">=</span> <span class="n">RetrieverQueryEngine</span><span class="p">(</span>
+        <span class="n">retriever</span><span class="o">=</span><span class="n">retriever</span><span class="p">,</span>
+        <span class="n">node_postprocessors</span><span class="o">=</span><span class="p">[</span><span class="n">processor</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">query_engine</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;请用中文回答我的毕业设计题目是什么&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By XRAG
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, xrag.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

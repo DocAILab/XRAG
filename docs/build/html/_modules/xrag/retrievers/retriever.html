@@ -1,0 +1,857 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>xrag.retrievers.retriever &#8212; XRAG 1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../../_static/documentation_options.js?v=a681ed88"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/xrag/retrievers/retriever';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">XRAG 1.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../modules.html">xrag</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../xrag.html">xrag package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.data.html">xrag.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.embs.html">xrag.embs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.eval.html">xrag.eval package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.index.html">xrag.index package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.launcher.html">xrag.launcher package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.llms.html">xrag.llms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.process.html">xrag.process package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.retrievers.html">xrag.retrievers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.webui.html">xrag.webui package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.cli.html">xrag.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../xrag.config.html">xrag.config module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for xrag.retrievers.retriever</h1><div class="highlight"><pre>
+<span></span><span class="c1"># pip install llama-index-retrievers-bm25</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">openai</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.base.base_retriever</span> <span class="kn">import</span> <span class="n">BaseRetriever</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.indices.document_summary</span> <span class="kn">import</span> <span class="n">DocumentSummaryIndexEmbeddingRetriever</span><span class="p">,</span> \
+    <span class="n">DocumentSummaryIndexLLMRetriever</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.indices.keyword_table.retrievers</span> <span class="kn">import</span> <span class="n">BaseKeywordTableRetriever</span><span class="p">,</span> <span class="n">KeywordTableGPTRetriever</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.indices.list</span> <span class="kn">import</span> <span class="n">SummaryIndexEmbeddingRetriever</span><span class="p">,</span> <span class="n">SummaryIndexRetriever</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.indices.tree</span> <span class="kn">import</span> <span class="n">TreeAllLeafRetriever</span><span class="p">,</span> <span class="n">TreeSelectLeafRetriever</span><span class="p">,</span> \
+    <span class="n">TreeSelectLeafEmbeddingRetriever</span><span class="p">,</span> <span class="n">TreeRootRetriever</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.postprocessor</span> <span class="kn">import</span> <span class="n">MetadataReplacementPostProcessor</span><span class="p">,</span> <span class="n">SimilarityPostprocessor</span><span class="p">,</span> <span class="n">LongContextReorder</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.query_engine</span> <span class="kn">import</span> <span class="n">RetrieverQueryEngine</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">llama_index.core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SimpleDirectoryReader</span><span class="p">,</span>
+    <span class="n">VectorStoreIndex</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">SummaryIndex</span><span class="p">,</span> <span class="n">TreeIndex</span><span class="p">,</span> <span class="n">QueryBundle</span><span class="p">,</span> <span class="n">StorageContext</span><span class="p">,</span> <span class="n">DocumentSummaryIndex</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.response_synthesizers</span> <span class="kn">import</span> <span class="n">ResponseMode</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.retrievers.fusion_retriever</span> <span class="kn">import</span> <span class="n">FUSION_MODES</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.schema</span> <span class="kn">import</span> <span class="n">NodeWithScore</span><span class="p">,</span> <span class="n">IndexNode</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.storage.docstore</span> <span class="kn">import</span> <span class="n">SimpleDocumentStore</span>
+<span class="kn">from</span> <span class="nn">llama_index.legacy.indices.keyword_table</span> <span class="kn">import</span> <span class="n">KeywordTableSimpleRetriever</span>
+<span class="kn">from</span> <span class="nn">llama_index.retrievers.bm25</span> <span class="kn">import</span> <span class="n">BM25Retriever</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.retrievers</span> <span class="kn">import</span> <span class="n">VectorIndexRetriever</span><span class="p">,</span> <span class="n">QueryFusionRetriever</span><span class="p">,</span> <span class="n">AutoMergingRetriever</span><span class="p">,</span> \
+    <span class="n">RecursiveRetriever</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.node_parser</span> <span class="kn">import</span> <span class="n">SentenceSplitter</span><span class="p">,</span> <span class="n">SentenceWindowNodeParser</span>
+<span class="kn">from</span> <span class="nn">llama_index.llms.openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="kn">from</span> <span class="nn">llama_index.core</span> <span class="kn">import</span> <span class="n">get_response_synthesizer</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">handlers</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">))</span>
+
+
+<span class="c1"># todo 常规检索模式: bm25检索 向量检索</span>
+<div class="viewcode-block" id="bm25_retriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.bm25_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">bm25_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+    <span class="n">retriever_bm25</span> <span class="o">=</span> <span class="n">BM25Retriever</span><span class="o">.</span><span class="n">from_defaults</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">similarity_top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">retriever_bm25</span></div>
+
+
+
+<div class="viewcode-block" id="vector_retriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.vector_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">vector_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+    <span class="c1"># index = VectorStoreIndex(node)</span>
+    <span class="n">retriever_vector</span> <span class="o">=</span> <span class="n">VectorIndexRetriever</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">similarity_top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                            <span class="n">store_nodes_override</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">retriever_vector</span></div>
+
+
+
+<span class="c1"># todo 特定于某种索引的检索器类:汇总索引检索 树索引检索 关键字表索引检索 文档摘要索引检索</span>
+<span class="c1"># note index必须为汇总索引 https://docs.llamaindex.ai/en/stable/api_reference/indices/list.html#llama_index.core.indices.list.SummaryIndex</span>
+<div class="viewcode-block" id="summary_retriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.summary_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">summary_retriever</span><span class="p">(</span><span class="n">summary_index</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid mode for summary retriever.&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># 最简单的文档汇总索引</span>
+        <span class="n">retriever_summary</span> <span class="o">=</span> <span class="n">SummaryIndexRetriever</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">summary_index</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># 基于编码的文档汇总索引</span>
+        <span class="n">retriever_summary</span> <span class="o">=</span> <span class="n">SummaryIndexEmbeddingRetriever</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">summary_index</span><span class="p">,</span> <span class="n">embed_model</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">embed_model</span><span class="p">,</span>
+                                                           <span class="n">similarity_top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># 基于大模型的文档汇总索引</span>
+        <span class="n">retriever_summary</span> <span class="o">=</span> <span class="n">SummaryIndexEmbeddingRetriever</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">summary_index</span><span class="p">,</span> <span class="n">llm</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">llm</span><span class="p">,</span> <span class="n">similarity_top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">retriever_summary</span></div>
+
+
+
+<span class="c1"># note index必须为树索引 https://docs.llamaindex.ai/en/latest/api_reference/indices/tree.html#llama_index.core.indices.tree.TreeIndex</span>
+<div class="viewcode-block" id="tree_retriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.tree_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">tree_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># 只使用叶节点的树索引</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">retriever_tree</span> <span class="o">=</span> <span class="n">TreeAllLeafRetriever</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+    <span class="c1"># 使用部分叶节点</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">retriever_tree</span> <span class="o">=</span> <span class="n">TreeSelectLeafRetriever</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+    <span class="c1"># 使用编码结合叶节点的检索器</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">retriever_tree</span> <span class="o">=</span> <span class="n">TreeSelectLeafEmbeddingRetriever</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">embed_model</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">embed_model</span><span class="p">)</span>
+    <span class="c1"># 使用根节点的检索器</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">retriever_tree</span> <span class="o">=</span> <span class="n">TreeRootRetriever</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">retriever_tree</span></div>
+
+
+
+<span class="c1"># node index必须为关键字表索引 https://docs.llamaindex.ai/en/stable/api_reference/query/retrievers/table.html</span>
+<div class="viewcode-block" id="keyword_retriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.keyword_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">keyword_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid mode for keyword retriever.&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+    <span class="c1"># 基本关键字表检索器</span>
+
+    <span class="c1"># GPT关键字表检索器</span>
+
+    <span class="n">retriever_keyword</span> <span class="o">=</span> <span class="n">KeywordTableGPTRetriever</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">retriever_keyword</span></div>
+
+
+
+<span class="c1"># 关于该检索器可能的bug：https://github.com/run-llama/llama_index/issues/7633</span>
+<div class="viewcode-block" id="document_summary_retrievers">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.document_summary_retrievers">[docs]</a>
+<span class="k">def</span> <span class="nf">document_summary_retrievers</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+    <span class="n">retriever_d</span> <span class="o">=</span> <span class="n">DocumentSummaryIndexLLMRetriever</span><span class="p">(</span>
+        <span class="n">index</span><span class="p">,</span>
+        <span class="n">choice_batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">choice_top_k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">retriever_d</span> <span class="o">=</span> <span class="n">DocumentSummaryIndexEmbeddingRetriever</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">retriever_d</span></div>
+
+
+
+<span class="c1"># todo 高级检索模式：自定义检索器 融合检索 自动合并检索（扩增上下文检索） 元数据替换+句子窗口检索 递归检索</span>
+<span class="c1"># 自定义检索器，定义了向量检索与bm25检索混合，混合模式为取合</span>
+<div class="viewcode-block" id="CustomRetriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.CustomRetriever">[docs]</a>
+<span class="k">class</span> <span class="nc">CustomRetriever</span><span class="p">(</span><span class="n">BaseRetriever</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">vector_retriever_c</span><span class="p">:</span> <span class="n">VectorIndexRetriever</span><span class="p">,</span>
+            <span class="n">bm25_retriever_c</span><span class="p">:</span> <span class="n">BM25Retriever</span><span class="p">,</span>
+            <span class="n">keyword_retriever_c</span><span class="p">:</span> <span class="n">KeywordTableSimpleRetriever</span><span class="p">,</span>
+            <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;AND&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vector_retriever</span> <span class="o">=</span> <span class="n">vector_retriever_c</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bm25_retriever</span> <span class="o">=</span> <span class="n">bm25_retriever_c</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keyword_retriever</span> <span class="o">=</span> <span class="n">keyword_retriever_c</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;AND&quot;</span><span class="p">,</span> <span class="s2">&quot;OR&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid mode.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_bundle</span><span class="p">:</span> <span class="n">QueryBundle</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NodeWithScore</span><span class="p">]:</span>
+        <span class="n">vector_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vector_retriever</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">query_bundle</span><span class="p">)</span>
+        <span class="n">bm25_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bm25_retriever</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">query_bundle</span><span class="p">)</span>
+
+        <span class="n">vector_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">node_id</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">vector_nodes</span><span class="p">}</span>
+        <span class="n">bm25_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">node_id</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">bm25_nodes</span><span class="p">}</span>
+
+        <span class="n">combined_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">node_id</span><span class="p">:</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">vector_nodes</span><span class="p">}</span>
+        <span class="n">combined_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">n</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">node_id</span><span class="p">:</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">bm25_nodes</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;AND&quot;</span><span class="p">:</span>
+            <span class="n">retrieve_ids</span> <span class="o">=</span> <span class="n">vector_ids</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">bm25_ids</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">retrieve_ids</span> <span class="o">=</span> <span class="n">vector_ids</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">bm25_ids</span><span class="p">)</span>
+
+        <span class="n">retrieve_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">combined_dict</span><span class="p">[</span><span class="n">rid</span><span class="p">]</span> <span class="k">for</span> <span class="n">rid</span> <span class="ow">in</span> <span class="n">retrieve_ids</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">retrieve_nodes</span></div>
+
+
+
+<span class="c1"># 融合检索器 其将来自多个文档的索引作为输入，并自动进行问题扩充，以获得多次查询结果用于合并</span>
+<span class="c1"># mode: 代表融合模式. 0 代表简单合并. 1: 采用RRF倒数排名融合</span>
+<div class="viewcode-block" id="query_fusion_retriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.query_fusion_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">query_fusion_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">num_queries</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">similarity_top_k</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">retriever_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">query_fusion_r</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">retriever_weight</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">retriever_weight</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">query_fusion_r</span> <span class="o">=</span> <span class="n">QueryFusionRetriever</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">index_s</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span> <span class="k">for</span> <span class="n">index_s</span> <span class="ow">in</span> <span class="n">index</span><span class="p">],</span>
+            <span class="n">llm</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">llm</span><span class="p">,</span>
+            <span class="n">similarity_top_k</span><span class="o">=</span><span class="n">similarity_top_k</span><span class="p">,</span>
+            <span class="n">num_queries</span><span class="o">=</span><span class="n">num_queries</span><span class="p">,</span>
+            <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="c1"># query_gen_prompt=&quot;...&quot;,</span>
+            <span class="c1"># 默认用于多轮询问的问题模板：</span>
+            <span class="c1"># QUERY_GEN_PROMPT=(</span>
+            <span class="c1">#     &quot;You are a helpful assistant that generates multiple search queries based on a &quot;</span>
+            <span class="c1">#     &quot;single input query. Generate {num_queries} search queries, one on each line, &quot;</span>
+            <span class="c1">#     &quot;related to the following input query:\n&quot;</span>
+            <span class="c1">#     &quot;Query: {query}\n&quot;</span>
+            <span class="c1">#     &quot;Queries:\n&quot;</span>
+            <span class="c1"># )</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">query_fusion_r</span> <span class="o">=</span> <span class="n">QueryFusionRetriever</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">index_s</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span> <span class="k">for</span> <span class="n">index_s</span> <span class="ow">in</span> <span class="n">index</span><span class="p">],</span>
+            <span class="n">llm</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">llm</span><span class="p">,</span>
+            <span class="n">similarity_top_k</span><span class="o">=</span><span class="n">similarity_top_k</span><span class="p">,</span>
+            <span class="n">num_queries</span><span class="o">=</span><span class="n">num_queries</span><span class="p">,</span>
+            <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="n">FUSION_MODES</span><span class="o">.</span><span class="n">RECIPROCAL_RANK</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">query_fusion_r</span></div>
+
+
+
+<span class="c1"># 自动合并检索</span>
+<span class="c1"># 其将自动合并子节点为高级节点，并进行扩增上下文操作 故需要提供节点类</span>
+<span class="c1"># 也可使用特殊节点类进行初始化 https://docs.llamaindex.ai/en/latest/examples/retrievers/auto_merging_retriever.html</span>
+<div class="viewcode-block" id="auto_merging_retriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.auto_merging_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">auto_merging_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">hierarchical_storage_context</span><span class="p">):</span>
+
+    <span class="n">auto_merging_r</span> <span class="o">=</span> <span class="n">AutoMergingRetriever</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span><span class="n">similarity_top_k</span><span class="o">=</span><span class="mi">6</span><span class="p">),</span> <span class="n">storage_context</span><span class="o">=</span><span class="n">hierarchical_storage_context</span><span class="p">,</span>
+                                          <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">auto_merging_r</span></div>
+
+
+
+<span class="c1"># 递归检索 + 句子节点引用rong</span>
+<div class="viewcode-block" id="recursive_retriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.recursive_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">recursive_retriever</span><span class="p">(</span><span class="n">base_nodes</span><span class="p">):</span>
+    <span class="n">sub_chunk_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">]</span>
+    <span class="n">sub_node_parsers</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">SentenceSplitter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">sub_chunk_sizes</span>
+    <span class="p">]</span>
+
+    <span class="n">all_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">base_node</span> <span class="ow">in</span> <span class="n">base_nodes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">sub_node_parsers</span><span class="p">:</span>
+            <span class="n">sub_nodes</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">get_nodes_from_documents</span><span class="p">([</span><span class="n">base_node</span><span class="p">])</span>
+            <span class="n">sub_inodes</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">IndexNode</span><span class="o">.</span><span class="n">from_text_node</span><span class="p">(</span><span class="n">sn</span><span class="p">,</span> <span class="n">base_node</span><span class="o">.</span><span class="n">node_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">sn</span> <span class="ow">in</span> <span class="n">sub_nodes</span>
+            <span class="p">]</span>
+            <span class="n">all_nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sub_inodes</span><span class="p">)</span>
+
+        <span class="c1"># also add original node to node</span>
+        <span class="n">original_node</span> <span class="o">=</span> <span class="n">IndexNode</span><span class="o">.</span><span class="n">from_text_node</span><span class="p">(</span><span class="n">base_node</span><span class="p">,</span> <span class="n">base_node</span><span class="o">.</span><span class="n">node_id</span><span class="p">)</span>
+        <span class="n">all_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">original_node</span><span class="p">)</span>
+
+    <span class="n">all_nodes_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="o">.</span><span class="n">node_id</span><span class="p">:</span> <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">all_nodes</span><span class="p">}</span>
+    <span class="n">vector_index_chunk</span> <span class="o">=</span> <span class="n">VectorStoreIndex</span><span class="p">(</span><span class="n">all_nodes</span><span class="p">,</span> <span class="n">embed_model</span><span class="o">=</span><span class="n">Settings</span><span class="o">.</span><span class="n">embed_model</span><span class="p">)</span>
+    <span class="n">vector_retriever_chunk</span> <span class="o">=</span> <span class="n">vector_index_chunk</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span><span class="n">similarity_top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">retriever_chunk</span> <span class="o">=</span> <span class="n">RecursiveRetriever</span><span class="p">(</span>
+        <span class="s2">&quot;vector&quot;</span><span class="p">,</span>
+        <span class="n">retriever_dict</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;vector&quot;</span><span class="p">:</span> <span class="n">vector_retriever_chunk</span><span class="p">},</span>
+        <span class="n">node_dict</span><span class="o">=</span><span class="n">all_nodes_dict</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">vector_retriever_chunk</span></div>
+
+
+
+<span class="c1"># 句子窗口类需要特殊的节点生成的索引</span>
+<div class="viewcode-block" id="sentence_window_retriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.sentence_window_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">sentence_window_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">index</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span><span class="n">node_postprocessors</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">MetadataReplacementPostProcessor</span><span class="p">(</span><span class="n">target_metadata_key</span><span class="o">=</span><span class="s2">&quot;window&quot;</span><span class="p">)</span>
+    <span class="p">],</span> <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="custom_retriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.custom_retriever">[docs]</a>
+<span class="k">def</span> <span class="nf">custom_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">vector_r</span> <span class="o">=</span> <span class="n">vector_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">bm25_r</span> <span class="o">=</span> <span class="n">bm25_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">keyword_r</span> <span class="o">=</span> <span class="n">keyword_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">mode</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid mode for custom retriever.&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">custom_r</span> <span class="o">=</span> <span class="n">CustomRetriever</span><span class="p">(</span><span class="n">vector_retriever_c</span><span class="o">=</span><span class="n">vector_r</span><span class="p">,</span> <span class="n">bm25_retriever_c</span><span class="o">=</span><span class="n">bm25_r</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;AND&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">custom_r</span> <span class="o">=</span> <span class="n">CustomRetriever</span><span class="p">(</span><span class="n">vector_retriever_c</span><span class="o">=</span><span class="n">vector_r</span><span class="p">,</span> <span class="n">keyword_retriever_c</span><span class="o">=</span><span class="n">keyword_r</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;OR&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">custom_r</span></div>
+
+
+
+<span class="c1"># refine：通过按顺序遍历每个检索到的文本块来创建和优化答案。 这将为每个节点/检索到的块进行单独的 LLM 调用。</span>
+<span class="c1"># compact（默认）：事先压缩（连接）块，从而减少 LLM 调用。填充尽可能多的文本（从检索到的块中串联/打包）可以放入上下文窗口</span>
+<span class="c1"># tree_summarize：根据需要多次使用提示查询 LLM，以便所有串联的块 被查询，从而产生同样多的答案，这些答案本身在 LLM 调用中以递归方式用作块 依此类推，直到只剩下一个块，因此只有一个最终答案。</span>
+<span class="c1"># simple_summarize：截断所有文本块以适应单个 LLM 提示。适合快速 摘要目的，但可能会因截断而丢失详细信息。</span>
+<span class="c1"># accumulate：给定一组文本块和查询，将查询应用于每个文本 块，同时将响应累积到数组中。返回 all 的串联字符串。当您需要对每个文本分别运行相同查询时，非常有用</span>
+<span class="c1"># compact_accumulate：与 accumulate 相同，但会“压缩”每个类似于 的 LLM 提示符，并对每个文本块运行相同查询。compact</span>
+<div class="viewcode-block" id="response_synthesizer">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.response_synthesizer">[docs]</a>
+<span class="k">def</span> <span class="nf">response_synthesizer</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">&gt;</span> <span class="mi">7</span><span class="p">:</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">choose</span> <span class="o">=</span> <span class="p">[</span><span class="n">ResponseMode</span><span class="o">.</span><span class="n">REFINE</span><span class="p">,</span> <span class="n">ResponseMode</span><span class="o">.</span><span class="n">COMPACT</span><span class="p">,</span> <span class="n">ResponseMode</span><span class="o">.</span><span class="n">COMPACT_ACCUMULATE</span><span class="p">,</span> <span class="n">ResponseMode</span><span class="o">.</span><span class="n">ACCUMULATE</span><span class="p">,</span>
+              <span class="n">ResponseMode</span><span class="o">.</span><span class="n">TREE_SUMMARIZE</span><span class="p">,</span> <span class="n">ResponseMode</span><span class="o">.</span><span class="n">SIMPLE_SUMMARIZE</span><span class="p">,</span> <span class="n">ResponseMode</span><span class="o">.</span><span class="n">NO_TEXT</span><span class="p">,</span> <span class="n">ResponseMode</span><span class="o">.</span><span class="n">GENERATION</span><span class="p">]</span>
+    <span class="n">response_s</span> <span class="o">=</span> <span class="n">get_response_synthesizer</span><span class="p">(</span><span class="n">response_mode</span><span class="o">=</span><span class="n">choose</span><span class="p">[</span><span class="n">mode</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">response_s</span></div>
+
+
+<span class="c1"># 检索器类型包括：</span>
+<span class="c1"># BM25</span>
+<span class="c1"># Vector</span>
+<span class="c1"># Summary: 汇总检索器 mode = 0 1 2 对应 最简单的文档汇总索引 基于编码的文档汇总索引 基于大模型的文档汇总索引 必须为关键字表索引 *</span>
+<span class="c1"># Keyword: 关键字表检索器 mode = 0 1 对应 基本关键字表检索器 GPT关键字表检索器 必须为关键字表索引 *</span>
+<span class="c1"># Custom</span>
+<span class="c1"># QueryFusion: 融合检索器 其将来自多个文档的索引作为输入，并自动进行问题扩充，以获得多次查询结果用于合并,index需为一个list</span>
+<span class="c1"># mode = 0, 1 分别使用llama simple重排序方法，1采用RRF</span>
+<span class="c1"># AutoMerging</span>
+<span class="c1"># Recursive</span>
+<span class="c1"># SentenceWindow *</span>
+<span class="c1"># Tree: index必须为树索引 *</span>
+<span class="c1"># mode: 1,2,3,0 对应 TreeAllLeafRetriever TreeSelectLeafRetriever TreeSelectLeafEmbeddingRetriever TreeRootRetriever</span>
+<span class="c1"># mode确定检索器的模式</span>
+<div class="viewcode-block" id="get_retriver">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.get_retriver">[docs]</a>
+<span class="k">def</span> <span class="nf">get_retriver</span><span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">node</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">hierarchical_storage_context</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;BM25&quot;</span><span class="p">:</span>
+        <span class="n">retriever</span> <span class="o">=</span> <span class="n">bm25_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;Vector&quot;</span><span class="p">:</span>
+        <span class="n">retriever</span> <span class="o">=</span> <span class="n">vector_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;Summary&quot;</span><span class="p">:</span>
+        <span class="n">retriever</span> <span class="o">=</span> <span class="n">summary_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;Tree&quot;</span><span class="p">:</span>
+        <span class="n">retriever</span> <span class="o">=</span> <span class="n">tree_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;Keyword&quot;</span><span class="p">:</span>
+        <span class="n">retriever</span> <span class="o">=</span> <span class="n">keyword_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;Custom&quot;</span><span class="p">:</span>
+        <span class="n">retriever</span> <span class="o">=</span> <span class="n">custom_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;QueryFusion&quot;</span><span class="p">:</span>
+        <span class="n">retriever</span> <span class="o">=</span> <span class="n">query_fusion_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;AutoMerging&quot;</span><span class="p">:</span>
+        <span class="n">retriever</span> <span class="o">=</span> <span class="n">auto_merging_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">hierarchical_storage_context</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;Recursive&quot;</span><span class="p">:</span>
+        <span class="n">retriever</span> <span class="o">=</span> <span class="n">recursive_retriever</span><span class="p">(</span><span class="n">base_nodes</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;SentenceWindow&quot;</span><span class="p">:</span>
+        <span class="n">retriever</span> <span class="o">=</span> <span class="n">sentence_window_retriever</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;retriever not supported: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mode</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">retriever</span></div>
+
+
+
+<div class="viewcode-block" id="query_expansion">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.query_expansion">[docs]</a>
+<span class="k">def</span> <span class="nf">query_expansion</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">query_number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">similarity_top_k</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">ret</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;query_expansion未传入检索器&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">QueryFusionRetriever</span><span class="p">(</span>
+        <span class="n">ret</span><span class="p">,</span>
+        <span class="n">similarity_top_k</span><span class="o">=</span><span class="n">similarity_top_k</span><span class="p">,</span>
+        <span class="n">num_queries</span><span class="o">=</span><span class="n">query_number</span><span class="p">,</span>  <span class="c1"># set this to 1 to disable query generation</span>
+        <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># query_gen_prompt=&quot;...&quot;,  # we could override the query generation prompt here</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="AllRetriever">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.AllRetriever">[docs]</a>
+<span class="k">class</span> <span class="nc">AllRetriever</span><span class="p">:</span>
+    <span class="n">_doc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_nodes</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_index</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_retriever</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">_query_number</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">_similar_k_top</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">_syn</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes_</span><span class="p">,</span> <span class="n">vector_index_</span><span class="p">,</span> <span class="n">summary_index_</span><span class="p">,</span> <span class="n">tree_index_</span><span class="p">,</span> <span class="n">keyword_index_</span><span class="p">,</span> <span class="n">sentence_index_</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bm25_retriever</span> <span class="o">=</span> <span class="n">bm25_retriever</span><span class="p">(</span><span class="n">vector_index_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bm25_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vector_retriever</span> <span class="o">=</span> <span class="n">vector_retriever</span><span class="p">(</span><span class="n">vector_index_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">summary_retriever</span> <span class="o">=</span> <span class="n">summary_retriever</span><span class="p">(</span><span class="n">summary_index_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">summary_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree_retriever</span> <span class="o">=</span> <span class="n">tree_retriever</span><span class="p">(</span><span class="n">tree_index_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyword_retriever</span> <span class="o">=</span> <span class="n">keyword_retriever</span><span class="p">(</span><span class="n">keyword_index_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keyword_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_s_retriever</span> <span class="o">=</span> <span class="n">document_summary_retrievers</span><span class="p">(</span><span class="n">vector_index_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc_s_retriever</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_retriever</span> <span class="o">=</span> <span class="n">custom_retriever</span><span class="p">(</span><span class="n">vector_index_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">custom_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_fusion_retriever</span> <span class="o">=</span> <span class="n">query_fusion_retriever</span><span class="p">(</span><span class="n">vector_index_</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query_fusion_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_merging_retriever</span> <span class="o">=</span> <span class="n">auto_merging_retriever</span><span class="p">(</span><span class="n">vector_index_</span><span class="p">,</span> <span class="n">nodes_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auto_merging_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recursive_retriever</span> <span class="o">=</span> <span class="n">recursive_retriever</span><span class="p">(</span><span class="n">nodes_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recursive_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">router_retriever</span> <span class="o">=</span> <span class="n">get_query_engine_by_router</span><span class="p">(</span><span class="n">summary_index_</span><span class="p">,</span> <span class="n">vector_index_</span><span class="p">,</span> <span class="n">keyword_index_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">router_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sentence_window_retriever</span> <span class="o">=</span> <span class="n">sentence_window_retriever</span><span class="p">(</span><span class="n">sentence_index_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_retriever</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sentence_window_retriever</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_syn</span> <span class="o">=</span> <span class="n">response_synthesizer</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AllRetriever.query_expansion">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.AllRetriever.query_expansion">[docs]</a>
+    <span class="k">def</span> <span class="nf">query_expansion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retriever</span><span class="p">,</span> <span class="n">query_number</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">similarity_number</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">query_number</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_query_number</span> <span class="o">=</span> <span class="n">query_number</span>
+        <span class="k">if</span> <span class="n">similarity_number</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_similar_k_top</span> <span class="o">=</span> <span class="n">similarity_number</span>
+        <span class="k">return</span> <span class="n">query_expansion</span><span class="p">([</span><span class="n">retriever</span><span class="p">],</span> <span class="n">query_number</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_number</span><span class="p">,</span> <span class="n">similarity_top_k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_similar_k_top</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AllRetriever.get_response_mode">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.AllRetriever.get_response_mode">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_response_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retriever_</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_syn</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="n">query_e</span> <span class="o">=</span> <span class="n">RetrieverQueryEngine</span><span class="p">(</span>
+            <span class="n">retriever</span><span class="o">=</span><span class="n">retriever_</span><span class="p">,</span>
+            <span class="n">response_synthesizer</span><span class="o">=</span><span class="n">response_synthesizer</span><span class="p">(</span><span class="n">mode</span><span class="p">),</span>
+            <span class="n">node_postprocessors</span><span class="o">=</span><span class="p">[</span><span class="n">LongContextReorder</span><span class="p">()]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">query_e</span></div>
+</div>
+
+
+
+<span class="kn">from</span> <span class="nn">llama_index.core.query_engine</span> <span class="kn">import</span> <span class="n">RouterQueryEngine</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.selectors</span> <span class="kn">import</span> <span class="n">PydanticSingleSelector</span>
+<span class="kn">from</span> <span class="nn">llama_index.core.tools</span> <span class="kn">import</span> <span class="n">QueryEngineTool</span>
+<span class="kn">from</span> <span class="nn">llama_index.core</span> <span class="kn">import</span> <span class="n">VectorStoreIndex</span><span class="p">,</span> <span class="n">SummaryIndex</span>
+
+<span class="c1"># define query engines</span>
+<span class="o">...</span>
+
+
+<div class="viewcode-block" id="get_query_engine_by_router">
+<a class="viewcode-back" href="../../../xrag.retrievers.html#xrag.retrievers.retriever.get_query_engine_by_router">[docs]</a>
+<span class="k">def</span> <span class="nf">get_query_engine_by_router</span><span class="p">(</span><span class="n">summary_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vector_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keyword_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">summary_tool</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">vector_tool</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">keyword_tool</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">summary_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Summary_index is None&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">summary_tool</span> <span class="o">=</span> <span class="n">QueryEngineTool</span><span class="o">.</span><span class="n">from_defaults</span><span class="p">(</span>
+            <span class="n">query_engine</span><span class="o">=</span><span class="n">summary_retriever</span><span class="p">(</span><span class="n">summary_index</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Useful for summarization questions related to the data source&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">vector_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;vector_index is None&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vector_tool</span> <span class="o">=</span> <span class="n">QueryEngineTool</span><span class="o">.</span><span class="n">from_defaults</span><span class="p">(</span>
+            <span class="n">query_engine</span><span class="o">=</span><span class="n">custom_retriever</span><span class="p">(</span><span class="n">vector_index</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Useful for retrieving specific context related to the data source&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">keyword_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;keyword_index is None&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">keyword_tool</span> <span class="o">=</span> <span class="n">QueryEngineTool</span><span class="o">.</span><span class="n">from_defaults</span><span class="p">(</span>
+            <span class="n">query_engine</span><span class="o">=</span><span class="n">keyword_retriever</span><span class="p">(</span><span class="n">keyword_index</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Useful for retrieving keyword related to the data source&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">query_engine_</span> <span class="o">=</span> <span class="n">RouterQueryEngine</span><span class="p">(</span>
+        <span class="n">selector</span><span class="o">=</span><span class="n">PydanticSingleSelector</span><span class="o">.</span><span class="n">from_defaults</span><span class="p">(),</span>
+        <span class="n">query_engine_tools</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">summary_tool</span><span class="p">,</span>
+            <span class="n">vector_tool</span><span class="p">,</span>
+            <span class="n">keyword_tool</span>
+        <span class="p">],</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">query_engine_</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">Settings</span><span class="o">.</span><span class="n">llm</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">)</span>
+    <span class="c1"># 需要一个直接放文件的本地目录</span>
+    <span class="n">documents</span> <span class="o">=</span> <span class="n">SimpleDirectoryReader</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;E:</span><span class="se">\\</span><span class="s2">junior_second_</span><span class="se">\\</span><span class="s2">benchmark_llm</span><span class="se">\\</span><span class="s2">RAG-benchmark&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+    <span class="n">index_</span> <span class="o">=</span> <span class="n">VectorStoreIndex</span><span class="o">.</span><span class="n">from_documents</span><span class="p">(</span><span class="n">documents</span><span class="p">,</span>
+                                    <span class="n">transformations</span><span class="o">=</span><span class="p">[</span><span class="n">SentenceSplitter</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">chunk_overlap</span><span class="o">=</span><span class="mi">20</span><span class="p">)],</span>
+                                    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># splitter = SentenceSplitter(</span>
+    <span class="c1">#     chunk_size=1024,</span>
+    <span class="c1">#     chunk_overlap=20,</span>
+    <span class="c1"># )</span>
+    <span class="c1"># nodes = splitter.get_nodes_from_documents(documents)</span>
+    <span class="c1"># index_ = VectorStoreIndex(nodes)</span>
+    <span class="n">retriever</span> <span class="o">=</span> <span class="n">vector_retriever</span><span class="p">(</span><span class="n">index_</span><span class="p">)</span>  <span class="c1"># 可用</span>
+    <span class="c1"># retriever = vector_retriever(index_)  # 可用</span>
+
+    <span class="c1"># retriever = summary_retriever(SummaryIndex(nodes))  # 可用</span>
+    <span class="c1"># retriever = summary_retriever(index_)</span>
+
+    <span class="c1"># retriever = tree_retriever(TreeIndex(nodes))  # 可用，看起来效果很差</span>
+
+    <span class="c1"># retriever = keyword_retriever(index_)  # 未测试</span>
+
+    <span class="c1"># vector_retriever = vector_retriever(index=index_)</span>
+    <span class="c1"># bm25_retriever = bm25_retriever(index=index_)</span>
+    <span class="c1"># retriever = CustomRetriever(vector_retriever=vector_retriever, bm25_retriever=bm25_retriever)  # 可用</span>
+
+    <span class="c1"># retriever = query_fusion_retriever([index_, index_], mode=1)  #可用</span>
+
+    <span class="c1"># retriever = auto_merging_retriever(index_, nodes)  # 可用</span>
+
+    <span class="c1">#     node_parser = SentenceWindowNodeParser.from_defaults(</span>
+    <span class="c1">#         window_size=3,</span>
+    <span class="c1">#         window_metadata_key=&quot;window&quot;,</span>
+    <span class="c1">#         original_text_metadata_key=&quot;original_text&quot;,</span>
+    <span class="c1">#     )</span>
+    <span class="c1"># retriever = sentence_window_retriever(index_)  # 可用</span>
+
+    <span class="c1"># retriever = recursive_retriever(nodes)  # 可用</span>
+    <span class="n">response_syn</span> <span class="o">=</span> <span class="n">response_synthesizer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="n">retriever</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="s2">&quot;请用中文回答我的毕业设计题目是什么&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">query_engine</span> <span class="o">=</span> <span class="n">RetrieverQueryEngine</span><span class="p">(</span>
+        <span class="n">retriever</span><span class="o">=</span><span class="n">get_retriver</span><span class="p">(</span><span class="s2">&quot;QueryFusion&quot;</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+        <span class="n">response_synthesizer</span><span class="o">=</span><span class="n">response_syn</span><span class="p">,</span>
+        <span class="n">node_postprocessors</span><span class="o">=</span><span class="p">[</span><span class="n">LongContextReorder</span><span class="p">()]</span>
+    <span class="p">)</span>
+    <span class="n">query_e</span> <span class="o">=</span> <span class="n">query_expansion</span><span class="p">([</span><span class="n">query_engine</span><span class="p">],</span><span class="n">query_number</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">similarity_top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">query_engine</span> <span class="o">=</span> <span class="n">RetrieverQueryEngine</span><span class="o">.</span><span class="n">from_args</span><span class="p">(</span><span class="n">query_e</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">query_engine</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;请用中文回答我的毕业设计题目是什么&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By XRAG
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, xrag.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

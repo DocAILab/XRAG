@@ -1,0 +1,827 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>xrag.llms package &#8212; XRAG 1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="_static/documentation_options.js?v=a681ed88"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'xrag.llms';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="xrag.process package" href="xrag.process.html" />
+    <link rel="prev" title="xrag.launcher package" href="xrag.launcher.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">XRAG 1.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="modules.html">xrag</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="xrag.html">xrag package</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="xrag.data.html">xrag.data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xrag.embs.html">xrag.embs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xrag.eval.html">xrag.eval package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xrag.index.html">xrag.index package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xrag.launcher.html">xrag.launcher package</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">xrag.llms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xrag.process.html">xrag.process package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xrag.retrievers.html">xrag.retrievers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xrag.webui.html">xrag.webui package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xrag.cli.html">xrag.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="xrag.config.html">xrag.config module</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/xrag.llms.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>xrag.llms package</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-xrag.llms.chatglm4">xrag.llms.chatglm4 module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM"><code class="docutils literal notranslate"><span class="pre">ChatGLM</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.api_key"><code class="docutils literal notranslate"><span class="pre">ChatGLM.api_key</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.chat"><code class="docutils literal notranslate"><span class="pre">ChatGLM.chat()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.class_name"><code class="docutils literal notranslate"><span class="pre">ChatGLM.class_name()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.complete"><code class="docutils literal notranslate"><span class="pre">ChatGLM.complete()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.context_window"><code class="docutils literal notranslate"><span class="pre">ChatGLM.context_window</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.metadata"><code class="docutils literal notranslate"><span class="pre">ChatGLM.metadata</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.model"><code class="docutils literal notranslate"><span class="pre">ChatGLM.model</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.model_config"><code class="docutils literal notranslate"><span class="pre">ChatGLM.model_config</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.model_post_init"><code class="docutils literal notranslate"><span class="pre">ChatGLM.model_post_init()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.num_output"><code class="docutils literal notranslate"><span class="pre">ChatGLM.num_output</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.reuse_client"><code class="docutils literal notranslate"><span class="pre">ChatGLM.reuse_client</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.stream_chat"><code class="docutils literal notranslate"><span class="pre">ChatGLM.stream_chat()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.stream_complete"><code class="docutils literal notranslate"><span class="pre">ChatGLM.stream_complete()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.get_additional_kwargs"><code class="docutils literal notranslate"><span class="pre">get_additional_kwargs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.to_message_dicts"><code class="docutils literal notranslate"><span class="pre">to_message_dicts()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-xrag.llms.huggingface_model">xrag.llms.huggingface_model module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.baichuan_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">baichuan_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.baichuan_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">baichuan_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.chatglm_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">chatglm_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.chatglm_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">chatglm_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.falcon_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">falcon_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.falcon_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">falcon_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.get_huggingfacellm"><code class="docutils literal notranslate"><span class="pre">get_huggingfacellm()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.llama_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">llama_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.llama_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">llama_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.mpt_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">mpt_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.mpt_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">mpt_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.qwen_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">qwen_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.qwen_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">qwen_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.yi_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">yi_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.yi_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">yi_model_and_tokenizer()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-xrag.llms.llm">xrag.llms.llm module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.llm.get_llm"><code class="docutils literal notranslate"><span class="pre">get_llm()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.llm.get_openai"><code class="docutils literal notranslate"><span class="pre">get_openai()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-xrag.llms">Module contents</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="xrag-llms-package">
+<h1>xrag.llms package<a class="headerlink" href="#xrag-llms-package" title="Link to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-xrag.llms.chatglm4">
+<span id="xrag-llms-chatglm4-module"></span><h2>xrag.llms.chatglm4 module<a class="headerlink" href="#module-xrag.llms.chatglm4" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">xrag.llms.chatglm4.</span></span><span class="sig-name descname"><span class="pre">ChatGLM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'glm-4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reuse_client</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/chatglm4.html#ChatGLM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CustomLLM</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.api_key">
+<span class="sig-name descname"><span class="pre">api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.api_key" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.chat">
+<span class="sig-name descname"><span class="pre">chat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">messages</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/chatglm4.html#ChatGLM.chat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.chat" title="Link to this definition">#</a></dt>
+<dd><p>Chat endpoint for LLM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>messages</strong> (<em>Sequence</em><em>[</em><em>ChatMessage</em><em>]</em>) – Sequence of chat messages.</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to the LLM.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Chat response from the LLM.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ChatResponse</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
+from llama_index.core.llms import ChatMessage</p>
+<p>response = llm.chat([ChatMessage(role=”user”, content=”Hello”)])
+print(response.content)
+<a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.class_name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/chatglm4.html#ChatGLM.class_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.class_name" title="Link to this definition">#</a></dt>
+<dd><p>Get the class name, used as a unique ID in serialization.</p>
+<p>This provides a key that makes serialization robust against actual class
+name changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.complete">
+<span class="sig-name descname"><span class="pre">complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/chatglm4.html#ChatGLM.complete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.complete" title="Link to this definition">#</a></dt>
+<dd><p>Completion endpoint for LLM.</p>
+<p>If the LLM is a chat model, the prompt is transformed into a single <cite>user</cite> message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> (<em>str</em>) – Prompt to send to the LLM.</p></li>
+<li><p><strong>formatted</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the prompt is already formatted for the LLM, by default False.</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to the LLM.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Completion response from the LLM.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CompletionResponse</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">response</span> <span class="pre">=</span> <span class="pre">llm.complete(&quot;your</span> <span class="pre">prompt&quot;)</span>
+<span class="pre">print(response.text)</span>
+<span class="pre">`</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.context_window">
+<span class="sig-name descname"><span class="pre">context_window</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.context_window" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.metadata">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">LLMMetadata</span></em><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.metadata" title="Link to this definition">#</a></dt>
+<dd><p>Get LLM metadata.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.model">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></em><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.model" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar[ConfigDict]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'arbitrary_types_allowed':</span> <span class="pre">True}</span></em><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.model_config" title="Link to this definition">#</a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.model_post_init">
+<span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.model_post_init" title="Link to this definition">#</a></dt>
+<dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
+<p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></span>) – The BaseModel instance.</p></li>
+<li><p><strong>context</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>) – The context.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.num_output">
+<span class="sig-name descname"><span class="pre">num_output</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></em><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.num_output" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.reuse_client">
+<span class="sig-name descname"><span class="pre">reuse_client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></em><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.reuse_client" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.stream_chat">
+<span class="sig-name descname"><span class="pre">stream_chat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">messages</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/chatglm4.html#ChatGLM.stream_chat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.stream_chat" title="Link to this definition">#</a></dt>
+<dd><p>Streaming chat endpoint for LLM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>messages</strong> (<em>Sequence</em><em>[</em><em>ChatMessage</em><em>]</em>) – Sequence of chat messages.</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to the LLM.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>ChatResponse</em> –     A generator of ChatResponse objects, each containing a new token of the response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">CompletionResponse</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a>python
+from llama_index.core.llms import ChatMessage</p>
+<p>gen = llm.stream_chat([ChatMessage(role=”user”, content=”Hello”)])
+for response in gen:</p>
+<blockquote>
+<div><p>print(response.delta, end=””, flush=True)</p>
+</div></blockquote>
+<p><a href="#id13"><span class="problematic" id="id14">``</span></a><a href="#id15"><span class="problematic" id="id16">`</span></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.ChatGLM.stream_complete">
+<span class="sig-name descname"><span class="pre">stream_complete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/chatglm4.html#ChatGLM.stream_complete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.chatglm4.ChatGLM.stream_complete" title="Link to this definition">#</a></dt>
+<dd><p>Streaming completion endpoint for LLM.</p>
+<p>If the LLM is a chat model, the prompt is transformed into a single <cite>user</cite> message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> (<em>str</em>) – Prompt to send to the LLM.</p></li>
+<li><p><strong>formatted</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the prompt is already formatted for the LLM, by default False.</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to the LLM.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>CompletionResponse</em> –     A generator of CompletionResponse objects, each containing a new token of the response.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generator</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">CompletionResponse</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p><a href="#id17"><span class="problematic" id="id18">``</span></a><a href="#id19"><span class="problematic" id="id20">`</span></a>python
+gen = llm.stream_complete(“your prompt”)
+for response in gen:</p>
+<blockquote>
+<div><p>print(response.text, end=””, flush=True)</p>
+</div></blockquote>
+<p><a href="#id21"><span class="problematic" id="id22">``</span></a><a href="#id23"><span class="problematic" id="id24">`</span></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.get_additional_kwargs">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.chatglm4.</span></span><span class="sig-name descname"><span class="pre">get_additional_kwargs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/chatglm4.html#get_additional_kwargs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.chatglm4.get_additional_kwargs" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.chatglm4.to_message_dicts">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.chatglm4.</span></span><span class="sig-name descname"><span class="pre">to_message_dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">messages</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/chatglm4.html#to_message_dicts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.chatglm4.to_message_dicts" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-xrag.llms.huggingface_model">
+<span id="xrag-llms-huggingface-model-module"></span><h2>xrag.llms.huggingface_model module<a class="headerlink" href="#module-xrag.llms.huggingface_model" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.baichuan_completion_to_prompt">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">baichuan_completion_to_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">completion</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#baichuan_completion_to_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.baichuan_completion_to_prompt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.baichuan_model_and_tokenizer">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">baichuan_model_and_tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#baichuan_model_and_tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.baichuan_model_and_tokenizer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.chatglm_completion_to_prompt">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">chatglm_completion_to_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">completion</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#chatglm_completion_to_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.chatglm_completion_to_prompt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.chatglm_model_and_tokenizer">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">chatglm_model_and_tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#chatglm_model_and_tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.chatglm_model_and_tokenizer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.falcon_completion_to_prompt">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">falcon_completion_to_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">completion</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#falcon_completion_to_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.falcon_completion_to_prompt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.falcon_model_and_tokenizer">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">falcon_model_and_tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#falcon_model_and_tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.falcon_model_and_tokenizer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.get_huggingfacellm">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">get_huggingfacellm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#get_huggingfacellm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.get_huggingfacellm" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.llama_completion_to_prompt">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">llama_completion_to_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">completion</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#llama_completion_to_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.llama_completion_to_prompt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.llama_model_and_tokenizer">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">llama_model_and_tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_token</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#llama_model_and_tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.llama_model_and_tokenizer" title="Link to this definition">#</a></dt>
+<dd><p>Loads a tokenizer and a causal language model from Hugging Face’s model hub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name or path of the pre-trained model.</p></li>
+<li><p><strong>auth_token</strong> (<em>str</em>) – The authentication token for accessing the model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the tokenizer and the model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.mpt_completion_to_prompt">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">mpt_completion_to_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">completion</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#mpt_completion_to_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.mpt_completion_to_prompt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.mpt_model_and_tokenizer">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">mpt_model_and_tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#mpt_model_and_tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.mpt_model_and_tokenizer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.qwen_completion_to_prompt">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">qwen_completion_to_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">completion</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#qwen_completion_to_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.qwen_completion_to_prompt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.qwen_model_and_tokenizer">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">qwen_model_and_tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#qwen_model_and_tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.qwen_model_and_tokenizer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.yi_completion_to_prompt">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">yi_completion_to_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">completion</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#yi_completion_to_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.yi_completion_to_prompt" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.huggingface_model.yi_model_and_tokenizer">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.huggingface_model.</span></span><span class="sig-name descname"><span class="pre">yi_model_and_tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/huggingface_model.html#yi_model_and_tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.huggingface_model.yi_model_and_tokenizer" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-xrag.llms.llm">
+<span id="xrag-llms-llm-module"></span><h2>xrag.llms.llm module<a class="headerlink" href="#module-xrag.llms.llm" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.llm.get_llm">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.llm.</span></span><span class="sig-name descname"><span class="pre">get_llm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/llm.html#get_llm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.llm.get_llm" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="xrag.llms.llm.get_openai">
+<span class="sig-prename descclassname"><span class="pre">xrag.llms.llm.</span></span><span class="sig-name descname"><span class="pre">get_openai</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xrag/llms/llm.html#get_openai"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#xrag.llms.llm.get_openai" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-xrag.llms">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-xrag.llms" title="Link to this heading">#</a></h2>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="xrag.launcher.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">xrag.launcher package</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="xrag.process.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">xrag.process package</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-xrag.llms.chatglm4">xrag.llms.chatglm4 module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM"><code class="docutils literal notranslate"><span class="pre">ChatGLM</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.api_key"><code class="docutils literal notranslate"><span class="pre">ChatGLM.api_key</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.chat"><code class="docutils literal notranslate"><span class="pre">ChatGLM.chat()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.class_name"><code class="docutils literal notranslate"><span class="pre">ChatGLM.class_name()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.complete"><code class="docutils literal notranslate"><span class="pre">ChatGLM.complete()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.context_window"><code class="docutils literal notranslate"><span class="pre">ChatGLM.context_window</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.metadata"><code class="docutils literal notranslate"><span class="pre">ChatGLM.metadata</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.model"><code class="docutils literal notranslate"><span class="pre">ChatGLM.model</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.model_config"><code class="docutils literal notranslate"><span class="pre">ChatGLM.model_config</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.model_post_init"><code class="docutils literal notranslate"><span class="pre">ChatGLM.model_post_init()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.num_output"><code class="docutils literal notranslate"><span class="pre">ChatGLM.num_output</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.reuse_client"><code class="docutils literal notranslate"><span class="pre">ChatGLM.reuse_client</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.stream_chat"><code class="docutils literal notranslate"><span class="pre">ChatGLM.stream_chat()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.ChatGLM.stream_complete"><code class="docutils literal notranslate"><span class="pre">ChatGLM.stream_complete()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.get_additional_kwargs"><code class="docutils literal notranslate"><span class="pre">get_additional_kwargs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.chatglm4.to_message_dicts"><code class="docutils literal notranslate"><span class="pre">to_message_dicts()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-xrag.llms.huggingface_model">xrag.llms.huggingface_model module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.baichuan_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">baichuan_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.baichuan_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">baichuan_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.chatglm_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">chatglm_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.chatglm_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">chatglm_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.falcon_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">falcon_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.falcon_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">falcon_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.get_huggingfacellm"><code class="docutils literal notranslate"><span class="pre">get_huggingfacellm()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.llama_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">llama_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.llama_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">llama_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.mpt_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">mpt_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.mpt_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">mpt_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.qwen_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">qwen_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.qwen_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">qwen_model_and_tokenizer()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.yi_completion_to_prompt"><code class="docutils literal notranslate"><span class="pre">yi_completion_to_prompt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.huggingface_model.yi_model_and_tokenizer"><code class="docutils literal notranslate"><span class="pre">yi_model_and_tokenizer()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-xrag.llms.llm">xrag.llms.llm module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.llm.get_llm"><code class="docutils literal notranslate"><span class="pre">get_llm()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xrag.llms.llm.get_openai"><code class="docutils literal notranslate"><span class="pre">get_openai()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-xrag.llms">Module contents</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By XRAG
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, xrag.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
