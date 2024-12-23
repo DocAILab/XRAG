@@ -1,0 +1,6 @@
+生成最新的html文档，需要在docs目录下(cd docs)：
+make html
+然后，在ragx（项目root）目录下(下面命令会将生成的网页文档部分推送到gh-pages分支，触发action重新部署)：
+ghp-import -n -p -f docs/build/html 
+
+这样就可以将最新的文档网页进行部署查看（github pages）。
