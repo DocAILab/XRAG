@@ -32,7 +32,21 @@ extensions = [
     'sphinx.ext.viewcode',       # 添加 "view source" 链接
     'sphinx.ext.napoleon',       # 支持 Google 和 NumPy 风格 docstring
     'sphinx_autodoc_typehints',  # 支持 Python 类型提示
+    'myst_parser',
 ]
+myst_enable_extensions = [
+    "dollarmath",    # 支持美元符号包裹的数学公式
+    "amsmath",       # 支持更高级的数学公式
+    "deflist",       # 支持定义列表
+    "html_admonition", # 支持 HTML 风格的警告框
+    "html_image",    # 支持 HTML 风格的图片插入
+    # 其他 MyST 扩展...
+]
+# 指定文档源文件的扩展名
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 
 
 templates_path = ['_templates']

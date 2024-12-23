@@ -1,2 +1,2 @@
-advanced-modules
+Advanced modules
 ================

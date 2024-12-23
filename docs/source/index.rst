@@ -3,6 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+
+.. You can directly write the docs in corresponding *.md files, just like the "getting-started.md" file -- hzt
+
 XRAG documentation
 ==================
 
