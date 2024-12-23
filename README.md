@@ -23,6 +23,11 @@
 
 ---
 
+## :mega: Updates
+
+- **2024-12.23: XRAG Documentation is released**🌈.
+- **2024-12.20: XRAG is released**🎉.
+---
 ## 📖 Introduction
 
 XRAG is a benchmarking framework designed to evaluate the foundational components of advanced Retrieval-Augmented Generation (RAG) systems. By dissecting and analyzing each core module, XRAG provides insights into how different configurations and components impact the overall performance of RAG systems.
