@@ -10,7 +10,7 @@
 
 
 
-<img src="img.png" width="100%" align="center" alt="XRAG">
+<img src="imgs/img.png" width="100%" align="center" alt="XRAG">
 
 ---
 
@@ -29,18 +29,45 @@
 - **2024-12.20: XRAG is released**🎉.
 ---
 ## 📖 Introduction
-
+<img src="imgs/overall.png" width="100%" align="center" alt="XRAG">
 XRAG is a benchmarking framework designed to evaluate the foundational components of advanced Retrieval-Augmented Generation (RAG) systems. By dissecting and analyzing each core module, XRAG provides insights into how different configurations and components impact the overall performance of RAG systems.
 
 ---
 
 ## ✨ Features
 
-- **🔍 Modular Benchmarking**: Evaluate individual components such as retrievers, readers, and rankers independently.
-- **⚙️ Configurable Pipelines**: Easily modify configurations to test various setups and components.
-- **📊 Extensive Metrics**: Utilize a range of evaluation metrics for comprehensive assessment.
-- **📚 Dataset Support**: Built-in support for popular datasets like HotpotQA, with the ability to add custom datasets.
-- **🤖 Integration with LLMs**: Seamless integration with large language models for generation tasks.
+- **🔍 Comprehensive Evaluation Framework**: 
+  - Multiple evaluation dimensions: LLM-based evaluation, Deep evaluation, and traditional metrics
+  - Support for evaluating retrieval quality, response faithfulness, and answer correctness
+  - Built-in evaluation models including LlamaIndex, DeepEval, and custom metrics
+
+- **⚙️ Flexible Architecture**:
+  - Modular design with pluggable components for retrievers, embeddings, and LLMs
+  - Support for various retrieval methods: Vector, BM25, Hybrid, and Tree-based
+  - Easy integration with custom retrieval and evaluation strategies
+
+- **🤖 Multiple LLM Support**:
+  - Seamless integration with OpenAI models
+  - Support for local models (Qwen, LLaMA, etc.)
+  - Configurable model parameters and API settings
+
+- **📊 Rich Evaluation Metrics**:
+  - Traditional metrics: F1, EM, MRR, Hit@K, MAP, NDCG
+  - LLM-based metrics: Faithfulness, Relevancy, Correctness
+  - Deep evaluation metrics: Contextual Precision/Recall, Hallucination, Bias
+
+- **🎯 Advanced Retrieval Methods**:
+  - BM25-based retrieval
+  - Vector-based semantic search
+  - Tree-structured retrieval
+  - Keyword-based retrieval
+  - Document summary retrieval
+  - Custom retrieval strategies
+
+- **💻 User-Friendly Interface**:
+  - Command-line interface with rich options
+  - Web UI for interactive evaluation
+  - Detailed evaluation reports and visualizations
 
 ---
 
@@ -128,14 +155,14 @@ xrag-cli run --override embeddings="new-embedding-model"
 
 ## ⚙️ Configuration
 
-XRAG uses a `config.toml` file for configuration management. Below is a sample of the configuration file:
+XRAG uses a `config.toml` file for configuration management. Here's a detailed explanation of the configuration options:
 
 ```toml
 [api_keys]
-api_key = "sk-xxxx"
-api_base = "https://xxx"
-api_name = "chatgpt-3.5"
-auth_token = "hf_xxx"
+api_key = "sk-xxxx"          # Your API key for LLM service
+api_base = "https://xxx"     # API base URL
+api_name = "gpt-4o"     # Model name
+auth_token = "hf_xxx"        # Hugging Face auth token
 
 [settings]
 llm = "chatgpt-3.5"
@@ -143,7 +170,6 @@ embeddings = "BAAI/bge-large-en-v1.5"
 split_type = "sentence"
 chunk_size = 128
 dataset = "hotpot_qa"
-source_dir = "../wiki"
 persist_dir = "storage"
 # ... additional settings ...
 ```
