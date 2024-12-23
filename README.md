@@ -22,17 +22,18 @@
 
 ## 📑 Table of Contents
 
-- [Updates](#mega-updates)
-- [Introduction](#-introduction)
-- [Features](#-features)
-- [WebUI Demo](#-webui-demo)
-- [Installation](#️-installation)
-- [Quick Start](#-quick-start)
-- [Configuration](#️-configuration)
-- [Troubleshooting](#-troubleshooting)
-- [Changelog](#-changelog)
-- [Feedback and Support](#-feedback-and-support)
-- [Acknowledgement](#round_pushpin-acknowledgement)
+- [:mega: Updates](#mega-updates)
+- [:book: Introduction](#-introduction)
+- [:sparkles: Features](#-features)
+- [:globe_with_meridians: WebUI Demo](#-webui-demo)
+- [:hammer_and_wrench: Installation](#️-installation)
+- [:rocket: Quick Start](#-quick-start)
+- [:gear: Configuration](#️-configuration)
+- [:warning: Troubleshooting](#-troubleshooting)
+- [:clipboard: Changelog](#-changelog)
+- [:speech_balloon: Feedback and Support](#-feedback-and-support)
+- [:round_pushpin: Acknowledgement](#round_pushpin-acknowledgement)
+- [:books: Citation](#-citation)
 
 ## :mega: Updates
 
@@ -92,7 +93,7 @@ xrag-cli webui
 The WebUI guides you through the following workflow:
 
 ### 1. Dataset Upload and Configuration
-<img src="imgs/dataset.png" width="100%" align="center" alt="Dataset Selection">
+<img src="imgs/dataset.png" width="100%" align="center" alt="Dataset Selection" style="border: 2px solid #ddd; border-radius: 8px; margin: 20px 0;">
 
 Upload and configure your datasets:
 - Support for benchmark datasets (HotpotQA, DropQA, NaturalQA)
@@ -100,7 +101,7 @@ Upload and configure your datasets:
 - Automatic format conversion and preprocessing
 
 ### 2. Index Building and Configuration
-<img src="imgs/index.png" width="100%" align="center" alt="Index Building">
+<img src="imgs/index.png" width="100%" align="center" alt="Index Building" style="border: 2px solid #ddd; border-radius: 8px; margin: 20px 0;">
 
 Configure system parameters and build indices:
 - API key configuration
@@ -109,7 +110,7 @@ Configure system parameters and build indices:
 - Chunk size optimization
 
 ### 3. RAG Strategy Configuration
-<img src="imgs/strategies.png" width="100%" align="center" alt="RAG Strategies">
+<img src="imgs/strategies.png" width="100%" align="center" alt="RAG Strategies" style="border: 2px solid #ddd; border-radius: 8px; margin: 20px 0;">
 
 Define your RAG pipeline components:
 - Pre-retrieval methods
@@ -118,8 +119,7 @@ Define your RAG pipeline components:
 - Custom prompt template creation
 
 ### 4. Interactive Testing
-<img src="imgs/evalone.png" width="100%" align="center" alt="Testing Interface">
-
+<img src="imgs/evalone.png" width="100%" align="center" alt="Testing Interface" style="border: 2px solid #ddd; border-radius: 8px; margin: 20px 0;">
 
 Test your RAG system interactively:
 - Real-time query testing
@@ -128,8 +128,8 @@ Test your RAG system interactively:
 - Performance analysis
 
 ### 5. Comprehensive Evaluation
-<img src="imgs/eval2.png" width="100%" align="center" alt="Evaluation Metrics">
-<img src="imgs/eval3.png" width="100%" align="center" alt="Evaluation Dashboard">
+<img src="imgs/eval2.png" width="100%" align="center" alt="Evaluation Metrics" style="border: 2px solid #ddd; border-radius: 8px; margin: 20px 0;">
+<img src="imgs/eval3.png" width="100%" align="center" alt="Evaluation Dashboard" style="border: 2px solid #ddd; border-radius: 8px; margin: 20px 0;">
 
 Conduct thorough system evaluation:
 - Multiple evaluation metrics
@@ -283,6 +283,22 @@ We value feedback from our users. If you have suggestions, feature requests, or 
 - This project is inspired by [RAGLAB](https://github.com/fate-ubw/RAGLab), [FlashRAG](https://github.com/RUC-NLPIR/FlashRAG), [FastRAG](https://github.com/IntelLabs/fastRAG), [AutoRAG](https://github.com/Marker-Inc-Korea/AutoRAG), [LocalRAG](https://github.com/jasonyux/LocalRQA).
 
 - We are deeply grateful for the following external libraries, which have been pivotal to the development and functionality of our project:  [LlamaIndex](https://docs.llamaindex.ai/en/stable/), [Hugging Face Transformers](https://github.com/huggingface/transformers).
+
+## 📚 Citation
+
+If you find this work helpful, please cite our paper:
+
+```bibtex
+@misc{mao2024xragexaminingcore,
+      title={XRAG: eXamining the Core -- Benchmarking Foundational Components in Advanced Retrieval-Augmented Generation}, 
+      author={Qianren Mao and Yangyifei Luo and Jinlong Zhang and Hanwen Hao and Zhilong Cao and Xiaolong Wang and Xiao Guan and Zhenting Huang and Weifeng Jiang and Shuyu Guo and Zhentao Han and Qili Zhang and Siyuan Tao and Yujie Liu and Junnan Liu and Zhixing Tan and Jie Sun and Bo Li and Xudong Liu and Richong Zhang and Jianxin Li},
+      year={2024},
+      eprint={2412.15529},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2412.15529}, 
+}
+```
 
 ## 🙏 Thank You
 
