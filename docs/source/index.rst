@@ -9,7 +9,14 @@ XRAG documentation
 
 .. toctree::
    :maxdepth: 3
-   :caption: API Documentation:
+   :caption: Documentation:
 
-   modules
+   getting-started
+   data
+   index-part
+   config
+   advanced-modules
+   evaluation
+   serving
+   api-reference
 

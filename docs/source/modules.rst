@@ -1,7 +1,14 @@
-xrag
-====
+modules 
+=======
 
 .. toctree::
    :maxdepth: 4
 
-   xrag
+   getting-started
+   data
+   index-part
+   config
+   advanced-modules
+   evaluation
+   serving
+   api-reference

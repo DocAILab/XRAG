@@ -1,4 +1,4 @@
-xrag package
+API reference
 ============
  
 
