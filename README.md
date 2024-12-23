@@ -182,7 +182,7 @@ We value feedback from our users. If you have suggestions, feature requests, or 
 ---
 
 
-## Acknowledgement
+## :round_pushpin: Acknowledgement
 
 - Organizers: [Qianren Mao](https://github.com/qianrenmao), [Yangyifei Luo (罗杨一飞)](https://github.com/lyyf2002), [Jinlong Zhang (张金龙)](https://zhengyuzhao.github.io/), [Hanwen Hao (郝瀚文)](https://liu.ai/)
 
