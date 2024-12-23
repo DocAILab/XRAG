@@ -12,16 +12,27 @@
 
 <img src="imgs/logo.png" width="100%" align="center" alt="XRAG">
 
----
-
 [![PyPI version](https://badge.fury.io/py/examinationrag.svg)](https://badge.fury.io/py/examinationrag)
 [![Python](https://img.shields.io/pypi/pyversions/examinationrag)](https://pypi.org/project/examinationrag/)
 [![License](https://img.shields.io/github/license/DocAILab/XRAG)](https://github.com/DocAILab/XRAG/blob/main/LICENSE)
 [![Downloads](https://static.pepy.tech/badge/examinationrag)](https://pepy.tech/project/examinationrag)
 [![GitHub stars](https://img.shields.io/github/stars/DocAILab/XRAG)](https://github.com/DocAILab/XRAG/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/DocAILab/XRAG)](https://github.com/DocAILab/XRAG/issues)
+[![arXiv](https://img.shields.io/badge/arXiv-2412.15529-b31b1b.svg)](https://arxiv.org/abs/2412.15529)
 
----
+## 📑 Table of Contents
+
+- [Updates](#mega-updates)
+- [Introduction](#-introduction)
+- [Features](#-features)
+- [WebUI Demo](#-webui-demo)
+- [Installation](#️-installation)
+- [Quick Start](#-quick-start)
+- [Configuration](#️-configuration)
+- [Troubleshooting](#-troubleshooting)
+- [Changelog](#-changelog)
+- [Feedback and Support](#-feedback-and-support)
+- [Acknowledgement](#round_pushpin-acknowledgement)
 
 ## :mega: Updates
 
@@ -70,7 +81,64 @@ XRAG is a benchmarking framework designed to evaluate the foundational component
   - Detailed evaluation reports and visualizations
 
 ---
+## 🌐 WebUI Demo
 
+XRAG provides an intuitive web interface for interactive evaluation and visualization. Launch it with:
+
+```bash
+xrag-cli webui
+```
+
+The WebUI guides you through the following workflow:
+
+### 1. Dataset Upload and Configuration
+<img src="imgs/dataset.png" width="100%" align="center" alt="Dataset Selection">
+
+Upload and configure your datasets:
+- Support for benchmark datasets (HotpotQA, DropQA, NaturalQA)
+- Custom dataset integration
+- Automatic format conversion and preprocessing
+
+### 2. Index Building and Configuration
+<img src="imgs/index.png" width="100%" align="center" alt="Index Building">
+
+Configure system parameters and build indices:
+- API key configuration
+- Parameter settings
+- Vector database index construction
+- Chunk size optimization
+
+### 3. RAG Strategy Configuration
+<img src="imgs/strategies.png" width="100%" align="center" alt="RAG Strategies">
+
+Define your RAG pipeline components:
+- Pre-retrieval methods
+- Retriever selection
+- Post-processor configuration
+- Custom prompt template creation
+
+### 4. Interactive Testing
+<img src="imgs/evalone.png" width="100%" align="center" alt="Testing Interface">
+
+
+Test your RAG system interactively:
+- Real-time query testing
+- Retrieval result inspection
+- Response generation review
+- Performance analysis
+
+### 5. Comprehensive Evaluation
+<img src="imgs/eval2.png" width="100%" align="center" alt="Evaluation Metrics">
+<img src="imgs/eval3.png" width="100%" align="center" alt="Evaluation Dashboard">
+
+Conduct thorough system evaluation:
+- Multiple evaluation metrics
+- Performance visualization
+- Component-wise analysis
+- Detailed quality assessment
+- Comparative analysis
+
+---
 ## 🛠️ Installation
 
 Before installing XRAG, ensure that you have Python 3.11 or later installed.
