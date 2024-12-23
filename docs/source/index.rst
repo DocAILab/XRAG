@@ -14,12 +14,12 @@ XRAG documentation
    :maxdepth: 3
    :caption: Documentation:
 
-   getting-started
-   data
-   index-part
-   config
-   advanced-modules
-   evaluation
-   serving
-   api-reference
+   getting-started/getting-started
+   data/data
+   index/index
+   config/config
+   advanced-modules/advanced-modules
+   evaluation/evaluation
+   serving/serving
+   api-reference/api-reference
 
