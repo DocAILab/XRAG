@@ -10,7 +10,7 @@
 
 
 
-<img src="imgs/img.png" width="100%" align="center" alt="XRAG">
+<img src="imgs/logo.png" width="100%" align="center" alt="XRAG">
 
 ---
 
