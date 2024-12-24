@@ -82,6 +82,7 @@ XRAG is a benchmarking framework designed to evaluate the foundational component
   - Detailed evaluation reports and visualizations
 
 ---
+
 ## 🌐 WebUI Demo
 
 XRAG provides an intuitive web interface for interactive evaluation and visualization. Launch it with:
