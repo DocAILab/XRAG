@@ -131,7 +131,8 @@ Test your RAG system interactively:
 ### 5. Comprehensive Evaluation
 <img src="imgs/eval2.png" width="100%" align="center" alt="Evaluation Metrics" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
 <img src="imgs/eval3.png" width="100%" align="center" alt="Evaluation Dashboard" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
----
+
+
 ## 🛠️ Installation
 
 Before installing XRAG, ensure that you have Python 3.11 or later installed.
