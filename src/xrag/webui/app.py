@@ -342,15 +342,16 @@ def main():
 
     if st.session_state.step == 3:
         st.header("Configure your RAG Query Engine")
-        cfg.retriever = st.selectbox("Retriever", options=RETRIEVER_OPTIONS, index=RETRIEVER_OPTIONS.index(
+        cfg.retriever = st.selectbox("Advanced Retriever", options=RETRIEVER_OPTIONS, index=RETRIEVER_OPTIONS.index(
             cfg.retriever) if cfg.retriever in RETRIEVER_OPTIONS else 0)
         cfg.retriever_mode = st.selectbox("Retriever Mode", options=[0, 1], index=cfg.retriever_mode)
-        cfg.postprocess_rerank = st.selectbox("Postprocess Rerank", options=POSTPROCESS_RERANK_OPTIONS,
-                                              index=POSTPROCESS_RERANK_OPTIONS.index(
-                                                  cfg.postprocess_rerank) if cfg.postprocess_rerank in POSTPROCESS_RERANK_OPTIONS else 0)
-        cfg.query_transform = st.selectbox("Query Transform", options=QUERY_TRANSFORM_OPTIONS,
+        cfg.query_transform = st.selectbox("Pre-retriever", options=QUERY_TRANSFORM_OPTIONS,
                                            index=QUERY_TRANSFORM_OPTIONS.index(
                                                cfg.query_transform) if cfg.query_transform in QUERY_TRANSFORM_OPTIONS else 0)
+        cfg.postprocess_rerank = st.selectbox("Post-process", options=POSTPROCESS_RERANK_OPTIONS,
+                                              index=POSTPROCESS_RERANK_OPTIONS.index(
+                                                  cfg.postprocess_rerank) if cfg.postprocess_rerank in POSTPROCESS_RERANK_OPTIONS else 0)
+        
         cfg.text_qa_template_str = st.text_area("Text QA Template", value=cfg.text_qa_template_str)
         cfg.refine_template_str = st.text_area("Refine Template", value=cfg.refine_template_str)
 
