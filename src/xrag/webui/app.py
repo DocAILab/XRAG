@@ -320,6 +320,7 @@ def main():
                     st.session_state.step = 2
                     with st.spinner("Loading Dataset..."):
                         st.session_state.qa_dataset = get_qa_dataset_("custom", uploaded_file)
+                        cfg.dataset = "custom"
                     st.rerun()
                 except Exception as e:
                     st.error(f"Error loading dataset: {str(e)}")
