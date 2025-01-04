@@ -288,19 +288,46 @@ def main():
         cfg.dataset = chosen_backend_dataset
         # custom dataset
         st.markdown("---")
-        # st.markdown("Or upload your own dataset")
-        files = st.file_uploader("Or upload your own dataset", type=["json"])
+        with st.expander("About Custom Dataset"):
+            st.markdown("""
+            ### Upload Custom Dataset
+            
+            Please upload a JSON file containing your dataset. The JSON file should be a list of objects with the following format:
+            ```json
+            [
+                {
+                    "question": "What is the capital of France?",
+                    "answer": "Paris",
+                    "file_paths": "path/to/document.txt"
+                    // or multiple files
+                    // "file_paths": ["path/to/doc1.txt", "path/to/doc2.txt"]
+                },
+                ...
+            ]
+            ```
+            Note: 
+            1. Make sure all file paths in the JSON are accessible from the server.
+            2. Supported file formats: txt, md, pdf, html, json, csv, etc.
+            3. Each question can reference one or multiple documents.
+            4. The system will automatically process and index all documents.
+            """)
+        
+        uploaded_file = st.file_uploader("Upload your dataset", type=["json"])
 
         if st.button("Load Dataset"):
-            st.session_state.step = 2
-            with st.spinner("Loading Dataset..."):
-                if files:
-                    # load to json
-                    files = [pd.read_json(file) for file in files]
-                    st.session_state.qa_dataset = get_qa_dataset_("custom",files)
-                else:
+            if uploaded_file is not None:
+                try:
+                    st.session_state.step = 2
+                    with st.spinner("Loading Dataset..."):
+                        st.session_state.qa_dataset = get_qa_dataset_("custom", uploaded_file)
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error loading dataset: {str(e)}")
+            else:
+                with st.spinner("Loading Dataset..."):
                     st.session_state.qa_dataset = get_qa_dataset_(cfg.dataset)
-            st.rerun()
+                st.session_state.step = 2
+                st.rerun()
 
     if st.session_state.step == 2:
         st.header("Configure your RAG Index")

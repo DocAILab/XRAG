@@ -3,14 +3,12 @@ import os
 os.environ['HF_ENDPOINT']='https://hf-mirror.com'
 from datasets import load_dataset
 import random
-# pip install datasets
-# from huggingface_hub import login
-# login(token='xxxxxx')
 from tqdm import tqdm
 from ..config import GlobalVar
 import warnings
 from ..config import Config
 from llama_index.core import Document
+from llama_index.core import SimpleDirectoryReader
 cfg = Config()
 
 test_init_total_number_documents = cfg.test_init_total_number_documents
@@ -58,61 +56,69 @@ def build_split(answers, questions, supporting_facts, title2id, title2sentences)
     return filter_questions,filter_answers, golden_ids, golden_sentences
 def get_qa_dataset(dataset_name:str,files=None):
     if files is not None:
-        # files is a json file, containing a list of {question, answer, documents}
+        # files is a json file, containing a list of {question, answer, file_paths}
         questions = []
         answers = []
         golden_sources = []  # 每个问题对应的所有文档
         source_sentences = []
         title2sentences = {}
         titles = []
-        title2start = {}
         title2id = {}
+        id = 0
 
         # 读取JSON文件
-        with open(files, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        if isinstance(files, str):
+            with open(files, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        else:
+            # 如果是从 streamlit 上传的文件
+            data = json.loads(files.getvalue())
 
-            # 处理每个样本
-            for item in data:
-                questions.append(item['question'])
-                answers.append(item['answer'])
+        # 收集所有唯一的文件路径
+        all_file_paths = set()
+        for item in data:
+            file_paths = item['file_paths'] if isinstance(item['file_paths'], list) else [item['file_paths']]
+            all_file_paths.update(file_paths)
 
-                # 处理多个文档
-                if isinstance(item['documents'], list):
-                    # 如果每个文档是字符串
-                    if all(isinstance(doc, str) for doc in item['documents']):
-                        golden_sources.append(item['documents'])
-                    # 如果每个文档是句子列表
-                    elif all(isinstance(doc, list) for doc in item['documents']):
-                        golden_sources.append([' '.join(doc) for doc in item['documents']])
-                else:
-                    # 如果只有一个文档
-                    golden_sources.append([item['documents']])
+        # 使用 SimpleDirectoryReader 加载所有文件
+        file_contents = {}
+        for file_path in all_file_paths:
+            try:
+                # 使用 SimpleDirectoryReader 加载单个文件
+                reader = SimpleDirectoryReader(input_files=[file_path])
+                docs = reader.load_data()
+                if docs:
+                    file_contents[file_path] = docs[0].text
+            except Exception as e:
+                print(f"Error reading file {file_path}: {e}")
+                continue
 
-        # 处理文档，构建索引
-        cur = 0
-        doc_id = 0
-        for qa_idx, docs in enumerate(golden_sources):
+        # 处理每个问答对
+        for item in data:
+            questions.append(item['question'])
+            answers.append(item['answer'])
+            
+            # 获取该问题对应的文档内容
+            file_paths = item['file_paths'] if isinstance(item['file_paths'], list) else [item['file_paths']]
+            doc_contents = []
             doc_ids = []
-            for doc in docs:
-                # 为每个文档创建一个唯一的标题
-                title = f"doc_{doc_id}"
-                doc_id += 1
-
-                # 将文档分割成句子
-                sentences = [doc]
-
-                # 更新数据结构
-                title2sentences[title] = sentences
-                title2start[title] = cur
-                titles.append(title)
-                source_sentences.extend(sentences)
-                cur += len(sentences)
-                title2id[title] = doc_id - 1
-                doc_ids.append(doc_id - 1)
-
-            # 更新golden_sources为对应的文档ID列表
-            golden_sources[qa_idx] = doc_ids
+            
+            for file_path in file_paths:
+                if file_path in file_contents:
+                    content = file_contents[file_path]
+                    
+                    # 为每个文档创建唯一标题
+                    title = f"doc_{id}"
+                    id += 1
+                    
+                    # 更新数据结构
+                    title2sentences[title] = [content]
+                    titles.append(title)
+                    source_sentences.append(content)
+                    title2id[title] = id - 1
+                    doc_ids.append(id - 1)
+            
+            golden_sources.append(doc_ids)
 
         # 使用 get_documents 函数创建 documents
         documents = get_documents(title2sentences, title2id)
@@ -158,7 +164,6 @@ def get_qa_dataset(dataset_name:str,files=None):
             sources=source_sentences,
             titles=titles,
             title2sentences=title2sentences,
-            title2start=title2start,
             title2id=title2id,
             documents=documents,
             dataset=files)
