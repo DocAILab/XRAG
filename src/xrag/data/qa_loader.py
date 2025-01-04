@@ -10,12 +10,21 @@ from tqdm import tqdm
 from ..config import GlobalVar
 import warnings
 from ..config import Config
+from llama_index.core import Document
 cfg = Config()
 
 test_init_total_number_documents = cfg.test_init_total_number_documents
 extra_number_documents = cfg.extra_number_documents
 test_all_number_documents = test_init_total_number_documents + extra_number_documents
 experiment_1 = cfg.experiment_1
+
+def get_documents(title2sentences, title2id):
+    documents = [Document(text=' '.join(sentence_list), metadata={'title': title, 'id': title2id[title]},
+                  doc_id=str(title2id[title])) for title, sentence_list in title2sentences.items()]
+    if cfg.experiment_1:
+        documents = documents[:cfg.test_all_number_documents]
+    return documents
+
 
 
 def build_split(answers, questions, supporting_facts, title2id, title2sentences):
@@ -105,6 +114,9 @@ def get_qa_dataset(dataset_name:str,files=None):
             # 更新golden_sources为对应的文档ID列表
             golden_sources[qa_idx] = doc_ids
 
+        # 使用 get_documents 函数创建 documents
+        documents = get_documents(title2sentences, title2id)
+
         # 划分数据集
         indexes = list(range(len(questions)))
         random.shuffle(indexes)
@@ -148,6 +160,7 @@ def get_qa_dataset(dataset_name:str,files=None):
             title2sentences=title2sentences,
             title2start=title2start,
             title2id=title2id,
+            documents=documents,
             dataset=files)
 
 
@@ -188,8 +201,9 @@ def get_qa_dataset(dataset_name:str,files=None):
                     cur += len(s)
                     title2id[t] = id
                     id += 1
-                # else:
-                    # print("title already exists, skip.")
+
+        # 使用 get_documents 函数创建 documents
+        documents = get_documents(title2sentences, title2id)
 
         indexes = list(range(len(questions)))
         # split the dataset 8:1:1
@@ -204,16 +218,6 @@ def get_qa_dataset(dataset_name:str,files=None):
         valid_data['question'], valid_data['expected_answer'], valid_data['golden_context_ids'], valid_data['golden_context'] = build_split([answers[i] for i in valid_indexes], [questions[i] for i in valid_indexes], [supporting_facts[i] for i in valid_indexes], title2id, title2sentences)
         test_data['question'], test_data['expected_answer'], test_data['golden_context_ids'], test_data['golden_context'] = build_split([answers[i] for i in test_indexes], [questions[i] for i in test_indexes], [supporting_facts[i] for i in test_indexes], title2id, title2sentences)
 
-
-        # train_data = {}
-        # train_data['question'] , train_data['answers'], train_data['golden_ids'], train_data['golden_sentences'] = build_split(dataset['train']['answer'], dataset['train']['question'], dataset['train']['context'], title2id, title2sentences)
-        # valid_data = {}
-        # valid_data['question'] , valid_data['answers'], valid_data['golden_ids'], valid_data['golden_sentences'] = build_split(dataset['validation']['answer'], dataset['validation']['question'], dataset['validation']['context'], title2id, title2sentences)
-        # test_data = {}
-        # test_data['question'] , test_data['answers'], test_data['golden_ids'], test_data['golden_sentences'] = build_split(dataset['test']['answer'], dataset['test']['question'], dataset['test']['context'], title2id, title2sentences)
-        # filter_answers, filter_questions, golden_ids, golden_sentences = build_split(answers, questions,
-        #                                                                              supporting_facts, title2id,
-        #                                                                              title2sentences)
         return dict(
             train_data=train_data,
             valid_data=valid_data,
@@ -223,6 +227,7 @@ def get_qa_dataset(dataset_name:str,files=None):
             title2sentences=title2sentences,
             title2start=title2start,
             title2id=title2id,
+            documents=documents,
             dataset=dataset)
     
     elif dataset_name == "drop":
@@ -240,14 +245,12 @@ def get_qa_dataset(dataset_name:str,files=None):
         answers = dataset['train']['answers_spans'] + dataset['validation']['answers_spans']
         answers = [x['spans'][0] for x in answers]
         sections = dataset['train']['section_id'] + dataset['validation']['section_id']
-        # query_ids = dataset['train']['query_id'] + dataset['validation']['query_id']
         golden_sources = dataset['train']['passage'] + dataset['validation']['passage']
         # split 8/1/1
         train_data = {}
         valid_data = {}
         test_data = {}
         indexs = list(range(len(questions)))
-
         if experiment_1:
             indexs = list(range(test_all_number_documents))
             if test_all_number_documents > len(questions):
@@ -283,17 +286,15 @@ def get_qa_dataset(dataset_name:str,files=None):
         # cur = 0
         i = 0
         for sec, source in zip(sections, golden_sources):
-            # i = i + 1
-            # if i == 300:
-            #     break
             if sec not in title2sentences:
                 title2sentences[sec] = [source]
                 titles.append(sec)
                 source_sentences.append(source)
                 title2id[sec] = id
                 id += 1
-            # else:
-            #     print("title already exists, skip.")
+
+        # 使用 get_documents 函数创建 documents
+        documents = get_documents(title2sentences, title2id)
 
         train_data['golden_context_ids'] = [[title2id[sec]] for sec in train_data['sections']]
         valid_data['golden_context_ids'] = [[title2id[sec]] for sec in valid_data['sections']]
@@ -317,6 +318,7 @@ def get_qa_dataset(dataset_name:str,files=None):
             titles=titles,
             title2sentences=title2sentences,
             title2id=title2id,
+            documents=documents,
             dataset=dataset)
 
 
@@ -396,7 +398,6 @@ def get_qa_dataset(dataset_name:str,files=None):
             '''
             source_sentences = []
             title2sentences = {}
-            # title2start = {}
             title2id = {}
             id = 0
             documents = []
@@ -406,7 +407,6 @@ def get_qa_dataset(dataset_name:str,files=None):
             texts = []
             for d in tqdm(dataset['train']):
                 # del if short_answers is empty
-
                 short_answers = d['annotations']['short_answers']
                 answer = None
                 for a in short_answers:
@@ -430,17 +430,9 @@ def get_qa_dataset(dataset_name:str,files=None):
                     source_sentences.append(text)
                     title2id[title] = id
                     id += 1
-                # else:
-                #     print("title already exists, skip.")
-
-                # mermory will be out of use ,so do memory optimization
-
-
-
 
             for d in dataset['validation']:
                 # del if short_answers is empty
-
                 short_answers = d['annotations']['short_answers']
                 answer = None
                 for a in short_answers:
@@ -465,13 +457,11 @@ def get_qa_dataset(dataset_name:str,files=None):
                     source_sentences.append(text)
                     title2id[title] = id
                     id += 1
-                # else:
-                #     print("title already exists, skip.")
 
-            # questions = dataset['validation']['question'] + dataset['train']['question']
-            # questions = [x['text'] for x in questions]
-            # answers = [' '.join([i['text'] for i in x['short_answers']]) for x in dataset['validation']['annotations'] + dataset['train']['annotations']]
-            # document = dataset['validation']['document'] + dataset['train']['document']
+            # 创建 documents
+            documents = get_documents(title2sentences, title2id)
+
+            # 划分数据集
             train_data = {}
             valid_data = {}
             test_data = {}
@@ -518,10 +508,14 @@ def get_qa_dataset(dataset_name:str,files=None):
                 sources=source_sentences,
                 titles=titles,
                 title2sentences=title2sentences,
-                title2id=title2id)
+                title2id=title2id,
+                documents=documents)
+
+            # 保存处理后的数据
             import pickle
             with open('../data/natural_questions.pkl', 'wb') as f:
                 pickle.dump(data, f)
+
         data = dict(**data, dataset=dataset)
         print("data loaded")
         print("documents:", len(data['titles']))
@@ -644,7 +638,6 @@ def get_qa_dataset(dataset_name:str,files=None):
         source_sentences = []
         title2sentences = {}
         titles = []
-        # title2start = {}
         title2id = {}
         id = 0
         for t,source in zip(ids,golden_sources):
@@ -656,8 +649,9 @@ def get_qa_dataset(dataset_name:str,files=None):
                 source_sentences.extend(sentence)
                 title2id[title] = id
                 id += 1
-            # else:
-            #     print("title already exists, skip.")
+
+        # 创建 documents
+        documents = get_documents(title2sentences, title2id)
 
         train_data = {}
         valid_data = {}
@@ -679,7 +673,6 @@ def get_qa_dataset(dataset_name:str,files=None):
             train_data['expected_answer'] = train_data['expected_answer'][:indexs]
             train_data['golden_context_ids'] = train_data['golden_context_ids'][:indexs]
             train_data['golden_context'] = train_data['golden_context'][:indexs]
-
 
         valid_data['question'] = dataset['validation']['question']
         valid_data['expected_answer'] = dataset['validation']['answer']
@@ -724,6 +717,7 @@ def get_qa_dataset(dataset_name:str,files=None):
             titles=titles,
             title2sentences=title2sentences,
             title2id=title2id,
+            documents=documents,
             dataset=dataset)
     elif dataset_name == "law":
         law = json.load(open('./data/law.json','r',encoding='utf-8'))
@@ -735,7 +729,6 @@ def get_qa_dataset(dataset_name:str,files=None):
         source_sentences = []
         titles = []
         id = 0
-        # title2start = {}
         title2id = {}
         for l in law:
             title = l[0]+'-'+l[1]
@@ -763,6 +756,9 @@ def get_qa_dataset(dataset_name:str,files=None):
         answers = [qa['answer'] for qa in law_qa_train if 'sentences' in qa] + [qa['answer'] for qa in law_qa_test]
         golden_sources = [qa['sentences'] for qa in law_qa_train if 'sentences' in qa] + [qa['sentences'] for qa in law_qa_test]
         golden_titles = [qa['title'] for qa in law_qa_train if 'sentences' in qa] + [qa['title'] for qa in law_qa_test]
+
+        # 创建 documents
+        documents = get_documents(title2sentences, title2id)
 
         # split the dataset 9:0.5:0.5
         train_data = {}
@@ -807,19 +803,8 @@ def get_qa_dataset(dataset_name:str,files=None):
             titles=titles,
             title2sentences=title2sentences,
             title2id=title2id,
+            documents=documents,
             dataset={'law':law,'law_qa_train':law_qa_train,'law_qa_test':law_qa_test})
-
-
-
-
-
-
-
-
-
-
-
-
 
     else:
         raise NotImplementedError(f'dataset {dataset_name} not implemented!')
@@ -829,7 +814,6 @@ def get_qa_dataset(dataset_name:str,files=None):
         answers=answers, 
         golden_sources=golden_sources,
         dataset=dataset)
-
 
 
 

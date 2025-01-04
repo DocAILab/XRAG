@@ -167,7 +167,7 @@ def get_qa_dataset_(dataset,files=None):
 
 @st.cache_resource(show_spinner=False)
 def get_index():
-    return build_index(st.session_state.qa_dataset)
+    return build_index(st.session_state.qa_dataset['documents'])
 
 @st.cache_resource(show_spinner=False)
 def get_query_engine():
