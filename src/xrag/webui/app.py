@@ -31,7 +31,52 @@ AVAILABLE_METRICS = [
 ]
 
 # Define options for each dropdown
-LLM_OPTIONS = ["openai", "gpt-4", "text-davinci-003"]  # Add more as needed
+LLM_OPTIONS = [
+    # huggingface models
+    'llama',      # meta-llama/Llama-2-7b-chat-hf
+    'chatglm',    # THUDM/chatglm3-6b
+    'qwen',       # Qwen/Qwen1.5-7B-Chat
+    'qwen14_int8',# Qwen/Qwen1.5-14B-Chat-GPTQ-Int8
+    'qwen7_int8', # Qwen/Qwen1.5-7B-Chat-GPTQ-Int8
+    'qwen1.8',    # Qwen/Qwen1.5-1.8B-Chat
+    'baichuan',   # baichuan-inc/Baichuan2-7B-Chat
+    'falcon',     # tiiuae/falcon-7b-instruct
+    'mpt',        # mosaicml/mpt-7b-chat
+    'yi',         # 01-ai/Yi-6B-Chat
+
+    # openai
+    'openai',     # OpenAI API
+
+    # ollama
+    'ollama',     # Ollama local models
+]
+
+# ollama cascade dict
+OLLAMA_OPTIONS = {
+    "LLaMA": {
+        "llama2-7b": "llama2:7b",
+        "llama2-13b": "llama2:13b",
+        "llama2-70b": "llama2:70b",
+
+        "llama3.1-8b": "llama3.1:8b",
+        "llama3.1-70b": "llama3.1:70b",
+
+        "llama3.2-1b": "llama3.2:1b",
+        "llama3.2-3b": "llama3.2:3b",
+
+    },
+    "Mistral": {
+        "mistral-7b": "mistral:7b",
+        "mixtral": "mixtral",
+        "mistral-7b-q4": "mistral:7b-q4_0",
+    },
+    "others": {
+        "gemma-7b": "gemma:7b",
+        "codellama": "codellama",
+        "neural-chat": "neural-chat",
+    }
+}
+
 EMBEDDING_OPTIONS = ["BAAI/bge-large-en-v1.5", "BAAI/bge-m3", "BAAI/bge-base-en-v1.5","BAAI/bge-small-en-v1.5","BAAI/bge-large-zh-v1.5","BAAI/bge-base-zh-v1.5","BAAI/bge-small-zh-v1.5"]  # Add more as needed
 SPLIT_TYPE_OPTIONS = ["sentence", "character", "hierarchical"]
 DATASET_OPTIONS = ["hotpot_qa", "drop", "natural_questions","trivia_qa","search_qa","finqa","law"]  # Replace with actual dataset options
@@ -392,6 +437,22 @@ def main():
             st.subheader("Settings")
 
             cfg.llm = st.selectbox("LLM", options=LLM_OPTIONS, index=LLM_OPTIONS.index(cfg.llm) if cfg.llm in LLM_OPTIONS else 0)
+            if cfg.llm == "ollama":
+                # 先选择模型系列
+                model_family = st.selectbox(
+                    "Ollama Model Family",
+                    options=list(OLLAMA_OPTIONS.keys())
+                )
+                
+                # 然后选择具体模型
+                if model_family:
+                    model_name = st.selectbox(
+                        "Ollama Model",
+                        options=list(OLLAMA_OPTIONS[model_family].keys()),
+                        format_func=lambda x: f"{x} ({OLLAMA_OPTIONS[model_family][x]})"
+                    )
+                    if model_name:
+                        cfg.ollama_model = OLLAMA_OPTIONS[model_family][model_name]
             cfg.embeddings = st.selectbox("Embeddings", options=EMBEDDING_OPTIONS, index=EMBEDDING_OPTIONS.index(cfg.embeddings) if cfg.embeddings in EMBEDDING_OPTIONS else 0)
             cfg.split_type = st.selectbox("Split Type", options=SPLIT_TYPE_OPTIONS, index=SPLIT_TYPE_OPTIONS.index(cfg.split_type))
             cfg.chunk_size = st.number_input("Chunk Size", min_value=1, value=cfg.chunk_size, step=1)
