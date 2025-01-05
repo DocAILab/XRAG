@@ -19,6 +19,7 @@ llama-index-legacy==0.9.48
 llama-index-llms-dashscope==0.2.1
 llama-index-llms-huggingface==0.3.4
 llama-index-llms-openai==0.2.9
+llama-index-llms-ollama==0.3.0
 FlagEmbedding==1.2.10
 zhipuai
 uptrain
