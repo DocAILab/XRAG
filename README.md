@@ -37,6 +37,7 @@
 
 ## :mega: Updates
 
+- **2025-01.05: Add generate command. Now you can generate your own QA pairs from a folder which contains your documents.**
 - **2024-12.23: XRAG Documentation is released**🌈.
 - **2024-12.20: XRAG is released**🎉.
 ---
@@ -205,6 +206,12 @@ xrag-cli [command] [options]
   xrag-cli help
   ```
 
+- **generate**: Generate QA pairs from a folder.
+
+  ```bash
+  xrag-cli generate -i <input_file> -o <output_file> -n <num_questions> -s <sentence_length>
+  ```
+
 ### **Overriding Configuration Parameters**
 
 Use the `--override` flag followed by key-value pairs to override configuration settings:
@@ -212,6 +219,14 @@ Use the `--override` flag followed by key-value pairs to override configuration 
 ```bash
 xrag-cli run --override embeddings="new-embedding-model"
 ```
+
+### **Generate QA pairs from a folder**
+
+```bash
+xrag-cli generate -i <input_file> -o <output_file> -n <num_questions> -s <sentence_length>
+```
+
+Automatically generate QA pairs from a folder.
 
 ---
 
