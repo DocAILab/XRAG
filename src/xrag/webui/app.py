@@ -288,31 +288,73 @@ def main():
         cfg.dataset = chosen_backend_dataset
         # custom dataset
         st.markdown("---")
-        with st.expander("About Custom Dataset"):
-            st.markdown("""
-            ### Upload Custom Dataset
-            
-            Please upload a JSON file containing your dataset. The JSON file should be a list of objects with the following format:
-            ```json
-            [
-                {
-                    "question": "What is the capital of France?",
-                    "answer": "Paris",
-                    "file_paths": "path/to/document.txt"
-                    // or multiple files
-                    // "file_paths": ["path/to/doc1.txt", "path/to/doc2.txt"]
-                },
-                ...
-            ]
-            ```
-            Note: 
-            1. Make sure all file paths in the JSON are accessible from the server.
-            2. Supported file formats: txt, md, pdf, html, json, csv, etc.
-            3. Each question can reference one or multiple documents.
-            4. The system will automatically process and index all documents.
-            """)
+        tab1, tab2 = st.tabs(["Upload JSON", "Generate from Folder"])
         
-        uploaded_file = st.file_uploader("Upload your dataset", type=["json"])
+        with tab1:
+            with st.expander("About Custom Dataset"):
+                st.markdown("""
+                ### Upload Custom Dataset
+                
+                Please upload a JSON file containing your dataset. The JSON file should be a list of objects with the following format:
+                ```json
+                [
+                    {
+                        "question": "What is the capital of France?",
+                        "answer": "Paris",
+                        "file_paths": "path/to/document.txt"
+                        // or multiple files
+                        // "file_paths": ["path/to/doc1.txt", "path/to/doc2.txt"]
+                    },
+                    ...
+                ]
+                ```
+                Note: 
+                1. Make sure all file paths in the JSON are accessible from the server.
+                2. Supported file formats: txt, md, pdf, html, json, csv, etc.
+                3. Each question can reference one or multiple documents.
+                4. The system will automatically process and index all documents.
+                """)
+            
+            uploaded_file = st.file_uploader("Upload your dataset", type=["json"])
+        
+        with tab2:
+            st.markdown("""
+            ### Generate QA Pairs from Documents
+            
+            Upload a folder containing your documents, and the system will:
+            1. Read all documents in the folder (including subfolders)
+            2. Use AI to generate relevant questions and answers
+            3. Create a dataset in the required format
+            
+            Supported file formats:
+            - Text files (.txt)
+            - Markdown files (.md)
+            - PDF documents (.pdf)
+            - HTML files (.html)
+            - And more...
+            
+            Note:
+            - If the sentence length is set to -1, the system will use file level as the unit.
+            - If the sentence length is set to a positive number, the system will split the document into chunks of the specified length.
+            """)
+            
+            folder_path = st.text_input("Enter folder path", value="./data/documents")
+            num_questions = st.number_input("Number of questions per file", min_value=1, value=3)
+            output_file = st.text_input("Output JSON file path", value="./data/generated_qa.json")
+            sentence_length = st.number_input("Sentence length", value=-1)
+            if st.button("Generate QA Dataset"):
+                try:
+                    with st.spinner("Generating QA pairs from documents..."):
+                        from xrag.data.qa_loader import generate_qa_from_folder
+                        qa_pairs = generate_qa_from_folder(folder_path, output_file, num_questions, sentence_length=sentence_length)
+                        st.success(f"Successfully generated {len(qa_pairs)} QA pairs!")
+                        # 自动加载生成的数据集
+                        st.session_state.qa_dataset = get_qa_dataset_("custom", output_file)
+                        cfg.dataset = "custom"
+                        st.session_state.step = 2
+                        st.rerun()
+                except Exception as e:
+                    st.error(f"Error generating QA dataset: {str(e)}")
 
         if st.button("Load Dataset"):
             if uploaded_file is not None:

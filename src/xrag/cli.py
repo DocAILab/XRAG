@@ -4,7 +4,8 @@ from enum import Enum, unique
 from .webui import run_web_ui
 from .launcher import run
 from .config import Config
-VERSION = "0.1.0"
+from .data.qa_loader import generate_qa_from_folder
+VERSION = "0.1.1"
 USAGE = (
     "-" * 70
     + "\n"
@@ -12,6 +13,7 @@ USAGE = (
     + "|   xrag-cli run -h: launch an eval experiment       |\n"
     + "|   xrag-cli webui: launch XRAGBoard                        |\n"
     + "|   xrag-cli version: show version info                      |\n"
+    + "|   xrag-cli generate -i <input_file> -o <output_file> -n <num_questions> -s <sentence_length>: generate QA pairs from a folder |\n"
     + "-" * 70
 )
 
@@ -32,6 +34,7 @@ class Command(str, Enum):
     RUN = "run"
     WEBUI = "webui"
     VER = "version"
+    GENERATE = "generate"
     HELP = "help"
 
 def main():
@@ -49,7 +52,11 @@ def main():
     subparsers.add_parser('webui', help='Run the web UI')
     subparsers.add_parser('version', help='Show version')
     subparsers.add_parser('help', help='Show help')
-
+    generate_parser = subparsers.add_parser('generate', help='Generate QA pairs')
+    generate_parser.add_argument('-i', '--input', type=str, help='Input file path')
+    generate_parser.add_argument('-o', '--output', type=str, help='Output file path')
+    generate_parser.add_argument('-n', '--num', type=int, help='Number of questions per file', default=3)
+    generate_parser.add_argument('-s', '--sentence_length', type=int, help='Sentence length, -1 means no split', default=-1)
     # Parse the arguments
     args = parser.parse_args()
 
@@ -75,5 +82,7 @@ def main():
         print(WELCOME)
     elif args.command == Command.HELP or args.command is None:
         parser.print_help()
+    elif args.command == Command.GENERATE:
+        generate_qa_from_folder(args.input, args.output, args.num, args.sentence_length)
     else:
         print(f"Unknown command: {args.command}")

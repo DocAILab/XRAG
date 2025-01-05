@@ -9,6 +9,7 @@ import warnings
 from ..config import Config
 from llama_index.core import Document
 from llama_index.core import SimpleDirectoryReader
+from ..llms.llm import get_llm
 cfg = Config()
 
 test_init_total_number_documents = cfg.test_init_total_number_documents
@@ -74,51 +75,39 @@ def get_qa_dataset(dataset_name:str,files=None):
             # 如果是从 streamlit 上传的文件
             data = json.loads(files.getvalue())
 
-        # 收集所有唯一的文件路径
-        all_file_paths = set()
-        for item in data:
-            file_paths = item['file_paths'] if isinstance(item['file_paths'], list) else [item['file_paths']]
-            all_file_paths.update(file_paths)
+        # # 收集所有唯一的文件路径
+        # all_file_paths = set()
+        # for item in data:
+        #     file_paths = item['file_paths'] if isinstance(item['file_paths'], list) else [item['file_paths']]
+        #     all_file_paths.update(file_paths)
 
-        # 使用 SimpleDirectoryReader 加载所有文件
-        file_contents = {}
-        for file_path in all_file_paths:
-            try:
-                # 使用 SimpleDirectoryReader 加载单个文件
-                reader = SimpleDirectoryReader(input_files=[file_path])
-                docs = reader.load_data()
-                if docs:
-                    file_contents[file_path] = docs[0].text
-            except Exception as e:
-                print(f"Error reading file {file_path}: {e}")
-                continue
+        # 对每个文件内容进行分段
+        title2sentences = {}
+        titles = []
+        source_sentences = []
+        title2id = {}
+        id = 0
 
         # 处理每个问答对
+        questions = []
+        answers = []
+        golden_sources = []  # 每个问题对应的文档ID列表
+        golden_sentences = []
+        source2id = {}
+
         for item in data:
             questions.append(item['question'])
             answers.append(item['answer'])
-            
-            # 获取该问题对应的文档内容
-            file_paths = item['file_paths'] if isinstance(item['file_paths'], list) else [item['file_paths']]
-            doc_contents = []
-            doc_ids = []
-            
-            for file_path in file_paths:
-                if file_path in file_contents:
-                    content = file_contents[file_path]
-                    
-                    # 为每个文档创建唯一标题
-                    title = f"doc_{id}"
-                    id += 1
-                    
-                    # 更新数据结构
-                    title2sentences[title] = [content]
-                    titles.append(title)
-                    source_sentences.append(content)
-                    title2id[title] = id - 1
-                    doc_ids.append(id - 1)
-            
-            golden_sources.append(doc_ids)
+            source_text = item.get('source_text', '')
+            if source_text not in source2id:
+                source2id[source_text] = id
+                title2sentences[f"doc_{id}"] = [source_text]
+                titles.append(f"doc_{id}")
+                source_sentences.append(source_text)
+                title2id[f"doc_{id}"] = id
+                id += 1
+            golden_sources.append([source2id[source_text]])
+            golden_sentences.append([source_text])
 
         # 使用 get_documents 函数创建 documents
         documents = get_documents(title2sentences, title2id)
@@ -139,22 +128,22 @@ def get_qa_dataset(dataset_name:str,files=None):
         train_data = {
             'question': [questions[i] for i in train_indexes],
             'expected_answer': [answers[i] for i in train_indexes],
-            'golden_context': [golden_sources[i] for i in train_indexes],
-            'golden_context_ids': [[title2id[f"doc_{i}"]] for i in train_indexes]
+            'golden_context': [golden_sentences[i] for i in train_indexes],
+            'golden_context_ids': [golden_sources[i] for i in train_indexes]
         }
 
         valid_data = {
             'question': [questions[i] for i in valid_indexes],
             'expected_answer': [answers[i] for i in valid_indexes],
-            'golden_context': [golden_sources[i] for i in valid_indexes],
-            'golden_context_ids': [[title2id[f"doc_{i}"]] for i in valid_indexes]
+            'golden_context': [golden_sentences[i] for i in valid_indexes],
+            'golden_context_ids': [golden_sources[i] for i in valid_indexes]
         }
 
         test_data = {
             'question': [questions[i] for i in test_indexes],
             'expected_answer': [answers[i] for i in test_indexes],
-            'golden_context': [golden_sources[i] for i in test_indexes],
-            'golden_context_ids': [[title2id[f"doc_{i}"]] for i in test_indexes]
+            'golden_context': [golden_sentences[i] for i in test_indexes],
+            'golden_context_ids': [golden_sources[i] for i in test_indexes]
         }
 
         return dict(
@@ -820,17 +809,291 @@ def get_qa_dataset(dataset_name:str,files=None):
         golden_sources=golden_sources,
         dataset=dataset)
 
+def generate_qa_from_folder(folder_path: str, output_file: str, num_questions_per_file: int = 3, sentence_length: int = -1):
+    """
+    从文件夹中读取所有文件，使用 LLM 生成问答对，并保存为指定格式的 JSON 文件
+    
+    Args:
+        folder_path: 包含文档的文件夹路径
+        output_file: 输出的 JSON 文件路径
+        num_questions_per_file: 每个文件生成的问题数量
+    """
+    # 转换为绝对路径
+    folder_path = os.path.abspath(folder_path)
+    output_file = os.path.abspath(output_file)
+    
+    print(f"Loading files from: {folder_path}")
+    
+    # 检查文件夹是否存在
+    if not os.path.exists(folder_path):
+        # 尝试从当前工作目录查找
+        cwd_path = os.path.join(os.getcwd(), folder_path)
+        if os.path.exists(cwd_path):
+            folder_path = cwd_path
+        else:
+            # 尝试从包安装目录查找
+            package_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+            pkg_path = os.path.join(package_path, folder_path)
+            if os.path.exists(pkg_path):
+                folder_path = pkg_path
+            else:
+                raise Exception(f"Folder not found in any of these locations:\n"
+                              f"1. {folder_path}\n"
+                              f"2. {cwd_path}\n"
+                              f"3. {pkg_path}")
+    
+    print(f"Using folder path: {folder_path}")
+    
+    # 检查文件夹中的文件
+    files = []
+    for root, _, filenames in os.walk(folder_path):
+        for filename in filenames:
+            files.append(os.path.join(root, filename))
+    print(f"Found files: {files}")
+    
+    # 确保安装必要的依赖
+    try:
+        import pypdf
+    except ImportError:
+        print("Installing required dependencies...")
+        import subprocess
+        subprocess.check_call(["pip", "install", "pypdf"])
+        import pypdf
 
+    # 手动加载文档
+    docs = []
+    for file_path in files:
+        try:
+            if file_path.lower().endswith('.pdf'):
+                print(f"Loading PDF file: {file_path}")
+                # 检查文件是否存在和可读
+                if not os.path.exists(file_path):
+                    print(f"File not found: {file_path}")
+                    continue
+                if not os.access(file_path, os.R_OK):
+                    print(f"File not readable: {file_path}")
+                    continue
+                
+                # 使用 pypdf 直接读取 PDF
+                try:
+                    with open(file_path, 'rb') as file:  # 使用二进制模式打开
+                        pdf_reader = pypdf.PdfReader(file)
+                        text = ""
+                        for page in pdf_reader.pages:
+                            text += page.extract_text() + "\n"
+                        if text.strip():  # 确保提取到了文本
+                            docs.append(Document(
+                                text=text,
+                                metadata={
+                                    'file_path': file_path,
+                                    'file_name': os.path.basename(file_path)
+                                }
+                            ))
+                            print(f"Successfully loaded PDF: {file_path}")
+                        else:
+                            print(f"Warning: No text extracted from PDF: {file_path}")
+                except Exception as e:
+                    print(f"Error reading PDF {file_path}: {str(e)}")
+                    import traceback
+                    traceback.print_exc()
+            else:
+                # 使用 SimpleDirectoryReader 读取非 PDF 文件
+                reader = SimpleDirectoryReader(
+                    input_files=[file_path],
+                    filename_as_id=True
+                )
+                file_docs = reader.load_data()
+                docs.extend(file_docs)
+                print(f"Successfully loaded: {file_path}")
+        except Exception as e:
+            print(f"Error loading file {file_path}: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            continue
 
+    if len(docs) == 0:
+        raise Exception("No documents were successfully loaded")
+    
+    if sentence_length > 0:
+        # split the text into sentences
+        from llama_index.core.node_parser import SentenceSplitter
+        parser = SentenceSplitter(chunk_size=sentence_length, chunk_overlap=20)
+        nodes = parser.get_nodes_from_documents(docs, show_progress=True)
+        print("nodes: " + str(nodes.__len__()))
+        docs = nodes
 
+    print(f"Successfully loaded {len(docs)} documents from {folder_path}")
 
+    # 初始化 LLM
+    llm = get_llm(cfg.llm)
+
+    qa_pairs = []
+    # 为每个文档生成问答对
+    for doc in tqdm(docs, desc="Generating QA pairs"):
+        try:
+            # 限制文本长度并确保完整句子
+            text = doc.text[:5000]
+            last_period = text.rfind('.')
+            if last_period > 0:
+                text = text[:last_period + 1]
+            
+            # 构建提示
+            prompt = """You are a helpful AI assistant that generates high-quality question-answer pairs from given text.
+            Please generate {num_questions} different question-answer pairs based on the following text.
+            The questions should:
+            1. Be diverse and cover different aspects of the content
+            2. Include both factual and analytical questions
+            3. Be clear and specific
+            4. Have answers that can be found in the text
+
+            TEXT:
+            {text}
+
+            Please format your response as a valid JSON array of objects, where each object has 'question' and 'answer' fields.
+            Example format:
+            [
+                {{"question": "What is X?", "answer": "X is Y."}},
+                {{"question": "How does Z work?", "answer": "Z works by..."}}
+            ]
+
+            Generate only the JSON array, no other text.""".format(
+                num_questions=num_questions_per_file,
+                text=text
+            )
+            
+            # 获取 LLM 响应
+            response = llm.complete(prompt)
+            
+            # 解析响应中的 JSON
+            try:
+                # 清理响应文本，确保它是有效的 JSON
+                response_text = response.text.strip()
+                if not response_text.startswith('['):
+                    response_text = response_text[response_text.find('['):]
+                if not response_text.endswith(']'):
+                    response_text = response_text[:response_text.rfind(']')+1]
+                
+                qa_list = json.loads(response_text)
+                
+                # 验证生成的问答对的格式
+                valid_qa_list = []
+                for qa in qa_list:
+                    if isinstance(qa, dict) and 'question' in qa and 'answer' in qa:
+                        qa['file_paths'] = doc.metadata.get('file_path', '')
+                        qa['source_text'] = text
+                        valid_qa_list.append(qa)
+                    
+                qa_pairs.extend(valid_qa_list)
+                print(f"Generated {len(valid_qa_list)} QA pairs for {doc.metadata.get('file_path', '')}")
+                
+            except json.JSONDecodeError as e:
+                print(f"Error parsing LLM response for file {doc.metadata.get('file_path', '')}: {str(e)}")
+                print(f"Response text: {response.text}")
+                continue
+                
+        except Exception as e:
+            print(f"Error generating QA pairs for file {doc.metadata.get('file_path', '')}: {str(e)}")
+            continue
+
+    if len(qa_pairs) == 0:
+        raise Exception("No QA pairs were generated. Please check the error messages above.")
+
+    # 保存生成的问答对到文件
+    try:
+        # 确保输出目录存在
+        os.makedirs(os.path.dirname(os.path.abspath(output_file)), exist_ok=True)
+        
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(qa_pairs, f, ensure_ascii=False, indent=2)
+        print(f"Successfully generated {len(qa_pairs)} QA pairs and saved to {output_file}")
+        return qa_pairs
+    except Exception as e:
+        raise Exception(f"Error saving QA pairs to file: {str(e)}")
+
+def test_file_loading(folder_path: str):
+    """
+    测试文件加载功能，详细检查每个步骤
+    
+    Args:
+        folder_path: 要测试的文件夹路径
+    """
+    print(f"\n=== Testing file loading from {folder_path} ===")
+    
+    # 转换为绝对路径
+    folder_path = os.path.abspath(folder_path)
+    print(f"Absolute path: {folder_path}")
+    
+    # 1. 检查文件夹是否存在
+    if not os.path.exists(folder_path):
+        print(f"Error: Folder {folder_path} does not exist!")
+        return
+    print(f"✓ Folder exists")
+    
+    # 2. 列出文件夹中的所有文件
+    print("\nFiles in directory:")
+    for root, dirs, files in os.walk(folder_path):
+        level = root.replace(folder_path, '').count(os.sep)
+        indent = ' ' * 4 * level
+        print(f"{indent}{os.path.basename(root)}/")
+        subindent = ' ' * 4 * (level + 1)
+        for f in files:
+            full_path = os.path.join(root, f)
+            size = os.path.getsize(full_path)
+            print(f"{subindent}{f} ({size} bytes)")
+            
+    # 3. 尝试使用 SimpleDirectoryReader 加载文件
+    print("\nTrying to load files with SimpleDirectoryReader:")
+    try:
+        reader = SimpleDirectoryReader(
+            input_dir=folder_path,
+            recursive=True,
+            exclude_hidden=True,
+            filename_as_id=True
+        )
+        print("✓ SimpleDirectoryReader initialized")
+        
+        # 4. 尝试加载数据
+        try:
+            docs = reader.load_data()
+            print(f"✓ Successfully loaded {len(docs)} documents")
+            
+            # 5. 检查每个文档的内容
+            print("\nDocument details:")
+            for i, doc in enumerate(docs, 1):
+                print(f"\nDocument {i}:")
+                print(f"  File path: {doc.metadata.get('file_path', 'No path')}")
+                print(f"  File name: {doc.metadata.get('file_name', 'No name')}")
+                print(f"  Content length: {len(doc.text)} characters")
+                print(f"  First 100 chars: {doc.text[:100]}...")
+                
+        except Exception as e:
+            print(f"Error loading data: {str(e)}")
+            print(f"Error type: {type(e)}")
+            import traceback
+            print("Full traceback:")
+            traceback.print_exc()
+            
+    except Exception as e:
+        print(f"Error initializing reader: {str(e)}")
+        print(f"Error type: {type(e)}")
+        import traceback
+        print("Full traceback:")
+        traceback.print_exc()
 
 if __name__=='__main__':
+    # 测试文件加载
+    # test_file_loading('./examples/data')
+    # generate_qa_from_folder('./examples/data', './examples/example.json', 3)
+    # custom_qa_dataset = get_qa_dataset('custom', './examples/example.json')
+    # print(custom_qa_dataset)
 
+    drop = get_qa_dataset('drop')
+    print(drop)
 
-
-    name = 'hotpot_qa' # drop, natural_questions, hotpot_qa
-    # ex_data = get_qa_dataset('hotpot_qa')
-    data = get_qa_dataset(name)
-    print()
+    custom_qa_dataset = get_qa_dataset('custom', './examples/example.json')
+    print(custom_qa_dataset)
+    
+    # 测试生成问答对
+    # print("\nTesting QA generation:")
+    # print(generate_qa_from_folder('./examples/data', './examples/example.json', 3))
 
