@@ -301,9 +301,11 @@ def main():
                     {
                         "question": "What is the capital of France?",
                         "answer": "Paris",
-                        "file_paths": "path/to/document.txt"
+                        "file_paths": "path/to/document.txt",
+                        "source_text": "source of the document"
                         // or multiple files
                         // "file_paths": ["path/to/doc1.txt", "path/to/doc2.txt"]
+                        // "source": ["source of the document 1", "source of the document 2"]
                     },
                     ...
                 ]
