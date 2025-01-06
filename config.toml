@@ -1,13 +1,14 @@
 [api_keys]
-api_key = "sk-vg3q5gPB1ICbxR0y5185E7EdCe0d466e9f117fDf9236Fa8d"
-api_base = "https://api.gpt.ge/v1"
+api_key = "sk-xxxx"
+api_base = "https://api.openai.com/v1"
 api_name = "gpt-4o"
 auth_token = "hf_xxx"
 
 
 [settings]
-llm = "openai"
-ollama_model = "llama2:7b"
+llm = "openai" # openai, huggingface, ollama
+ollama_model = "llama2:7b" # ollama model name
+huggingface_model = "llama" # huggingface model name
 embeddings = "BAAI/bge-large-en-v1.5"
 split_type = "sentence"
 chunk_size = 128

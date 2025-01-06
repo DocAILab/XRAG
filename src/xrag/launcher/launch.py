@@ -24,7 +24,7 @@ def seed_everything(seed):
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
 
-def build_index(qa_dataset):
+def build_index(documents):
     cfg = Config()
     llm = get_llm(cfg.llm)
     # Create and dl embeddings instance
@@ -38,7 +38,7 @@ def build_index(qa_dataset):
     cfg.persist_dir = cfg.persist_dir + '-' + cfg.dataset + '-' + cfg.embeddings + '-' + cfg.split_type + '-' + str(
         cfg.chunk_size)
 
-    index, hierarchical_storage_context = get_index(qa_dataset, cfg.persist_dir, split_type=cfg.split_type,
+    index, hierarchical_storage_context = get_index(documents, cfg.persist_dir, split_type=cfg.split_type,
                                                     chunk_size=cfg.chunk_size)
 
 
@@ -106,7 +106,7 @@ def run(cli=True):
     seed_everything(42)
     cfg = Config()
     qa_dataset = get_qa_dataset(cfg.dataset)
-    index, hierarchical_storage_context = build_index(qa_dataset)
+    index, hierarchical_storage_context = build_index(qa_dataset['documents'])
     query_engine = build_query_engine(index, hierarchical_storage_context)
     if cli:
         evaluateResults = eval_cli(qa_dataset, query_engine)

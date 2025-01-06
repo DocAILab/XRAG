@@ -33,6 +33,23 @@ AVAILABLE_METRICS = [
 # Define options for each dropdown
 LLM_OPTIONS = [
     # huggingface models
+    # 'llama',      # meta-llama/Llama-2-7b-chat-hf
+    # 'chatglm',    # THUDM/chatglm3-6b
+    # 'qwen',       # Qwen/Qwen1.5-7B-Chat
+    # 'qwen14_int8',# Qwen/Qwen1.5-14B-Chat-GPTQ-Int8
+    # 'qwen7_int8', # Qwen/Qwen1.5-7B-Chat-GPTQ-Int8
+    # 'qwen1.8',    # Qwen/Qwen1.5-1.8B-Chat
+    # 'baichuan',   # baichuan-inc/Baichuan2-7B-Chat
+    # 'falcon',     # tiiuae/falcon-7b-instruct
+    # 'mpt',        # mosaicml/mpt-7b-chat
+    # 'yi',         # 01-ai/Yi-6B-Chat
+
+    'openai',     # OpenAI API
+    'huggingface',# HuggingFace local models
+    'ollama',     # Ollama local models
+]
+
+HF_MODEL_OPTIONS = [
     'llama',      # meta-llama/Llama-2-7b-chat-hf
     'chatglm',    # THUDM/chatglm3-6b
     'qwen',       # Qwen/Qwen1.5-7B-Chat
@@ -43,12 +60,6 @@ LLM_OPTIONS = [
     'falcon',     # tiiuae/falcon-7b-instruct
     'mpt',        # mosaicml/mpt-7b-chat
     'yi',         # 01-ai/Yi-6B-Chat
-
-    # openai
-    'openai',     # OpenAI API
-
-    # ollama
-    'ollama',     # Ollama local models
 ]
 
 # ollama cascade dict
@@ -74,7 +85,8 @@ OLLAMA_OPTIONS = {
         "gemma-7b": "gemma:7b",
         "codellama": "codellama",
         "neural-chat": "neural-chat",
-    }
+        "other": "other"
+    },
 }
 
 EMBEDDING_OPTIONS = ["BAAI/bge-large-en-v1.5", "BAAI/bge-m3", "BAAI/bge-base-en-v1.5","BAAI/bge-small-en-v1.5","BAAI/bge-large-zh-v1.5","BAAI/bge-base-zh-v1.5","BAAI/bge-small-zh-v1.5"]  # Add more as needed
@@ -212,7 +224,7 @@ def get_qa_dataset_(dataset,files=None):
 
 @st.cache_resource(show_spinner=False)
 def get_index():
-    return build_index(st.session_state.qa_dataset)
+    return build_index(st.session_state.qa_dataset['documents'])
 
 @st.cache_resource(show_spinner=False)
 def get_query_engine():
@@ -333,59 +345,114 @@ def main():
         cfg.dataset = chosen_backend_dataset
         # custom dataset
         st.markdown("---")
-        # st.markdown("Or upload your own dataset")
-        files = st.file_uploader("Or upload your own dataset", type=["json"])
+        st.markdown("## Or your own dataset")
+        tab1, tab2 = st.tabs(["Upload JSON", "Generate from Folder"])
+        
+        with tab1:
+            with st.expander("About Custom Dataset"):
+                st.markdown("""
+                ### Upload Custom Dataset
+                
+                Please upload a JSON file containing your dataset. The JSON file should be a list of objects with the following format:
+                ```json
+                [
+                    {
+                        "question": "What is the capital of France?",
+                        "answer": "Paris",
+                        "file_paths": "path/to/document.txt",
+                        "source_text": "source of the document"
+                        // or multiple files
+                        // "file_paths": ["path/to/doc1.txt", "path/to/doc2.txt"]
+                        // "source": ["source of the document 1", "source of the document 2"]
+                    },
+                    ...
+                ]
+                ```
+                Note: 
+                1. Make sure all file paths in the JSON are accessible from the server.
+                2. Supported file formats: txt, md, pdf, html, json, csv, etc.
+                3. Each question can reference one or multiple documents.
+                4. The system will automatically process and index all documents.
+                """)
+            
+            uploaded_file = st.file_uploader("Upload your dataset", type=["json"])
+        
+        with tab2:
+            st.markdown("""
+            ### Generate QA Pairs from Documents
+            
+            Upload a folder containing your documents, and the system will:
+            1. Read all documents in the folder (including subfolders)
+            2. Use AI to generate relevant questions and answers
+            3. Create a dataset in the required format
+            
+            Supported file formats:
+            - Text files (.txt)
+            - Markdown files (.md)
+            - PDF documents (.pdf)
+            - HTML files (.html)
+            - And more...
+            
+            Note:
+            - If the sentence length is set to -1, the system will use file level as the unit.
+            - If the sentence length is set to a positive number, the system will split the document into chunks of the specified length.
+            """)
+            
+            folder_path = st.text_input("Enter folder path", value="./data/documents")
+            num_questions = st.number_input("Number of questions per file", min_value=1, value=3)
+            output_file = st.text_input("Output JSON file path", value="./data/generated_qa.json")
+            sentence_length = st.number_input("Sentence length", value=-1)
+            if st.button("Generate QA Dataset"):
+                try:
+                    with st.spinner("Generating QA pairs from documents..."):
+                        from xrag.data.qa_loader import generate_qa_from_folder
+                        qa_pairs = generate_qa_from_folder(folder_path, output_file, num_questions, sentence_length=sentence_length)
+                        st.success(f"Successfully generated {len(qa_pairs)} QA pairs!")
+                        # 自动加载生成的数据集
+                        st.session_state.qa_dataset = get_qa_dataset_("custom", output_file)
+                        cfg.dataset = "custom"
+                        st.session_state.step = 2
+                        st.rerun()
+                except Exception as e:
+                    st.error(f"Error generating QA dataset: {str(e)}")
 
         if st.button("Load Dataset"):
-            st.session_state.step = 2
-            with st.spinner("Loading Dataset..."):
-                if files:
-                    # load to json
-                    files = [pd.read_json(file) for file in files]
-                    st.session_state.qa_dataset = get_qa_dataset_("custom",files)
-                else:
+            if uploaded_file is not None:
+                try:
+                    st.session_state.step = 2
+                    with st.spinner("Loading Dataset..."):
+                        st.session_state.qa_dataset = get_qa_dataset_("custom", uploaded_file)
+                        cfg.dataset = "custom"
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error loading dataset: {str(e)}")
+            else:
+                with st.spinner("Loading Dataset..."):
                     st.session_state.qa_dataset = get_qa_dataset_(cfg.dataset)
-            st.rerun()
+                st.session_state.step = 2
+                st.rerun()
 
     if st.session_state.step == 2:
         st.header("Configure your RAG Index")
-        # st.markdown("Selected Dataset: " + cfg.dataset)
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            # API Keys
-            st.subheader("API Keys")
+        st.subheader("Settings")
+
+        cfg.llm = st.selectbox("LLM", options=LLM_OPTIONS, index=LLM_OPTIONS.index(cfg.llm) if cfg.llm in LLM_OPTIONS else 0)
+        if cfg.llm == "ollama":
+            cfg.ollama_model = st.text_input("Your Ollama Model", value=cfg.ollama_model)
+        elif cfg.llm == 'huggingface':
+            cfg.huggingface_model = st.selectbox("HuggingFace Model", options=HF_MODEL_OPTIONS, index=HF_MODEL_OPTIONS.index(cfg.huggingface_model) if cfg.huggingface_model in HF_MODEL_OPTIONS else 0)
+            cfg.auth_token = st.text_input("Your Auth Token", value=cfg.auth_token)
+        elif cfg.llm == 'openai':
             cfg.api_key = st.text_input("API Key", value=cfg.api_key, type="password")
             cfg.api_base = st.text_input("API Base", value=cfg.api_base)
-            cfg.api_name = st.text_input("API Name", value=cfg.api_name)
-            cfg.auth_token = st.text_input("Auth Token", value=cfg.auth_token)
+            cfg.api_name = st.text_input("Model Name", value=cfg.api_name)
 
-        with col2:
-
-            # Settings
-            st.subheader("Settings")
-
-            cfg.llm = st.selectbox("LLM", options=LLM_OPTIONS, index=LLM_OPTIONS.index(cfg.llm) if cfg.llm in LLM_OPTIONS else 0)
-            if cfg.llm == "ollama":
-                # 先选择模型系列
-                model_family = st.selectbox(
-                    "Ollama Model Family",
-                    options=list(OLLAMA_OPTIONS.keys())
-                )
-                
-                # 然后选择具体模型
-                if model_family:
-                    model_name = st.selectbox(
-                        "Ollama Model",
-                        options=list(OLLAMA_OPTIONS[model_family].keys()),
-                        format_func=lambda x: f"{x} ({OLLAMA_OPTIONS[model_family][x]})"
-                    )
-                    if model_name:
-                        cfg.ollama_model = OLLAMA_OPTIONS[model_family][model_name]
-            cfg.embeddings = st.selectbox("Embeddings", options=EMBEDDING_OPTIONS, index=EMBEDDING_OPTIONS.index(cfg.embeddings) if cfg.embeddings in EMBEDDING_OPTIONS else 0)
-            cfg.split_type = st.selectbox("Split Type", options=SPLIT_TYPE_OPTIONS, index=SPLIT_TYPE_OPTIONS.index(cfg.split_type))
-            cfg.chunk_size = st.number_input("Chunk Size", min_value=1, value=cfg.chunk_size, step=1)
-            # cfg.source_dir = st.text_input("Source Directory", value=cfg.source_dir)
-            cfg.persist_dir = st.text_input("Persist Directory", value=cfg.persist_dir)
+        st.markdown("---")
+        cfg.embeddings = st.selectbox("Embeddings", options=EMBEDDING_OPTIONS, index=EMBEDDING_OPTIONS.index(cfg.embeddings) if cfg.embeddings in EMBEDDING_OPTIONS else 0)
+        cfg.split_type = st.selectbox("Split Type", options=SPLIT_TYPE_OPTIONS, index=SPLIT_TYPE_OPTIONS.index(cfg.split_type))
+        cfg.chunk_size = st.number_input("Chunk Size", min_value=1, value=cfg.chunk_size, step=1)
+        # cfg.source_dir = st.text_input("Source Directory", value=cfg.source_dir)
+        cfg.persist_dir = st.text_input("Persist Directory", value=cfg.persist_dir)
 
         # 返回或者继续
         c1,c_,c2 = st.columns([1,4,1])
@@ -403,15 +470,16 @@ def main():
 
     if st.session_state.step == 3:
         st.header("Configure your RAG Query Engine")
-        cfg.retriever = st.selectbox("Retriever", options=RETRIEVER_OPTIONS, index=RETRIEVER_OPTIONS.index(
+        cfg.retriever = st.selectbox("Advanced Retriever", options=RETRIEVER_OPTIONS, index=RETRIEVER_OPTIONS.index(
             cfg.retriever) if cfg.retriever in RETRIEVER_OPTIONS else 0)
         cfg.retriever_mode = st.selectbox("Retriever Mode", options=[0, 1], index=cfg.retriever_mode)
-        cfg.postprocess_rerank = st.selectbox("Postprocess Rerank", options=POSTPROCESS_RERANK_OPTIONS,
-                                              index=POSTPROCESS_RERANK_OPTIONS.index(
-                                                  cfg.postprocess_rerank) if cfg.postprocess_rerank in POSTPROCESS_RERANK_OPTIONS else 0)
-        cfg.query_transform = st.selectbox("Query Transform", options=QUERY_TRANSFORM_OPTIONS,
+        cfg.query_transform = st.selectbox("Pre-retriever", options=QUERY_TRANSFORM_OPTIONS,
                                            index=QUERY_TRANSFORM_OPTIONS.index(
                                                cfg.query_transform) if cfg.query_transform in QUERY_TRANSFORM_OPTIONS else 0)
+        cfg.postprocess_rerank = st.selectbox("Post-process", options=POSTPROCESS_RERANK_OPTIONS,
+                                              index=POSTPROCESS_RERANK_OPTIONS.index(
+                                                  cfg.postprocess_rerank) if cfg.postprocess_rerank in POSTPROCESS_RERANK_OPTIONS else 0)
+        
         cfg.text_qa_template_str = st.text_area("Text QA Template", value=cfg.text_qa_template_str)
         cfg.refine_template_str = st.text_area("Refine Template", value=cfg.refine_template_str)
 

@@ -17,25 +17,6 @@ llm_dict = {
     "yi": "01-ai/Yi-6B-Chat",
 }
 
-# depricated => You can specify the ollama_model field in config.toml
-# # ollama cascade dict
-# ollama_dict = {
-#     "LLaMA": {
-#         "llama2-7b": "llama2:7b",
-#         "llama2-13b": "llama2:13b",
-#         "llama2-7b-q4": "llama2:7b-q4_0",
-#     },
-#     "Mistral": {
-#         "mistral-7b": "mistral:7b",
-#         "mixtral": "mixtral",
-#         "mistral-7b-q4": "mistral:7b-q4_0",
-#     },
-#     "others": {
-#         "gemma-7b": "gemma:7b",
-#         "codellama": "codellama",
-#         "neural-chat": "neural-chat",
-#     }
-# }
 
 def get_openai(api_base,api_key,api_name):
     return OpenAI(api_key=api_key,api_base=api_base, temperature=0,model=api_name)
@@ -43,8 +24,8 @@ def get_openai(api_base,api_key,api_name):
 
 
 def get_llm(name):
-    if name in llm_dict.keys():
-        return get_huggingfacellm(llm_dict[name])
+    if name == 'huggingface':
+        return get_huggingfacellm(Config().huggingface_model)
     elif name == 'openai':
         return get_openai(Config().api_base,Config().api_key,Config().api_name)
     elif name == 'ollama':

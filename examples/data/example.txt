@@ -1,0 +1,1 @@
+This is an example file. It contains some text. The text is about the capital of France. The capital of France is Paris. The text is about the capital of China. The capital of China is Beijing.

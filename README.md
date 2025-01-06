@@ -37,6 +37,8 @@
 
 ## :mega: Updates
 
+- **2025-01.06: Add ollama LLM support.**
+- **2025-01.05: Add generate command. Now you can generate your own QA pairs from a folder which contains your documents.**
 - **2024-12.23: XRAG Documentation is released**🌈.
 - **2024-12.20: XRAG is released**🎉.
 ---
@@ -82,6 +84,7 @@ XRAG is a benchmarking framework designed to evaluate the foundational component
   - Detailed evaluation reports and visualizations
 
 ---
+
 ## 🌐 WebUI Demo
 
 XRAG provides an intuitive web interface for interactive evaluation and visualization. Launch it with:
@@ -130,7 +133,8 @@ Test your RAG system interactively:
 ### 5. Comprehensive Evaluation
 <img src="imgs/eval2.png" width="100%" align="center" alt="Evaluation Metrics" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
 <img src="imgs/eval3.png" width="100%" align="center" alt="Evaluation Dashboard" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
----
+
+
 ## 🛠️ Installation
 
 Before installing XRAG, ensure that you have Python 3.11 or later installed.
@@ -203,6 +207,12 @@ xrag-cli [command] [options]
   xrag-cli help
   ```
 
+- **generate**: Generate QA pairs from a folder.
+
+  ```bash
+  xrag-cli generate -i <input_file> -o <output_file> -n <num_questions> -s <sentence_length>
+  ```
+
 ### **Overriding Configuration Parameters**
 
 Use the `--override` flag followed by key-value pairs to override configuration settings:
@@ -210,6 +220,14 @@ Use the `--override` flag followed by key-value pairs to override configuration 
 ```bash
 xrag-cli run --override embeddings="new-embedding-model"
 ```
+
+### **Generate QA pairs from a folder**
+
+```bash
+xrag-cli generate -i <input_file> -o <output_file> -n <num_questions> -s <sentence_length>
+```
+
+Automatically generate QA pairs from a folder.
 
 ---
 
@@ -225,7 +243,9 @@ api_name = "gpt-4o"     # Model name
 auth_token = "hf_xxx"        # Hugging Face auth token
 
 [settings]
-llm = "chatgpt-3.5"
+llm = "openai" # openai, huggingface, ollama
+ollama_model = "llama2:7b" # ollama model name
+huggingface_model = "llama" # huggingface model name
 embeddings = "BAAI/bge-large-en-v1.5"
 split_type = "sentence"
 chunk_size = 128
