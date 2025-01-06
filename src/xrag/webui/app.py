@@ -438,23 +438,7 @@ def main():
 
         cfg.llm = st.selectbox("LLM", options=LLM_OPTIONS, index=LLM_OPTIONS.index(cfg.llm) if cfg.llm in LLM_OPTIONS else 0)
         if cfg.llm == "ollama":
-            # 先选择模型系列
-            model_family = st.selectbox(
-                "Ollama Model Family",
-                options=list(OLLAMA_OPTIONS.keys())
-            )
-            
-            # 然后选择具体模型
-            if model_family:
-                model_name = st.selectbox(
-                    "Ollama Model",
-                    options=list(OLLAMA_OPTIONS[model_family].keys()),
-                    format_func=lambda x: f"{x} ({OLLAMA_OPTIONS[model_family][x]})"
-                )
-                if model_name and model_name != 'other':
-                    cfg.ollama_model = OLLAMA_OPTIONS[model_family][model_name]
-                else:
-                    cfg.ollama_model = st.text_input("Your Ollama Model", value=cfg.ollama_model)
+            cfg.ollama_model = st.text_input("Your Ollama Model", value=cfg.ollama_model)
         elif cfg.llm == 'huggingface':
             cfg.huggingface_model = st.selectbox("HuggingFace Model", options=HF_MODEL_OPTIONS, index=HF_MODEL_OPTIONS.index(cfg.huggingface_model) if cfg.huggingface_model in HF_MODEL_OPTIONS else 0)
             cfg.auth_token = st.text_input("Your Auth Token", value=cfg.auth_token)
