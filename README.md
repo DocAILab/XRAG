@@ -37,6 +37,7 @@
 
 ## :mega: Updates
 
+- **2025-01.06: Add ollama LLM support.**
 - **2025-01.05: Add generate command. Now you can generate your own QA pairs from a folder which contains your documents.**
 - **2024-12.23: XRAG Documentation is released**🌈.
 - **2024-12.20: XRAG is released**🎉.
@@ -242,7 +243,9 @@ api_name = "gpt-4o"     # Model name
 auth_token = "hf_xxx"        # Hugging Face auth token
 
 [settings]
-llm = "chatgpt-3.5"
+llm = "openai" # openai, huggingface, ollama
+ollama_model = "llama2:7b" # ollama model name
+huggingface_model = "llama" # huggingface model name
 embeddings = "BAAI/bge-large-en-v1.5"
 split_type = "sentence"
 chunk_size = 128
