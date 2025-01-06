@@ -33,6 +33,23 @@ AVAILABLE_METRICS = [
 # Define options for each dropdown
 LLM_OPTIONS = [
     # huggingface models
+    # 'llama',      # meta-llama/Llama-2-7b-chat-hf
+    # 'chatglm',    # THUDM/chatglm3-6b
+    # 'qwen',       # Qwen/Qwen1.5-7B-Chat
+    # 'qwen14_int8',# Qwen/Qwen1.5-14B-Chat-GPTQ-Int8
+    # 'qwen7_int8', # Qwen/Qwen1.5-7B-Chat-GPTQ-Int8
+    # 'qwen1.8',    # Qwen/Qwen1.5-1.8B-Chat
+    # 'baichuan',   # baichuan-inc/Baichuan2-7B-Chat
+    # 'falcon',     # tiiuae/falcon-7b-instruct
+    # 'mpt',        # mosaicml/mpt-7b-chat
+    # 'yi',         # 01-ai/Yi-6B-Chat
+
+    'openai',     # OpenAI API
+    'huggingface',# HuggingFace local models
+    'ollama',     # Ollama local models
+]
+
+HF_MODEL_OPTIONS = [
     'llama',      # meta-llama/Llama-2-7b-chat-hf
     'chatglm',    # THUDM/chatglm3-6b
     'qwen',       # Qwen/Qwen1.5-7B-Chat
@@ -43,12 +60,6 @@ LLM_OPTIONS = [
     'falcon',     # tiiuae/falcon-7b-instruct
     'mpt',        # mosaicml/mpt-7b-chat
     'yi',         # 01-ai/Yi-6B-Chat
-
-    # openai
-    'openai',     # OpenAI API
-
-    # ollama
-    'ollama',     # Ollama local models
 ]
 
 # ollama cascade dict
@@ -74,7 +85,8 @@ OLLAMA_OPTIONS = {
         "gemma-7b": "gemma:7b",
         "codellama": "codellama",
         "neural-chat": "neural-chat",
-    }
+        "other": "other"
+    },
 }
 
 EMBEDDING_OPTIONS = ["BAAI/bge-large-en-v1.5", "BAAI/bge-m3", "BAAI/bge-base-en-v1.5","BAAI/bge-small-en-v1.5","BAAI/bge-large-zh-v1.5","BAAI/bge-base-zh-v1.5","BAAI/bge-small-zh-v1.5"]  # Add more as needed
@@ -333,6 +345,7 @@ def main():
         cfg.dataset = chosen_backend_dataset
         # custom dataset
         st.markdown("---")
+        st.markdown("## Or your own dataset")
         tab1, tab2 = st.tabs(["Upload JSON", "Generate from Folder"])
         
         with tab1:
@@ -421,43 +434,41 @@ def main():
 
     if st.session_state.step == 2:
         st.header("Configure your RAG Index")
-        # st.markdown("Selected Dataset: " + cfg.dataset)
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            # API Keys
-            st.subheader("API Keys")
+        st.subheader("Settings")
+
+        cfg.llm = st.selectbox("LLM", options=LLM_OPTIONS, index=LLM_OPTIONS.index(cfg.llm) if cfg.llm in LLM_OPTIONS else 0)
+        if cfg.llm == "ollama":
+            # 先选择模型系列
+            model_family = st.selectbox(
+                "Ollama Model Family",
+                options=list(OLLAMA_OPTIONS.keys())
+            )
+            
+            # 然后选择具体模型
+            if model_family:
+                model_name = st.selectbox(
+                    "Ollama Model",
+                    options=list(OLLAMA_OPTIONS[model_family].keys()),
+                    format_func=lambda x: f"{x} ({OLLAMA_OPTIONS[model_family][x]})"
+                )
+                if model_name and model_name != 'other':
+                    cfg.ollama_model = OLLAMA_OPTIONS[model_family][model_name]
+                else:
+                    cfg.ollama_model = st.text_input("Your Ollama Model", value=cfg.ollama_model)
+        elif cfg.llm == 'huggingface':
+            cfg.huggingface_model = st.selectbox("HuggingFace Model", options=HF_MODEL_OPTIONS, index=HF_MODEL_OPTIONS.index(cfg.huggingface_model) if cfg.huggingface_model in HF_MODEL_OPTIONS else 0)
+            cfg.auth_token = st.text_input("Your Auth Token", value=cfg.auth_token)
+        elif cfg.llm == 'openai':
             cfg.api_key = st.text_input("API Key", value=cfg.api_key, type="password")
             cfg.api_base = st.text_input("API Base", value=cfg.api_base)
-            cfg.api_name = st.text_input("API Name", value=cfg.api_name)
-            cfg.auth_token = st.text_input("Auth Token", value=cfg.auth_token)
+            cfg.api_name = st.text_input("Model Name", value=cfg.api_name)
 
-        with col2:
-
-            # Settings
-            st.subheader("Settings")
-
-            cfg.llm = st.selectbox("LLM", options=LLM_OPTIONS, index=LLM_OPTIONS.index(cfg.llm) if cfg.llm in LLM_OPTIONS else 0)
-            if cfg.llm == "ollama":
-                # 先选择模型系列
-                model_family = st.selectbox(
-                    "Ollama Model Family",
-                    options=list(OLLAMA_OPTIONS.keys())
-                )
-                
-                # 然后选择具体模型
-                if model_family:
-                    model_name = st.selectbox(
-                        "Ollama Model",
-                        options=list(OLLAMA_OPTIONS[model_family].keys()),
-                        format_func=lambda x: f"{x} ({OLLAMA_OPTIONS[model_family][x]})"
-                    )
-                    if model_name:
-                        cfg.ollama_model = OLLAMA_OPTIONS[model_family][model_name]
-            cfg.embeddings = st.selectbox("Embeddings", options=EMBEDDING_OPTIONS, index=EMBEDDING_OPTIONS.index(cfg.embeddings) if cfg.embeddings in EMBEDDING_OPTIONS else 0)
-            cfg.split_type = st.selectbox("Split Type", options=SPLIT_TYPE_OPTIONS, index=SPLIT_TYPE_OPTIONS.index(cfg.split_type))
-            cfg.chunk_size = st.number_input("Chunk Size", min_value=1, value=cfg.chunk_size, step=1)
-            # cfg.source_dir = st.text_input("Source Directory", value=cfg.source_dir)
-            cfg.persist_dir = st.text_input("Persist Directory", value=cfg.persist_dir)
+        st.markdown("---")
+        cfg.embeddings = st.selectbox("Embeddings", options=EMBEDDING_OPTIONS, index=EMBEDDING_OPTIONS.index(cfg.embeddings) if cfg.embeddings in EMBEDDING_OPTIONS else 0)
+        cfg.split_type = st.selectbox("Split Type", options=SPLIT_TYPE_OPTIONS, index=SPLIT_TYPE_OPTIONS.index(cfg.split_type))
+        cfg.chunk_size = st.number_input("Chunk Size", min_value=1, value=cfg.chunk_size, step=1)
+        # cfg.source_dir = st.text_input("Source Directory", value=cfg.source_dir)
+        cfg.persist_dir = st.text_input("Persist Directory", value=cfg.persist_dir)
 
         # 返回或者继续
         c1,c_,c2 = st.columns([1,4,1])
