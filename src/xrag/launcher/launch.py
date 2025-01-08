@@ -101,11 +101,11 @@ def eval_cli(qa_dataset, query_engine):
         evaluateResults.print_results()
         print("总数：" + str(all_num))
     return evaluateResults
-def run(cli=True):
+def run(cli=True, custom_dataset=None):
 
     seed_everything(42)
     cfg = Config()
-    qa_dataset = get_qa_dataset(cfg.dataset)
+    qa_dataset = get_qa_dataset(cfg.dataset, custom_dataset)
     index, hierarchical_storage_context = build_index(qa_dataset['documents'])
     query_engine = build_query_engine(index, hierarchical_storage_context)
     if cli:

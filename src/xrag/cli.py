@@ -47,6 +47,7 @@ def main():
     # 'run' command
     run_parser = subparsers.add_parser('run', help='Run the application')
     run_parser.add_argument('--override', nargs='*', help='Override config values (e.g., --override key1=value1 key2=value2)')
+    run_parser.add_argument('-c', '--custom_dataset', default='', type=str, help='Custom dataset json path')
 
     # Other commands
     subparsers.add_parser('webui', help='Run the web UI')
@@ -75,7 +76,10 @@ def main():
         # Update the Config instance
         config = Config()
         config.update_config(config_overrides)
-        run()
+        if args.custom_dataset:
+            run(custom_dataset=args.custom_dataset)
+        else:
+            run()
     elif args.command == Command.WEBUI:
         run_web_ui()
     elif args.command == Command.VER:
