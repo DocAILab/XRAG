@@ -13,6 +13,7 @@ embeddings = "BAAI/bge-large-en-v1.5"
 split_type = "sentence"
 chunk_size = 128
 dataset = "hotpot_qa"
+# dataset_path = "data/xxx.json" # If dataset is custom, set the path to the custom dataset
 persist_dir = "storage"
 llamaIndexEvaluateModel = "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8"
 deepEvalEvaluateModel = "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8"

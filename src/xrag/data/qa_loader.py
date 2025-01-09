@@ -819,97 +819,9 @@ def generate_qa_from_folder(folder_path: str, output_file: str, num_questions_pe
         num_questions_per_file: 每个文件生成的问题数量
     """
     # 转换为绝对路径
-    folder_path = os.path.abspath(folder_path)
     output_file = os.path.abspath(output_file)
-    
-    print(f"Loading files from: {folder_path}")
-    
-    # 检查文件夹是否存在
-    if not os.path.exists(folder_path):
-        # 尝试从当前工作目录查找
-        cwd_path = os.path.join(os.getcwd(), folder_path)
-        if os.path.exists(cwd_path):
-            folder_path = cwd_path
-        else:
-            # 尝试从包安装目录查找
-            package_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-            pkg_path = os.path.join(package_path, folder_path)
-            if os.path.exists(pkg_path):
-                folder_path = pkg_path
-            else:
-                raise Exception(f"Folder not found in any of these locations:\n"
-                              f"1. {folder_path}\n"
-                              f"2. {cwd_path}\n"
-                              f"3. {pkg_path}")
-    
-    print(f"Using folder path: {folder_path}")
-    
-    # 检查文件夹中的文件
-    files = []
-    for root, _, filenames in os.walk(folder_path):
-        for filename in filenames:
-            files.append(os.path.join(root, filename))
-    print(f"Found files: {files}")
-    
-    # 确保安装必要的依赖
-    try:
-        import pypdf
-    except ImportError:
-        print("Installing required dependencies...")
-        import subprocess
-        subprocess.check_call(["pip", "install", "pypdf"])
-        import pypdf
 
-    # 手动加载文档
-    docs = []
-    for file_path in files:
-        try:
-            if file_path.lower().endswith('.pdf'):
-                print(f"Loading PDF file: {file_path}")
-                # 检查文件是否存在和可读
-                if not os.path.exists(file_path):
-                    print(f"File not found: {file_path}")
-                    continue
-                if not os.access(file_path, os.R_OK):
-                    print(f"File not readable: {file_path}")
-                    continue
-                
-                # 使用 pypdf 直接读取 PDF
-                try:
-                    with open(file_path, 'rb') as file:  # 使用二进制模式打开
-                        pdf_reader = pypdf.PdfReader(file)
-                        text = ""
-                        for page in pdf_reader.pages:
-                            text += page.extract_text() + "\n"
-                        if text.strip():  # 确保提取到了文本
-                            docs.append(Document(
-                                text=text,
-                                metadata={
-                                    'file_path': file_path,
-                                    'file_name': os.path.basename(file_path)
-                                }
-                            ))
-                            print(f"Successfully loaded PDF: {file_path}")
-                        else:
-                            print(f"Warning: No text extracted from PDF: {file_path}")
-                except Exception as e:
-                    print(f"Error reading PDF {file_path}: {str(e)}")
-                    import traceback
-                    traceback.print_exc()
-            else:
-                # 使用 SimpleDirectoryReader 读取非 PDF 文件
-                reader = SimpleDirectoryReader(
-                    input_files=[file_path],
-                    filename_as_id=True
-                )
-                file_docs = reader.load_data()
-                docs.extend(file_docs)
-                print(f"Successfully loaded: {file_path}")
-        except Exception as e:
-            print(f"Error loading file {file_path}: {str(e)}")
-            import traceback
-            traceback.print_exc()
-            continue
+    docs = get_dataset(folder_path)
 
     if len(docs) == 0:
         raise Exception("No documents were successfully loaded")
@@ -1079,6 +991,101 @@ def test_file_loading(folder_path: str):
         import traceback
         print("Full traceback:")
         traceback.print_exc()
+        
+def get_dataset(dataset_path: str):
+    folder_path = os.path.abspath(dataset_path)
+    print(f"Loading files from: {folder_path}")
+    
+    # 检查文件夹是否存在
+    if not os.path.exists(folder_path):
+        # 尝试从当前工作目录查找
+        cwd_path = os.path.join(os.getcwd(), folder_path)
+        if os.path.exists(cwd_path):
+            folder_path = cwd_path
+        else:
+            # 尝试从包安装目录查找
+            package_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+            pkg_path = os.path.join(package_path, folder_path)
+            if os.path.exists(pkg_path):
+                folder_path = pkg_path
+            else:
+                raise Exception(f"Folder not found in any of these locations:\n"
+                              f"1. {folder_path}\n"
+                              f"2. {cwd_path}\n"
+                              f"3. {pkg_path}")
+    
+    print(f"Using folder path: {folder_path}")
+    
+    # 检查文件夹中的文件
+    files = []
+    for root, _, filenames in os.walk(folder_path):
+        for filename in filenames:
+            files.append(os.path.join(root, filename))
+    print(f"Found files: {files}")
+    
+    # 确保安装必要的依赖
+    try:
+        import pypdf
+    except ImportError:
+        print("Installing required dependencies...")
+        import subprocess
+        subprocess.check_call(["pip", "install", "pypdf"])
+        import pypdf
+
+    # 手动加载文档
+    docs = []
+    for file_path in files:
+        try:
+            if file_path.lower().endswith('.pdf'):
+                print(f"Loading PDF file: {file_path}")
+                # 检查文件是否存在和可读
+                if not os.path.exists(file_path):
+                    print(f"File not found: {file_path}")
+                    continue
+                if not os.access(file_path, os.R_OK):
+                    print(f"File not readable: {file_path}")
+                    continue
+                
+                # 使用 pypdf 直接读取 PDF
+                try:
+                    with open(file_path, 'rb') as file:  # 使用二进制模式打开
+                        pdf_reader = pypdf.PdfReader(file)
+                        text = ""
+                        for page in pdf_reader.pages:
+                            text += page.extract_text() + "\n"
+                        if text.strip():  # 确保提取到了文本
+                            docs.append(Document(
+                                text=text,
+                                metadata={
+                                    'file_path': file_path,
+                                    'file_name': os.path.basename(file_path)
+                                }
+                            ))
+                            print(f"Successfully loaded PDF: {file_path}")
+                        else:
+                            print(f"Warning: No text extracted from PDF: {file_path}")
+                except Exception as e:
+                    print(f"Error reading PDF {file_path}: {str(e)}")
+                    import traceback
+                    traceback.print_exc()
+            else:
+                # 使用 SimpleDirectoryReader 读取非 PDF 文件
+                reader = SimpleDirectoryReader(
+                    input_files=[file_path],
+                    filename_as_id=True
+                )
+                file_docs = reader.load_data()
+                docs.extend(file_docs)
+                print(f"Successfully loaded: {file_path}")
+        except Exception as e:
+            print(f"Error loading file {file_path}: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            continue
+        
+    return docs
+        
+        
 
 if __name__=='__main__':
     # 测试文件加载

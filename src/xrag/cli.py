@@ -36,6 +36,7 @@ class Command(str, Enum):
     VER = "version"
     GENERATE = "generate"
     HELP = "help"
+    API = "api"
 
 def main():
     # Initialize the argument parser
@@ -53,6 +54,14 @@ def main():
     subparsers.add_parser('webui', help='Run the web UI')
     subparsers.add_parser('version', help='Show version')
     subparsers.add_parser('help', help='Show help')
+    
+    # API command
+    api_parser = subparsers.add_parser('api', help='Run the API server')
+    api_parser.add_argument('--host', type=str, default='0.0.0.0', help='API server host')
+    api_parser.add_argument('--port', type=int, default=8000, help='API server port')
+    api_parser.add_argument('--json_path', type=str, default='', help='JSON file path')
+    api_parser.add_argument('--dataset_folder', type=str, default='', help='Dataset folder path')
+
     generate_parser = subparsers.add_parser('generate', help='Generate QA pairs')
     generate_parser.add_argument('-i', '--input', type=str, help='Input file path')
     generate_parser.add_argument('-o', '--output', type=str, help='Output file path')
@@ -88,5 +97,8 @@ def main():
         parser.print_help()
     elif args.command == Command.GENERATE:
         generate_qa_from_folder(args.input, args.output, args.num, args.sentence_length)
+    elif args.command == Command.API:
+        from .api.server import run_api_server
+        run_api_server(host=args.host, port=args.port, json_path=args.json_path, dataset_folder=args.dataset_folder)
     else:
         print(f"Unknown command: {args.command}")
