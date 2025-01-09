@@ -5,7 +5,7 @@ import uvicorn
 
 from ..launcher.launch import build_index, build_query_engine
 from ..config import Config
-from ..process.query_transform import transform_and_query
+from ..process.query_transform import transform_and_query_async
 from ..data.qa_loader import get_qa_dataset, get_dataset
 
 app = FastAPI(
@@ -55,8 +55,8 @@ async def startup_event():
     else:
         documents = get_qa_dataset(config.dataset)['documents']
     index, hierarchical_storage_context = build_index(documents)
-    # 构建查询引擎
-    query_engine = build_query_engine(index, hierarchical_storage_context)
+    # 构建查询引擎，使用异步模式
+    query_engine = build_query_engine(index, hierarchical_storage_context, use_async=True)
 
 @app.post("/query", response_model=QueryResponse)
 async def query(request: QueryRequest):
@@ -64,8 +64,8 @@ async def query(request: QueryRequest):
         raise HTTPException(status_code=500, detail="Query engine not initialized")
     
     try:
-        # 使用 transform_and_query 处理查询
-        response = transform_and_query(request.query, config, query_engine)
+        # 使用异步版本的查询函数
+        response = await transform_and_query_async(request.query, config, query_engine)
         
         # 构造返回结果
         sources = []

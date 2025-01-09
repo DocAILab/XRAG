@@ -44,8 +44,7 @@ def build_index(documents):
 
     return index, hierarchical_storage_context
 
-def build_query_engine(index, hierarchical_storage_context):
-
+def build_query_engine(index, hierarchical_storage_context, use_async=False):
     cfg = Config()
     query_engine = RetrieverQueryEngine(
         retriever=get_retriver(cfg.retriever, index, hierarchical_storage_context=hierarchical_storage_context),
@@ -60,9 +59,9 @@ def build_query_engine(index, hierarchical_storage_context):
     refine_template = PromptTemplate(refine_template_str)
 
     query_engine.update_prompts({"response_synthesizer:text_qa_template": text_qa_template,
-                                 "response_synthesizer:refine_template": refine_template})
-    query_engine = query_expansion([query_engine], query_number=4, similarity_top_k=10)
-    query_engine = RetrieverQueryEngine.from_args(query_engine)
+                                "response_synthesizer:refine_template": refine_template})
+    # query_engine = query_expansion([query_engine], query_number=4, similarity_top_k=10)
+    query_engine = RetrieverQueryEngine.from_args(query_engine, use_async=use_async)
 
     return query_engine
 

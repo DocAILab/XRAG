@@ -9,13 +9,118 @@ from llama_index.question_gen.openai import OpenAIQuestionGenerator
 from llama_index.core.schema import NodeWithScore, TextNode
 
 from ..llms import llm
+
+# 定义模板字符串
+ZEROSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL = """\
+You are a world class state of the art agent.
+
+You have access to multiple tools, each representing a different data source or API.
+Each of the tools has a name and a description, formatted as a JSON dictionary.
+The keys of the dictionary are the names of the tools and the values are the \
+descriptions.
+Your purpose is to help answer a complex user question by generating a list of sub \
+questions that can be answered by the tools.
+
+These are the guidelines you consider when completing your task:
+* Be as specific as possible
+* The sub questions should be relevant to the user question
+* The sub questions should be answerable by the tools provided
+* You can generate multiple sub questions for each tool
+* Tools must be specified by their name, not their description
+* You don't need to use a tool if you don't think it's relevant
+
+Output the list of sub questions by calling the SubQuestionList function.
+
+## Tools
+```json
+{tools_str}
+```
+
+## User Question
+{query_str}
+"""
+
+FEWSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL = """\
+You are a world class state of the art agent.
+
+You have access to multiple tools, each representing a different data source or API.
+Each of the tools has a name and a description, formatted as a JSON dictionary.
+The keys of the dictionary are the names of the tools and the values are the \
+descriptions.
+Your purpose is to help answer a complex user question by generating a list of sub \
+questions that can be answered by the tools.
+
+These are the guidelines you consider when completing your task:
+* Be as specific as possible
+* The sub questions should be relevant to the user question
+* The sub questions should be answerable by the tools provided
+* You can generate multiple sub questions for each tool
+* Tools must be specified by their name, not their description
+* You don't need to use a tool if you don't think it's relevant
+
+Here are a few examples:
+
+1.
+Question: What type of media does Tar Creek and Before Stonewall have in common?
+Sub questions:
+- What is the media type of Tar Creek?
+- What is the media type of Before Stonewall?
+
+2.
+Question: Which documentary was created first, Murderball or Year at Danger?
+Sub questions: 
+- When was the documentary "Murderball" created?
+- When was the documentary "Year at Danger" created?
+
+3.
+Question: How was Paul Grahams life different before, during, and after YC?
+Sub questions:
+- What did Paul Graham work on before YC?
+- What did Paul Graham work on during YC?
+- What did Paul Graham work on after YC?
+
+4.
+Question: What role did Ed Roland and Adam Duritz perform in their respective bands, Collective Soul and Counting Crows?
+Sub questions: 
+- What role did Ed Roland perform in the band Collective Soul?
+- What role did Adam Duritz perform in the band Counting Crows?
+
+5.
+Question: Did Down and Out in America or Lost in La Mancha win more awards?
+Sub questions: 
+- How many awards did the movie "Down and Out in America" win?
+- How many awards did the movie "Lost in La Mancha" win?
+
+Output the list of sub questions by calling the SubQuestionList function.
+
+## Tools
+```json
+{tools_str}
+```
+
+## User Question
+{query_str}
+"""
+
 def transform_and_query(query, cfg, query_engine):
+    """同步版本的查询转换函数"""
     if cfg.query_transform == "subquery_zeroshot":
-        return subquery_zeroshot(query, query_engine)
+        return subquery_zeroshot_sync(query, query_engine)
     elif cfg.query_transform == "subquery_fewshot":
-        return subquery_fewshot(query, query_engine)
+        return subquery_fewshot_sync(query, query_engine)
     else:
-        return query_engine.query(transform(llm, query, cfg))
+        transformed_query = transform(llm, query, cfg)
+        return query_engine.query(transformed_query)
+
+async def transform_and_query_async(query, cfg, query_engine):
+    """异步版本的查询转换函数"""
+    if cfg.query_transform == "subquery_zeroshot":
+        return await subquery_zeroshot(query, query_engine)
+    elif cfg.query_transform == "subquery_fewshot":
+        return await subquery_fewshot(query, query_engine)
+    else:
+        transformed_query = transform(llm, query, cfg)
+        return await query_engine.aquery(transformed_query)
 
 
 def transform(llm, query, cfg):
@@ -173,7 +278,8 @@ def stepback_fewshot(query, llm=llm):
     return stepback(query, stepback_query_gen_str_fewshot, llm=llm)
 
 
-def subquery(query, prompt_template_str, query_engine):
+def subquery_sync(query, prompt_template_str, query_engine):
+    """同步版本的 subquery 函数"""
     query_engine_tools = [
         QueryEngineTool(
             query_engine=query_engine,
@@ -194,108 +300,13 @@ def subquery(query, prompt_template_str, query_engine):
 
     return subquery_engine.query(query)
 
+def subquery_zeroshot_sync(query, query_engine):
+    """同步版本的 subquery_zeroshot 函数"""
+    return subquery_sync(query, ZEROSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL, query_engine)
 
-def subquery_zeroshot(query, query_engine):
-    """
-    Query拆解 - Subquery - zeroshot
-    """
-    ZEROSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL = """\
-    You are a world class state of the art agent.
-
-    You have access to multiple tools, each representing a different data source or API.
-    Each of the tools has a name and a description, formatted as a JSON dictionary.
-    The keys of the dictionary are the names of the tools and the values are the \
-    descriptions.
-    Your purpose is to help answer a complex user question by generating a list of sub \
-    questions that can be answered by the tools.
-
-    These are the guidelines you consider when completing your task:
-    * Be as specific as possible
-    * The sub questions should be relevant to the user question
-    * The sub questions should be answerable by the tools provided
-    * You can generate multiple sub questions for each tool
-    * Tools must be specified by their name, not their description
-    * You don't need to use a tool if you don't think it's relevant
-
-    Output the list of sub questions by calling the SubQuestionList function.
-
-    ## Tools
-    ```json
-    {tools_str}
-    ```
-
-    ## User Question
-    {query_str}
-    """
-    return subquery(query, ZEROSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL, query_engine)
-
-
-def subquery_fewshot(query, query_engine):
-    """
-    Query拆解 - Subquery - fewshot
-    """
-    FEWSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL = """\
-    You are a world class state of the art agent.
-
-    You have access to multiple tools, each representing a different data source or API.
-    Each of the tools has a name and a description, formatted as a JSON dictionary.
-    The keys of the dictionary are the names of the tools and the values are the \
-    descriptions.
-    Your purpose is to help answer a complex user question by generating a list of sub \
-    questions that can be answered by the tools.
-
-    These are the guidelines you consider when completing your task:
-    * Be as specific as possible
-    * The sub questions should be relevant to the user question
-    * The sub questions should be answerable by the tools provided
-    * You can generate multiple sub questions for each tool
-    * Tools must be specified by their name, not their description
-    * You don't need to use a tool if you don't think it's relevant
-
-    Here are a few examples:
-
-    1.
-    Question: What type of media does Tar Creek and Before Stonewall have in common?
-    Sub questions:
-    - What is the media type of Tar Creek?
-    - What is the media type of Before Stonewall?
-
-    2.
-    Question: Which documentary was created first, Murderball or Year at Danger?
-    Sub questions: 
-    - When was the documentary "Murderball" created?
-    - When was the documentary "Year at Danger" created?
-
-    3.
-    Question: How was Paul Grahams life different before, during, and after YC?
-    Sub questions:
-    - What did Paul Graham work on before YC?
-    - What did Paul Graham work on during YC?
-    - What did Paul Graham work on after YC?
-
-    4.
-    Question: What role did Ed Roland and Adam Duritz perform in their respective bands, Collective Soul and Counting Crows?
-    Sub questions: 
-    - What role did Ed Roland perform in the band Collective Soul?
-    - What role did Adam Duritz perform in the band Counting Crows?
-
-    5.
-    Question: Did Down and Out in America or Lost in La Mancha win more awards?
-    Sub questions: 
-    - How many awards did the movie "Down and Out in America" win?
-    - How many awards did the movie "Lost in La Mancha" win?
-
-    Output the list of sub questions by calling the SubQuestionList function.
-
-    ## Tools
-    ```json
-    {tools_str}
-    ```
-
-    ## User Question
-    {query_str}
-    """
-    return subquery(query, FEWSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL, query_engine)
+def subquery_fewshot_sync(query, query_engine):
+    """同步版本的 subquery_fewshot 函数"""
+    return subquery_sync(query, FEWSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL, query_engine)
 
 
 class CustomSubQuestionQueryEngine(SubQuestionQueryEngine):
@@ -307,3 +318,33 @@ class CustomSubQuestionQueryEngine(SubQuestionQueryEngine):
             metadata = {}
         node = TextNode(text=node_text, metadata=metadata)
         return NodeWithScore(node=node)
+
+async def subquery(query, prompt_template_str, query_engine):
+    """异步版本的 subquery 函数"""
+    query_engine_tools = [
+        QueryEngineTool(
+            query_engine=query_engine,
+            metadata=ToolMetadata(
+                name="Data Source",
+                description="Data source for the query engine",
+            ),
+        )
+    ]
+
+    subquery_engine = CustomSubQuestionQueryEngine.from_defaults(
+        query_engine_tools=query_engine_tools,
+        use_async=True,
+        question_gen=OpenAIQuestionGenerator.from_defaults(
+            prompt_template_str=prompt_template_str
+        ),
+    )
+
+    return await subquery_engine.aquery(query)
+
+async def subquery_zeroshot(query, query_engine):
+    """异步版本的 subquery_zeroshot 函数"""
+    return await subquery(query, ZEROSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL, query_engine)
+
+async def subquery_fewshot(query, query_engine):
+    """异步版本的 subquery_fewshot 函数"""
+    return await subquery(query, FEWSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL, query_engine)

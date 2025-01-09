@@ -41,3 +41,6 @@ mauve-text
 streamlit
 streamlit-option-menu
 streamlit_card
+fastapi
+uvicorn
+pydantic
