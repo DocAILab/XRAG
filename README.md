@@ -213,6 +213,72 @@ xrag-cli [command] [options]
   xrag-cli generate -i <input_file> -o <output_file> -n <num_questions> -s <sentence_length>
   ```
 
+- **api**: Launch the API server for XRAG services.
+
+  ```bash
+  xrag-cli api [--host <host>] [--port <port>] [--json_path <json_path>] [--dataset_folder <dataset_folder>]
+  ```
+
+  Options:
+  - `--host`: API server host address (default: 0.0.0.0)
+  - `--port`: API server port number (default: 8000)
+  - `--json_path`: Path to the JSON configuration file
+  - `--dataset_folder`: Path to the dataset folder
+
+### **Using the API Service**
+
+Once the API server is running, you can interact with it using HTTP requests. Here are the available endpoints:
+
+#### 1. Query Endpoint
+
+Send a POST request to `/query` to get answers based on your documents:
+
+```bash
+curl -X POST "http://localhost:8000/query" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "query": "your question here",
+           "top_k": 3
+         }'
+```
+
+Response format:
+```json
+{
+    "answer": "Generated answer to your question",
+    "sources": [
+        {
+            "content": "Source document content",
+            "id": "document_id",
+            "score": 0.85
+        }
+    ]
+}
+```
+
+#### 2. Health Check
+
+Check the API server status with a GET request to `/health`:
+
+```bash
+curl "http://localhost:8000/health"
+```
+
+Response format:
+```json
+{
+    "status": "healthy",
+    "engine_status": "initialized"
+}
+```
+
+The API service supports both custom JSON datasets and folder-based documents:
+- Use `--json_path` for JSON format QA datasets
+- Use `--dataset_folder` for document folders
+- Do **not** set `--json_path` and `--dataset_folder` at the same time.
+
+  
+
 ### **Overriding Configuration Parameters**
 
 Use the `--override` flag followed by key-value pairs to override configuration settings:

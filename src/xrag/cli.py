@@ -5,7 +5,7 @@ from .webui import run_web_ui
 from .launcher import run
 from .config import Config
 from .data.qa_loader import generate_qa_from_folder
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 USAGE = (
     "-" * 70
     + "\n"
@@ -14,6 +14,7 @@ USAGE = (
     + "|   xrag-cli webui: launch XRAGBoard                        |\n"
     + "|   xrag-cli version: show version info                      |\n"
     + "|   xrag-cli generate -i <input_file> -o <output_file> -n <num_questions> -s <sentence_length>: generate QA pairs from a folder |\n"
+    + "|   xrag-cli api --host <host> --port <port> --json_path <json_path> --dataset_folder <dataset_folder>: run the API server |\n"
     + "-" * 70
 )
 

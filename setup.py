@@ -18,7 +18,7 @@ extra_require = {
 def main():
     setup(
         name="examinationrag",
-        version='0.1.2',
+        version='0.1.3',
         author="DocAILab",
         author_email="luoyangyifei@buaa.edu.cn",
         description="XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation",
