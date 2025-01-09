@@ -37,6 +37,7 @@
 
 ## :mega: Updates
 
+- **2025-01.09: Add API support. Now you can use XRAG as a backend service.**
 - **2025-01.06: Add ollama LLM support.**
 - **2025-01.05: Add generate command. Now you can generate your own QA pairs from a folder which contains your documents.**
 - **2024-12.23: XRAG Documentation is released**🌈.
@@ -333,6 +334,17 @@ persist_dir = "storage"
 ---
 
 ## 📝 Changelog
+
+
+### Version 0.1.3
+
+- Add API support. Now you can use XRAG as a backend service.
+
+### Version 0.1.2
+- Add ollama LLM support.
+
+### Version 0.1.1
+- Add generate command. Now you can generate your own QA pairs from a folder which contains your documents.
 
 ### Version 0.1.0
 
