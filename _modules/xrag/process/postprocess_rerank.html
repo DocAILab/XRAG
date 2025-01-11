@@ -15,8 +15,8 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!-- 
-    this give us a css class that will be invisible only if js is disabled 
+  <!--
+    this give us a css class that will be invisible only if js is disabled
   -->
   <noscript>
     <style>
@@ -26,24 +26,23 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=a681ed88"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/xrag/process/postprocess_rerank';</script>
-    <link rel="canonical" href="https://docailab.github.io/XRAG/_modules/xrag/process/postprocess_rerank.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -137,23 +136,63 @@
 </button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Documentation:</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../modules.html">xrag</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../xrag.html">xrag package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.data.html">xrag.data package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.embs.html">xrag.embs package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.eval.html">xrag.eval package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.index.html">xrag.index package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.launcher.html">xrag.launcher package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.llms.html">xrag.llms package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.process.html">xrag.process package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.retrievers.html">xrag.retrievers package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.webui.html">xrag.webui package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.cli.html">xrag.cli module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../xrag.config.html">xrag.config module</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../getting-started/getting-started.html">Getting Started</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/installation.html">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting-started/quickstart.html">QuickStart</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../data/data.html">Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../data/XRAG_Data_Schema.html">XRAG_Data_Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../data/Load_XRAG_Data.html">Load XRAG Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../data/Prepare_Your_Data.html">Prepare Your Data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../index/index.html">Index</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../index/EmbeddingModule.html">EmbeddingModule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../index/VectorIndex.html">VectorIndex</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../config/config.html">Config</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../config/API_KEYs.html">API_KEYS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../config/Parameters_Setting.html">Parameters_Setting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../config/XRAG_Prompts.html">XRAG_Prompts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../config/XRAG_Lanucher.html">XRAG_Lanucher</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../advanced-modules/advanced-modules.html">Advanced modules</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced-modules/Pre-retrieval.html">Pre-retrieval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced-modules/Retrieval.html">Retrieval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced-modules/Post-retrieval.html">Post-retrieval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../advanced-modules/Generator.html">Generator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../evaluation/evaluation.html">Evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../evaluation/ConR_Evaluation.html">ConR_Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../evaluation/ConG_Evaluation.html">ConG_Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../evaluation/CogL_Evaluation.html">CogL_Evaluation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../serving/serving.html">Serving</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../serving/Interactive_Webui.html">Interactive Web UI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../serving/Ollama.html">Ollama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../serving/XRAG_API.html">XRAG APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../serving/XRAG_CLI.html">XRAG Cli</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api-reference/api-reference.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.data.html">xrag.data package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.embs.html">xrag.embs package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.eval.html">xrag.eval package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.index.html">xrag.index package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.launcher.html">xrag.launcher package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.llms.html">xrag.llms package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.process.html">xrag.process package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.retrievers.html">xrag.retrievers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.webui.html">xrag.webui package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.cli.html">xrag.cli module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api-reference/xrag.config.html">xrag.config module</a></li>
 </ul>
 </details></li>
 </ul>
@@ -164,9 +203,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -260,7 +304,7 @@
 <span class="c1"># !pip install llama-index-postprocessor-cohere-rerank</span>
 
 <div class="viewcode-block" id="get_postprocessor">
-<a class="viewcode-back" href="../../../xrag.process.html#xrag.process.postprocess_rerank.get_postprocessor">[docs]</a>
+<a class="viewcode-back" href="../../../api-reference/xrag.process.html#xrag.process.postprocess_rerank.get_postprocessor">[docs]</a>
 <span class="k">def</span> <span class="nf">get_postprocessor</span><span class="p">(</span><span class="n">cfg</span><span class="p">):</span>
     <span class="c1"># postprocess rerank, available: long_context_reorder, colbertv2_rerank, cohere_rerank, bge-reranker-base</span>
     <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">postprocess_rerank</span> <span class="o">==</span> <span class="s1">&#39;long_context_reorder&#39;</span><span class="p">:</span>
@@ -336,8 +380,8 @@ By XRAG
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
