@@ -6,8 +6,11 @@
 
 .. You can directly write the docs in corresponding *.md files, just like the "getting-started.md" file -- hzt
 
-XRAG documentation
+
+Welcome to XRAG’s documentation!
 ==================
+XRAG is a benchmarking framework designed to evaluate the foundational components of advanced Retrieval-Augmented Generation (RAG) systems. By dissecting and analyzing each core module, XRAG provides insights into how different configurations and components impact the overall performance of RAG systems.
+
 
 
 .. toctree::
