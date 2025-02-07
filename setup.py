@@ -18,7 +18,7 @@ extra_require = {
 def main():
     setup(
         name="examinationrag",
-        version='0.1.3',
+        version='0.1.4',
         author="DocAILab",
         author_email="luoyangyifei@buaa.edu.cn",
         description="XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation",
@@ -29,6 +29,9 @@ def main():
         url="https://github.com/DocAILab/XRAG",
         package_dir={"": "src"},
         packages=find_packages("src"),
+        package_data={
+            "xrag": ["default_config.toml"],
+        },
         python_requires=">=3.9.0",
         install_requires=get_requires(),
         extras_require=extra_require,

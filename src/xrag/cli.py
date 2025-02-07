@@ -5,7 +5,7 @@ from .webui import run_web_ui
 from .launcher import run
 from .config import Config
 from .data.qa_loader import generate_qa_from_folder
-VERSION = "0.1.3"
+VERSION = "0.1.4"
 USAGE = (
     "-" * 70
     + "\n"
