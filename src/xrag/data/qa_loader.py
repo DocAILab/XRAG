@@ -415,7 +415,9 @@ def get_qa_dataset(dataset_name:str,files=None):
                 answers.append(answer)
                 title = d['document']['title']
                 documents.append(title)
-                text = [token for token,is_html in zip(d['document']['tokens']['token'],d['document']['tokens']['is_html']) if not is_html]
+                start_token = d['annotations']['long_answer'][0]['start_token']
+                end_token = d['annotations']['long_answer'][0]['end_token']
+                text = [token for token, is_html in zip(d['document']['tokens']['token'][start_token:end_token], d['document']['tokens']['is_html'][start_token:end_token]) if not is_html]
                 text = ' '.join(text)
                 texts.append(text)
                 if title not in title2sentences:
@@ -1094,7 +1096,7 @@ if __name__=='__main__':
     # custom_qa_dataset = get_qa_dataset('custom', './examples/example.json')
     # print(custom_qa_dataset)
 
-    drop = get_qa_dataset('drop')
+    drop = get_qa_dataset('natural_questions')
     print(drop)
 
     custom_qa_dataset = get_qa_dataset('custom', './examples/example.json')
