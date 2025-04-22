@@ -7,8 +7,8 @@ from llama_index.core.tools import QueryEngineTool, ToolMetadata
 from llama_index.core.query_engine import SubQuestionQueryEngine
 from llama_index.question_gen.openai import OpenAIQuestionGenerator
 from llama_index.core.schema import NodeWithScore, TextNode
-
-from ..llms import llm
+from llama_index.core import Settings
+# from ..llms import llm
 
 # 定义模板字符串
 ZEROSHOT_OPENAI_SUB_QUESTION_PROMPT_TMPL = """\
@@ -109,7 +109,7 @@ def transform_and_query(query, cfg, query_engine):
     elif cfg.query_transform == "subquery_fewshot":
         return subquery_fewshot_sync(query, query_engine)
     else:
-        transformed_query = transform(llm, query, cfg)
+        transformed_query = transform(query, cfg)
         return query_engine.query(transformed_query)
 
 async def transform_and_query_async(query, cfg, query_engine):
@@ -119,11 +119,11 @@ async def transform_and_query_async(query, cfg, query_engine):
     elif cfg.query_transform == "subquery_fewshot":
         return await subquery_fewshot(query, query_engine)
     else:
-        transformed_query = transform(llm, query, cfg)
+        transformed_query = transform(query, cfg)
         return await query_engine.aquery(transformed_query)
 
 
-def transform(llm, query, cfg):
+def transform(query, cfg):
     # parser.add_argument('--query_transform', type=str, default='none', help='query transform, available: none, hyde_zeroshot, hyde_fewshot, stepback_zeroshot, stepback_fewshot, subquery_zeroshot, subquery_fewshot')
     if cfg.query_transform == "none":
         return query
@@ -215,15 +215,15 @@ def hyde_fewshot(query):
     return hyde(query, HYDE_TMPL_FEWSHOT)
 
 
-def stepback(query, prompt_template_str, llm=llm):
+def stepback(query, prompt_template_str):
     """
     Query扩写 - Stepback
     """
     stepback_query_gen_prompt = PromptTemplate(prompt_template_str)
-    return llm.predict(stepback_query_gen_prompt, query=query) + " " + query
+    return Settings.llm.predict(stepback_query_gen_prompt, query=query) + " " + query
 
 
-def stepback_zeroshot(query, llm=llm):
+def stepback_zeroshot(query):
     """
     Query扩写 - Stepback - zeroshot
     """
@@ -235,10 +235,10 @@ def stepback_zeroshot(query, llm=llm):
     Original Question: {query}
     Stepback Question: 
     """
-    return stepback(query, stepback_query_gen_str_zeroshot, llm=llm)
+    return stepback(query, stepback_query_gen_str_zeroshot)
 
 
-def stepback_fewshot(query, llm=llm):
+def stepback_fewshot(query):
     """
     Query拆解 - Stepback - fewshot
     """
@@ -275,7 +275,7 @@ def stepback_fewshot(query, llm=llm):
     Stepback Question: 
     """
 
-    return stepback(query, stepback_query_gen_str_fewshot, llm=llm)
+    return stepback(query, stepback_query_gen_str_fewshot)
 
 
 def subquery_sync(query, prompt_template_str, query_engine):
