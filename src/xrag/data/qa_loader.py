@@ -376,14 +376,14 @@ def get_qa_dataset(dataset_name:str,files=None):
             }]
         }
         """
-        dataset = load_dataset("natural_questions", cache_dir='../data')
+
         # load from pickle if exists
         if os.path.exists('../data/natural_questions.pkl'):
             import pickle
             with open('../data/natural_questions.pkl', 'rb') as f:
                 data = pickle.load(f)
         else:
-
+            dataset = load_dataset("natural_questions", cache_dir='../data')
             '''
             Dataset({
         features: ['id', 'document', 'question', 'long_answer_candidates', 'annotations'],
@@ -512,7 +512,7 @@ def get_qa_dataset(dataset_name:str,files=None):
             with open('../data/natural_questions.pkl', 'wb') as f:
                 pickle.dump(data, f)
 
-        data = dict(**data, dataset=dataset)
+        data = dict(**data)
         print("data loaded")
         print("documents:", len(data['titles']))
         print("train_questions:", len(data['train_data']['question']))
