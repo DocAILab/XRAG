@@ -97,7 +97,7 @@ xrag-cli webui
 The WebUI guides you through the following workflow:
 
 ### 1. Dataset Upload and Configuration
-<img src="imgs/dataset.png" width="100%" align="center" alt="Dataset Selection" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
+<img src="imgs/1.png" width="100%" align="center" alt="Dataset Selection" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
 
 Upload and configure your datasets:
 - Support for benchmark datasets (HotpotQA, DropQA, NaturalQA)
@@ -105,7 +105,7 @@ Upload and configure your datasets:
 - Automatic format conversion and preprocessing
 
 ### 2. Index Building and Configuration
-<img src="imgs/index.png" width="100%" align="center" alt="Index Building" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
+<img src="imgs/2.png" width="100%" align="center" alt="Index Building" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
 
 Configure system parameters and build indices:
 - API key configuration
@@ -114,7 +114,7 @@ Configure system parameters and build indices:
 - Chunk size optimization
 
 ### 3. RAG Strategy Configuration
-<img src="imgs/strategies.png" width="100%" align="center" alt="RAG Strategies" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
+<img src="imgs/3.png" width="100%" align="center" alt="RAG Strategies" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
 
 Define your RAG pipeline components:
 - Pre-retrieval methods
@@ -123,7 +123,7 @@ Define your RAG pipeline components:
 - Custom prompt template creation
 
 ### 4. Interactive Testing
-<img src="imgs/evalone.png" width="100%" align="center" alt="Testing Interface" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
+<img src="imgs/4.png" width="100%" align="center" alt="Testing Interface" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
 
 Test your RAG system interactively:
 - Real-time query testing
@@ -132,8 +132,7 @@ Test your RAG system interactively:
 - Performance analysis
 
 ### 5. Comprehensive Evaluation
-<img src="imgs/eval2.png" width="100%" align="center" alt="Evaluation Metrics" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
-<img src="imgs/eval3.png" width="100%" align="center" alt="Evaluation Dashboard" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
+<img src="imgs/5.png" width="100%" align="center" alt="Evaluation Metrics" style="border: 2px solid #666; border-radius: 8px; margin: 20px 0;">
 
 
 ## 🛠️ Installation
