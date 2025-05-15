@@ -378,7 +378,7 @@ We value feedback from our users. If you have suggestions, feature requests, or 
 If you find this work helpful, please cite our paper:
 
 ```bibtex
-@misc{mao2024xragexaminingcore,
+@article{mao2024xragexaminingcore,
       title={XRAG: eXamining the Core -- Benchmarking Foundational Components in Advanced Retrieval-Augmented Generation}, 
       author={Qianren Mao and Yangyifei Luo and Jinlong Zhang and Hanwen Hao and Zhilong Cao and Xiaolong Wang and Xiao Guan and Zhenting Huang and Weifeng Jiang and Shuyu Guo and Zhentao Han and Qili Zhang and Siyuan Tao and Yujie Liu and Junnan Liu and Zhixing Tan and Jie Sun and Bo Li and Xudong Liu and Richong Zhang and Jianxin Li},
       year={2024},
