@@ -59,8 +59,8 @@ def create_default_config(config_file_path):
                           "NLG_rouge_rougeL", "NLG_rouge_rougeLsum"]
             },
             "prompt": {
-                "text_qa_template_str": "Context information is below.\n---------------------\n{context_str}\n---------------------\nGiven the context information and not prior knowledge, answer the question: {query_str}\n",
-                "refine_template_str": "We have the opportunity to refine the original answer(only if needed) with some more context below.\n------------\n{context_msg}\n------------\nGiven the new context, refine the original answer to better answer the question: {query_str}. If the context isn't useful, output the original answer again.\nOriginal Answer: {existing_answer}"
+                "text_qa_template_path": "src/xrag/prompts/text_qa_template.txt",
+                "refine_template_path": "src/xrag/prompts/refine_template.txt"
             }
         }
         with open(config_file_path, 'w', encoding='utf-8') as f:
@@ -88,6 +88,37 @@ class Config:
                     setattr(cls._instance, key, value)
 
         return cls._instance
+
+    def _load_prompt_template(self, file_path: str):
+        """Load prompt template from file."""
+        try:
+            # Handle relative paths from the project root
+            if not os.path.isabs(file_path):
+                project_root = os.path.dirname(os.path.abspath("config.toml"))
+                file_path = os.path.join(project_root, file_path)
+
+            with open(file_path, "r", encoding="utf-8") as f:
+                return f.read().strip()
+        except FileNotFoundError:
+            logger.error(f"Prompt template file not found: {file_path}")
+            return ""
+        except Exception as e:
+            logger.error(f"Error loading prompt template from {file_path}: {e}")
+            return ""
+
+    @property
+    def text_qa_template_str(self):
+        """Get the text QA template string from file."""
+        if hasattr(self, "text_qa_template_path"):
+            return self._load_prompt_template(self.text_qa_template_path)
+        return ""
+
+    @property
+    def refine_template_str(self):
+        """Get the refine template string from file."""
+        if hasattr(self, "refine_template_path"):
+            return self._load_prompt_template(self.refine_template_path)
+        return ""
 
     def update_config(self, overrides):
         for key, value in overrides.items():
