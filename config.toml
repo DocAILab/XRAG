@@ -1,29 +1,49 @@
-[api_keys]
-api_key = "sk-xxxx"
-api_base = "https://api.openai.com/v1"
-api_name = "gpt-4o"
+[llm_settings]
+llm = "ollama"
+# openai setting(when llm is openai)
+api_key = "sk-6afea23713344d07a443ab512189e14d"
+api_base = "https://api.deepseek.com/v1"  # https://api.openai.com/v1
+api_name = "deepseek-chat" # gpt-4o deepseek-chat
 auth_token = "hf_xxx"
+temperature = 0
+# huggingface setting(when llm is huggingface)
+huggingface_model = "llama"
+# ollama setting(when llm is ollama)
+ollama_model = "deepseek-r1:1.5b"
+ollama_request_timeout = 60
 
 
-[logging]
-# Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
-log_level = "INFO"
-# Path to log file - comment or set to empty string to disable file logging
-log_file = "logs/xrag.log"
-# Log format
-log_format = "[%(asctime)s,%(msecs)03d] %(levelname)-8s - (%(name)s) %(filename)s, ln %(lineno)d: %(message)s"
+
+[embedding_settings]
+embedding_type = "loacl"  #or huggingface
+embeddings = "BAAI/llm-embedder" # BAAI/llm-embedder BAAI/bge-large-en-v1.5
+embed_batch_size = 16
 
 
-[settings]
-llm = "openai" # openai, huggingface, ollama
-ollama_model = "llama2:7b" # ollama model name
-huggingface_model = "llama" # huggingface model name
-embeddings = "BAAI/bge-large-en-v1.5"
-split_type = "sentence"
+
+
+[chunk_settings]
+split_type = "sentence" #sentence,character,hierarchical
+# when split_type is sentence
 chunk_size = 128
-dataset = "hotpot_qa"
-# dataset_path = "data/xxx.json" # If dataset is custom, set the path to the custom dataset
+chunk_overlap = 20
+# when split_type is hierarchical
+chunk_sizes=[2048, 512, 128]
+
+
+
+[dataset_settings]
+dataset_type = "local"
 persist_dir = "storage"
+# if dataset_type is huggingface
+dataset = "hotpot_qa"
+# if dataset_type is local
+dataset_path = "examples/generated_qa.json"
+
+
+
+[Evaluate_settings]
+# 这一块都是实验部分用到的参数
 llamaIndexEvaluateModel = "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8"
 deepEvalEvaluateModel = "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8"
 upTrainEvaluateModel = "qwen:7b-chat-v1.5-q8_0"
@@ -37,12 +57,68 @@ extra_number_documents = 20
 extra_rate_documents = 0.1
 test_all_number_documents = 40
 experiment_1 = false
+
+[responce_synthsizer]
+# 回答合成器设
+# 这里原来是一个数字的，我把他优化到一个字符串，并且支持大小写不敏感,如果输入的字符串不支持，则采用默认的refine
+# refine,compact,compact_accumulate,accumulate,tree_summarize,simple_summarize,no_text,generation
+responce_synthsizer = 'refine'
+
+[retrieval_settings]
+# 这里非常复杂，有10种retriver
 retriever = "BM25"
-retriever_mode = 0
-postprocess_rerank = "long_context_reorder"
+# 1.BM25
+similarity_top_k_BM25=3
+
+# 2.Vector
+similarity_top_k_VECTOR=3
+show_progress_VECTOR=True
+shore_nodes_override_VECTOR=True
+
+# 3.Summary
+retriver_type_SUMMARY='normal' # normal,embed,llm
+similarity_top_k_SUMMARY=3
+
+# 4.Tree
+retriver_type_TREE='root' # root allleaf selectleaf selectleafembedding
+
+# 5.Keyword
+# 不需要设置
+
+# 6.Custom 
+retriver_type_CUSTOM='bm25_and' # bm25_and,keyword_or
+
+# 7.QueryFusion
+retriver_type_QUERYFUSION='normal' # normal,reciprocal_rank
+num_quries_QUERYFUSION=4
+similarity_top_k_QUERYFUSION=2
+retriever_weight_QUERYFUSION=null  # default: [1 / len(index)] * len(index)
+
+# 8.AutoMerging
+similarity_top_k_AUTOMERGING=6
+
+# 9.Recursive
+sub_chunk_sizes_RECURSIVE=[128,256,512]
+chunk_overlap_RECURSIVE=20
+similarity_top_k_RECURSIVE=3
+
+# 10.SentenceWindow
+# 无需设置
+
+[postprocessor_setting]
+# 会根据这个选项构造合适的后处理器
+postprocess_rerank = "long_context_reorder" 
+
+
+
+[query_settings]
 query_transform = "none"
 metrics = ["NLG_chrf", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp","NLG_perplexity", "NLG_rouge_rouge1", "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum"]
 
 [prompt]
 text_qa_template_str = "Context information is below.\n---------------------\n{context_str}\n---------------------\nGiven the context information and not prior knowledge, answer the question: {query_str}\n"
 refine_template_str = "We have the opportunity to refine the original answer(only if needed) with some more context below.\n------------\n{context_msg}\n------------\nGiven the new context, refine the original answer to better answer the question: {query_str}. If the context isn't useful, output the original answer again.\nOriginal Answer: {existing_answer}"
+
+[workflow_settings]
+log_path = ""
+debug = true # 表示log输出的详细程度

@@ -18,8 +18,8 @@ llm_dict = {
 }
 
 
-def get_openai(api_base,api_key,api_name):
-    return OpenAI(api_key=api_key,api_base=api_base, temperature=0,model=api_name)
+def get_openai(api_base,api_key,api_name,temperature):
+    return OpenAI(api_key=api_key,api_base=api_base, temperature=temperature,model=api_name)
 
 
 
@@ -27,9 +27,9 @@ def get_llm(name):
     if name == 'huggingface':
         return get_huggingfacellm(Config().huggingface_model)
     elif name == 'openai':
-        return get_openai(Config().api_base,Config().api_key,Config().api_name)
+        return get_openai(api_base=Config().api_base, api_key=Config().api_key, temperature=Config().temperature, model=Config().api_name)
     elif name == 'ollama':
-        return Ollama(model=Config().ollama_model, request_timeout=60.0) 
+        return Ollama(model=Config().ollama_model, request_timeout=Config().ollama_request_timeout)
     else:
         raise ValueError(f"no model name: {name}.")
 
