@@ -5,6 +5,10 @@ from .webui import run_web_ui
 from .launcher import run
 from .config import Config
 from .data.qa_loader import generate_qa_from_folder
+from .utils import get_module_logger
+
+logger = get_module_logger(__name__)
+
 VERSION = "0.1.4"
 USAGE = (
     "-" * 70
@@ -81,7 +85,7 @@ def main():
                     key, value = override.split('=', 1)
                     config_overrides[key.strip()] = value.strip()
                 else:
-                    print(f"Invalid override format: {override}")
+                    logger.error(f"Invalid override format: {override}")
                     sys.exit(1)
         # Update the Config instance
         config = Config()
@@ -102,4 +106,4 @@ def main():
         from .api.server import run_api_server
         run_api_server(host=args.host, port=args.port, json_path=args.json_path, dataset_folder=args.dataset_folder)
     else:
-        print(f"Unknown command: {args.command}")
+        logger.error(f"Unknown command: {args.command}")

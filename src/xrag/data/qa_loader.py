@@ -10,6 +10,9 @@ from ..config import Config
 from llama_index.core import Document
 from llama_index.core import SimpleDirectoryReader
 from ..llms.llm import get_llm
+from ..utils import get_module_logger
+
+logger = get_module_logger(__name__)
 cfg = Config()
 
 test_init_total_number_documents = cfg.test_init_total_number_documents
@@ -52,8 +55,8 @@ def build_split(answers, questions, supporting_facts, title2id, title2sentences)
         golden_sentences.append([' '.join(title2sentences[t]) for t in sup_titles])
         filter_questions.append(q)
         filter_answers.append(a)
-    print("questions:", len(questions))
-    print("filter_questions:", len(filter_questions))
+    logger.info("questions:", len(questions))
+    logger.info("filter_questions:", len(filter_questions))
     return filter_questions,filter_answers, golden_ids, golden_sentences
 def get_qa_dataset(dataset_name:str,files=None):
     if files is not None:
@@ -493,10 +496,10 @@ def get_qa_dataset(dataset_name:str,files=None):
             del train_data['golden_sources']
             del valid_data['golden_sources']
             del test_data['golden_sources']
-            print("questions:", len(questions))
-            print("train_questions:", len(train_data['question']))
-            print("valid_questions:", len(valid_data['question']))
-            print("test_questions:", len(test_data['question']))
+            logger.info("questions:", len(questions))
+            logger.info("train_questions:", len(train_data['question']))
+            logger.info("valid_questions:", len(valid_data['question']))
+            logger.info("test_questions:", len(test_data['question']))
             data = dict(
                 train_data=train_data,
                 valid_data=valid_data,
@@ -513,11 +516,11 @@ def get_qa_dataset(dataset_name:str,files=None):
                 pickle.dump(data, f)
 
         data = dict(**data)
-        print("data loaded")
-        print("documents:", len(data['titles']))
-        print("train_questions:", len(data['train_data']['question']))
-        print("valid_questions:", len(data['valid_data']['question']))
-        print("test_questions:", len(data['test_data']['question']))
+        logger.info("data loaded")
+        logger.info("documents:", len(data['titles']))
+        logger.info("train_questions:", len(data['train_data']['question']))
+        logger.info("valid_questions:", len(data['valid_data']['question']))
+        logger.info("test_questions:", len(data['test_data']['question']))
         return data
 
 
@@ -719,8 +722,8 @@ def get_qa_dataset(dataset_name:str,files=None):
         law = json.load(open('./data/law.json','r',encoding='utf-8'))
         law_qa_test = json.load(open('data/law_qa_test.json', 'r', encoding='utf-8'))
         law_qa_train = json.load(open('data/law_qa_train.json', 'r', encoding='utf-8'))
-        print(len(law))
-        print(len(law_qa_train))
+        logger.debug(len(law))
+        logger.debug(len(law_qa_train))
         title2sentences = {}
         source_sentences = []
         titles = []
@@ -833,10 +836,10 @@ def generate_qa_from_folder(folder_path: str, output_file: str, num_questions_pe
         from llama_index.core.node_parser import SentenceSplitter
         parser = SentenceSplitter(chunk_size=sentence_length, chunk_overlap=20)
         nodes = parser.get_nodes_from_documents(docs, show_progress=True)
-        print("nodes: " + str(nodes.__len__()))
+        logger.info("nodes: " + str(nodes.__len__()))
         docs = nodes
 
-    print(f"Successfully loaded {len(docs)} documents from {folder_path}")
+    logger.info(f"Successfully loaded {len(docs)} documents from {folder_path}")
 
     # 初始化 LLM
     llm = get_llm(cfg.llm)
@@ -898,15 +901,15 @@ def generate_qa_from_folder(folder_path: str, output_file: str, num_questions_pe
                         valid_qa_list.append(qa)
                     
                 qa_pairs.extend(valid_qa_list)
-                print(f"Generated {len(valid_qa_list)} QA pairs for {doc.metadata.get('file_path', '')}")
+                logger.info(f"Generated {len(valid_qa_list)} QA pairs for {doc.metadata.get('file_path', '')}")
                 
             except json.JSONDecodeError as e:
-                print(f"Error parsing LLM response for file {doc.metadata.get('file_path', '')}: {str(e)}")
-                print(f"Response text: {response.text}")
+                logger.warning(f"Error parsing LLM response for file {doc.metadata.get('file_path', '')}: {str(e)}")
+                logger.warning(f"Response text: {response.text}")
                 continue
                 
         except Exception as e:
-            print(f"Error generating QA pairs for file {doc.metadata.get('file_path', '')}: {str(e)}")
+            logger.warning(f"Error generating QA pairs for file {doc.metadata.get('file_path', '')}: {str(e)}")
             continue
 
     if len(qa_pairs) == 0:
@@ -919,7 +922,7 @@ def generate_qa_from_folder(folder_path: str, output_file: str, num_questions_pe
         
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(qa_pairs, f, ensure_ascii=False, indent=2)
-        print(f"Successfully generated {len(qa_pairs)} QA pairs and saved to {output_file}")
+        logger.info(f"Successfully generated {len(qa_pairs)} QA pairs and saved to {output_file}")
         return qa_pairs
     except Exception as e:
         raise Exception(f"Error saving QA pairs to file: {str(e)}")
@@ -996,7 +999,7 @@ def test_file_loading(folder_path: str):
         
 def get_dataset(dataset_path: str):
     folder_path = os.path.abspath(dataset_path)
-    print(f"Loading files from: {folder_path}")
+    logger.info(f"Loading files from: {folder_path}")
     
     # 检查文件夹是否存在
     if not os.path.exists(folder_path):
@@ -1016,20 +1019,20 @@ def get_dataset(dataset_path: str):
                               f"2. {cwd_path}\n"
                               f"3. {pkg_path}")
     
-    print(f"Using folder path: {folder_path}")
+    logger.info(f"Using folder path: {folder_path}")
     
     # 检查文件夹中的文件
     files = []
     for root, _, filenames in os.walk(folder_path):
         for filename in filenames:
             files.append(os.path.join(root, filename))
-    print(f"Found files: {files}")
+    logger.info(f"Found files: {files}")
     
     # 确保安装必要的依赖
     try:
         import pypdf
     except ImportError:
-        print("Installing required dependencies...")
+        logger.info("Installing required dependencies...")
         import subprocess
         subprocess.check_call(["pip", "install", "pypdf"])
         import pypdf
@@ -1039,13 +1042,13 @@ def get_dataset(dataset_path: str):
     for file_path in files:
         try:
             if file_path.lower().endswith('.pdf'):
-                print(f"Loading PDF file: {file_path}")
+                logger.info(f"Loading PDF file: {file_path}")
                 # 检查文件是否存在和可读
                 if not os.path.exists(file_path):
-                    print(f"File not found: {file_path}")
+                    logger.warning(f"File not found: {file_path}")
                     continue
                 if not os.access(file_path, os.R_OK):
-                    print(f"File not readable: {file_path}")
+                    logger.warning(f"File not readable: {file_path}")
                     continue
                 
                 # 使用 pypdf 直接读取 PDF
@@ -1063,11 +1066,11 @@ def get_dataset(dataset_path: str):
                                     'file_name': os.path.basename(file_path)
                                 }
                             ))
-                            print(f"Successfully loaded PDF: {file_path}")
+                            logger.info(f"Successfully loaded PDF: {file_path}")
                         else:
-                            print(f"Warning: No text extracted from PDF: {file_path}")
+                            logger.warning(f"Warning: No text extracted from PDF: {file_path}")
                 except Exception as e:
-                    print(f"Error reading PDF {file_path}: {str(e)}")
+                    logger.error(f"Error reading PDF {file_path}: {str(e)}")
                     import traceback
                     traceback.print_exc()
             else:
@@ -1078,9 +1081,9 @@ def get_dataset(dataset_path: str):
                 )
                 file_docs = reader.load_data()
                 docs.extend(file_docs)
-                print(f"Successfully loaded: {file_path}")
+                logger.info(f"Successfully loaded: {file_path}")
         except Exception as e:
-            print(f"Error loading file {file_path}: {str(e)}")
+            logger.error(f"Error loading file {file_path}: {str(e)}")
             import traceback
             traceback.print_exc()
             continue
@@ -1097,10 +1100,10 @@ if __name__=='__main__':
     # print(custom_qa_dataset)
 
     drop = get_qa_dataset('natural_questions')
-    print(drop)
+    logger.info(drop)
 
     custom_qa_dataset = get_qa_dataset('custom', './examples/example.json')
-    print(custom_qa_dataset)
+    logger.info(custom_qa_dataset)
     
     # 测试生成问答对
     # print("\nTesting QA generation:")

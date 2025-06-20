@@ -24,8 +24,11 @@ import typing as t
 import polars as pl
 from uptrain.framework.evals import ParametricEval, ResponseMatching
 from uptrain.framework.evalllm import EvalLLM
+from ..utils import get_module_logger
 
 import nest_asyncio
+
+logger = get_module_logger(__name__)
 
 LLAMA_CUSTOM_FAITHFULNESS_TEMPLATE = PromptTemplate(
     "Please tell if the context supports the given information related to the question.\n"
@@ -260,7 +263,7 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
     # region llama_index evaluation
     for i in eval_result.evaluationName:
         if i in metrics and i[0:8] != "DeepEval" and i[0:7] != "UpTrain" and i[0:3] != "NLG":
-            print("now run " + i)
+            logger.info("now run " + i)
 
             count = 2
             while True:
@@ -299,9 +302,9 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
                     count = count - 1
 
                     logging.exception(e)
-                    print("error ")
+                    logger.error("error ")
                     if count == 0:
-                        print(i + " error")
+                        logger.error(i + " error")
                         break
     # endregion
     # region uptrain evaluation
@@ -362,9 +365,9 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
 
                     logging.exception(e)
                     #   file2.write(traceback.format_exc())
-                    print("error ")
+                    logger.error("error ")
                     if count == 0:
-                        print(i + " error")
+                        logger.error(i + " error")
                         break
     # # region NLG evaluation
     # NLG_metrics = []

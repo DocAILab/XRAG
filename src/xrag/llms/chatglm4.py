@@ -12,8 +12,11 @@ from llama_index.core.llms import (
 from llama_index.core.llms.callbacks import llm_completion_callback, llm_chat_callback
 
 from zhipuai import ZhipuAI
+from ..utils import get_module_logger
 # pip install zhipuai
 DEFAULT_MODEL = 'glm-4'
+
+logger = get_module_logger(__name__)
 
 def to_message_dicts(messages: Sequence[ChatMessage])->List:
     return [
@@ -100,7 +103,7 @@ class ChatGLM(CustomLLM):
                 additional_kwargs= {}),
             raw=response, additional_kwargs= get_additional_kwargs(response),
         )
-        print(f"chat: {rsp} ")
+        logger.info(f"chat: {rsp} ")
 
         return rsp
 
@@ -129,7 +132,7 @@ class ChatGLM(CustomLLM):
                                      additional_kwargs=get_additional_kwargs(response),)
             # print(f"complete: {rsp} ")
         except Exception as e:
-            print(f"complete: exception {e}")
+            logger.warning(f"complete: exception {e}")
 
         return rsp
 
