@@ -20,6 +20,11 @@ def create_default_config(config_file_path):
                 "api_name": "gpt-4",
                 "auth_token": "hf_xxx"
             },
+            "logging": {
+                "log_level": "INFO",
+                "log_file": "logs/xrag.log",
+                "log_format": "[%(asctime)s,%(msecs)03d] %(levelname)-8s - (%(name)s) %(filename)s, ln %(lineno)d: %(message)s",
+            },
             "settings": {
                 "llm": "openai",
                 "ollama_model": "llama2:7b",
