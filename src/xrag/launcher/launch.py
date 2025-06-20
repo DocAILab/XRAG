@@ -14,13 +14,9 @@ from ..eval.evaluate_rag import EvaluationResult
 from ..eval.EvalModelAgent import EvalModelAgent
 from ..process.postprocess_rerank import get_postprocessor
 from ..process.query_transform import transform_and_query
-from ..utils import get_module_logger
 import random
 import numpy as np
 import torch
-
-logger = get_module_logger(__name__)
-
 def seed_everything(seed):
     random.seed(seed)
     np.random.seed(seed)
@@ -32,7 +28,7 @@ def build_index(documents):
     cfg = Config()
     llm = get_llm(cfg.llm)
     # Create and dl embeddings instance
-    embeddings = get_embedding(cfg.embeddings)
+    embeddings = get_embedding(cfg.embeddings,cfg.embed_batch_size)
 
     Settings.chunk_size = cfg.chunk_size
     Settings.llm = llm
@@ -43,7 +39,7 @@ def build_index(documents):
         cfg.chunk_size)
 
     index, hierarchical_storage_context = get_index(documents, cfg.persist_dir, split_type=cfg.split_type,
-                                                    chunk_size=cfg.chunk_size)
+                                                    chunk_size=cfg.chunk_size,chunk_overlap=cfg.chunk_overlap,chunk_sizes=cfg.chunk_sizes)
 
 
     return index, hierarchical_storage_context
@@ -51,8 +47,8 @@ def build_index(documents):
 def build_query_engine(index, hierarchical_storage_context, use_async=False):
     cfg = Config()
     query_engine = RetrieverQueryEngine(
-        retriever=get_retriver(cfg.retriever, index, hierarchical_storage_context=hierarchical_storage_context),
-        response_synthesizer=response_synthesizer(0),
+        retriever=get_retriver(cfg.retriever, index, hierarchical_storage_context=hierarchical_storage_context,cfg=cfg),
+        response_synthesizer=response_synthesizer(cfg.responce_synthsizer),
         node_postprocessors=[get_postprocessor(cfg)]
     )
 
@@ -102,13 +98,18 @@ def eval_cli(qa_dataset, query_engine):
         evaluateResults.add(eval_result)
         all_num = all_num + 1
         evaluateResults.print_results()
-        logger.info("总数：" + str(all_num))
+        print("总数：" + str(all_num))
     return evaluateResults
 def run(cli=True, custom_dataset=None):
 
     seed_everything(42)
     cfg = Config()
-    qa_dataset = get_qa_dataset(cfg.dataset, custom_dataset)
+    if cfg.dataset_type == 'local':
+        print('Using local dataset')
+        qa_dataset = get_qa_dataset(cfg.dataset, cfg.dataset_path)
+    else:
+        print('Using huggingface dataset')
+        qa_dataset = get_qa_dataset(cfg.dataset, cfg.dataset_path)
     index, hierarchical_storage_context = build_index(qa_dataset['documents'])
     query_engine = build_query_engine(index, hierarchical_storage_context)
     if cli:
@@ -123,4 +124,4 @@ def run(cli=True, custom_dataset=None):
 
 if __name__ == '__main__':
     run()
-    logger.info('Success')
+    print('Success')

@@ -1,10 +1,10 @@
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 # from llama_index.legacy.embeddings import HuggingFaceEmbedding
 
-def get_embedding(name):
+def get_embedding(name,embed_batch_size=16):
     return HuggingFaceEmbedding(
         model_name=name,
-        embed_batch_size=16,
+        embed_batch_size=embed_batch_size,
         # cache_folder="./embedding_model"
     )
 
