@@ -75,35 +75,41 @@ def main():
     # Parse the arguments
     args = parser.parse_args()
 
-    # Handle commands
-    if args.command == Command.RUN:
-        # Parse overrides
-        config_overrides = {}
-        if args.override:
-            for override in args.override:
-                if '=' in override:
-                    key, value = override.split('=', 1)
-                    config_overrides[key.strip()] = value.strip()
-                else:
-                    logger.error(f"Invalid override format: {override}")
-                    sys.exit(1)
-        # Update the Config instance
-        config = Config()
-        config.update_config(config_overrides)
-        if args.custom_dataset:
-            run(custom_dataset=args.custom_dataset)
+    try:
+        # Handle commands
+        if args.command == Command.RUN:
+            # Parse overrides
+            config_overrides = {}
+            if args.override:
+                for override in args.override:
+                    if '=' in override:
+                        key, value = override.split('=', 1)
+                        config_overrides[key.strip()] = value.strip()
+                    else:
+                        logger.error(f"Invalid override format: {override}")
+                        sys.exit(1)
+            # Update the Config instance
+            config = Config()
+            config.update_config(config_overrides)
+            if args.custom_dataset:
+                run(custom_dataset=args.custom_dataset)
+            else:
+                run()
+        elif args.command == Command.WEBUI:
+            run_web_ui()
+        elif args.command == Command.VER:
+            print(WELCOME)
+        elif args.command == Command.HELP or args.command is None:
+            parser.print_help()
+        elif args.command == Command.GENERATE:
+            generate_qa_from_folder(args.input, args.output, args.num, args.sentence_length)
+        elif args.command == Command.API:
+            from .api.server import run_api_server
+            run_api_server(host=args.host, port=args.port, json_path=args.json_path, dataset_folder=args.dataset_folder)
         else:
-            run()
-    elif args.command == Command.WEBUI:
-        run_web_ui()
-    elif args.command == Command.VER:
-        print(WELCOME)
-    elif args.command == Command.HELP or args.command is None:
-        parser.print_help()
-    elif args.command == Command.GENERATE:
-        generate_qa_from_folder(args.input, args.output, args.num, args.sentence_length)
-    elif args.command == Command.API:
-        from .api.server import run_api_server
-        run_api_server(host=args.host, port=args.port, json_path=args.json_path, dataset_folder=args.dataset_folder)
-    else:
-        logger.error(f"Unknown command: {args.command}")
+            logger.error(f"Unknown command: {args.command}")
+            
+    except (Exception, KeyboardInterrupt) as e:
+        from .utils.error_view import show_error_view
+
+        show_error_view(e)
