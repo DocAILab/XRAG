@@ -34,10 +34,8 @@ from llama_index.core.node_parser import SentenceSplitter, SentenceWindowNodePar
 from llama_index.llms.openai import OpenAI
 
 from llama_index.core import get_response_synthesizer
-
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-logging.getLogger().handlers = []
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
+from ..utils import get_module_logger
+logger = get_module_logger(__name__)
 
 
 # todo 常规检索模式: bm25检索 向量检索
@@ -467,7 +465,7 @@ if __name__ == '__main__':
     # retriever = recursive_retriever(nodes)  # 可用
     response_syn = response_synthesizer(0)
     nodes = retriever.retrieve("请用中文回答我的毕业设计题目是什么")
-    print(nodes)
+    logger.debug(nodes)
     query_engine = RetrieverQueryEngine(
         retriever=get_retriver("QueryFusion", index_, mode=0),
         response_synthesizer=response_syn,
@@ -476,4 +474,4 @@ if __name__ == '__main__':
     query_e = query_expansion([query_engine],query_number=4,similarity_top_k=3)
     query_engine = RetrieverQueryEngine.from_args(query_e)
     response = query_engine.query("请用中文回答我的毕业设计题目是什么")
-    print(response)
+    logger.debug(response)

@@ -6,7 +6,10 @@ from transformers.generation.utils import GenerationConfig
 from llama_index.llms.huggingface import HuggingFaceLLM
 # pip install llama-index-llms-huggingface
 from ..config import Config
+from ..utils import get_module_logger
+
 cfg = Config()
+logger = get_module_logger(__name__)
 
 load_tokenizer = []
 
@@ -199,7 +202,7 @@ llm_argument_dict = {
 }
 
 def get_huggingfacellm(name):
-    print("name is " + name)
+    logger.info("name is " + name)
     tokenizer, model = tokenizer_and_model_fn_dict[name](name)
 
     # Create a HF LLM using the llama index wrapper

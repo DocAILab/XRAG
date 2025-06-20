@@ -10,6 +10,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from deepeval.models.base_model import DeepEvalBaseLLM
 from uptrain import Settings
 from .DeepEvalLocalModel import DeepEvalLocalModel
+from ..utils import get_module_logger
+
+logger = get_module_logger(__name__)
 
 load_tokenizer = []
 llm_args = {"context_window": 4096, "max_new_tokens": 256,
@@ -34,10 +37,10 @@ class EvalModelAgent():
         api_name = self.args.api_name
         api_key = self.args.api_key
         api_base = self.args.api_base
-        print("EvalModelName:")
-        print(api_name)
-        print("EvalModelAPI:")
-        print(api_key)
+        logger.info("EvalModelName:")
+        logger.info(api_name)
+        logger.info("EvalModelAPI:")
+        logger.info(api_key)
         if api_name == "":
             self._llama_model = AutoModelForCausalLM.from_pretrained(llamaIndex_LocalmodelName,
                                                      torch_dtype=torch.float16,

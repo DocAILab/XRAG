@@ -18,6 +18,9 @@ from llama_index.core import (
     SimpleDirectoryReader,
     VectorStoreIndex, Settings, SummaryIndex, TreeIndex, QueryBundle, StorageContext,
 )
+from ..utils import get_module_logger
+
+logger = get_module_logger(__name__)
 
 # from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
@@ -85,15 +88,15 @@ if __name__ == '__main__':
     retriever = bm25_retriever(index_)  # 可用
 
     nodes = retriever.retrieve("请用中文回答我的毕业设计题目是什么")
-    print(nodes)
+    logger.debug(nodes)
 
     processor = transformer_rerank()
     filtered_nodes = processor.postprocess_nodes(nodes, query_str="请用中文回答我的毕业设计题目是什么")
-    print(filtered_nodes)
+    logger.debug(filtered_nodes)
 
     query_engine = RetrieverQueryEngine(
         retriever=retriever,
         node_postprocessors=[processor]
     )
     response = query_engine.query("请用中文回答我的毕业设计题目是什么")
-    print(response)
+    logger.debug(response)

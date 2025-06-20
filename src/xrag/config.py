@@ -2,6 +2,9 @@ import os
 import toml
 import shutil
 import pkg_resources
+from .utils import get_module_logger
+
+logger = get_module_logger(__name__)
 
 
 def create_default_config(config_file_path):
@@ -19,6 +22,11 @@ def create_default_config(config_file_path):
                 "api_base": "https://api.openai.com/v1",
                 "api_name": "gpt-4",
                 "auth_token": "hf_xxx"
+            },
+            "logging": {
+                "log_level": "INFO",
+                "log_file": "logs/xrag.log",
+                "log_format": "[%(asctime)s,%(msecs)03d] %(levelname)-8s - (%(name)s) %(filename)s, ln %(lineno)d: %(message)s",
             },
             "settings": {
                 "llm": "openai",
@@ -88,7 +96,7 @@ class Config:
                 new_value = self._convert_type(value, type(old_value))
                 setattr(self, key, new_value)
             else:
-                print(f"Invalid configuration key: {key}")
+                logger.warning(f"Invalid configuration key: {key}")
 
     def _convert_type(self, value, to_type):
         try:
@@ -103,7 +111,7 @@ class Config:
             else:
                 return value  # For other types
         except ValueError:
-            print(f"Could not convert value '{value}' to type {to_type.__name__}")
+            logger.error(f"Could not convert value '{value}' to type {to_type.__name__}")
             return value
 
 
@@ -124,5 +132,5 @@ if __name__ == '__main__':
     cfg = Config()
 
     # Now you can access config values directly as attributes:
-    print(cfg.test_init_total_number_documents)  # Outputs: 20
-    print(cfg.api_key)  # Outputs the API key from the toml file
+    logger.info(cfg.test_init_total_number_documents)  # Outputs: 20
+    logger.info(cfg.api_key)  # Outputs the API key from the toml file

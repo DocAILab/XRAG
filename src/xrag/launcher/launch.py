@@ -14,9 +14,13 @@ from ..eval.evaluate_rag import EvaluationResult
 from ..eval.EvalModelAgent import EvalModelAgent
 from ..process.postprocess_rerank import get_postprocessor
 from ..process.query_transform import transform_and_query
+from ..utils import get_module_logger
 import random
 import numpy as np
 import torch
+
+logger = get_module_logger(__name__)
+
 def seed_everything(seed):
     random.seed(seed)
     np.random.seed(seed)
@@ -98,7 +102,7 @@ def eval_cli(qa_dataset, query_engine):
         evaluateResults.add(eval_result)
         all_num = all_num + 1
         evaluateResults.print_results()
-        print("总数：" + str(all_num))
+        logger.info("总数：" + str(all_num))
     return evaluateResults
 def run(cli=True, custom_dataset=None):
 
@@ -119,4 +123,4 @@ def run(cli=True, custom_dataset=None):
 
 if __name__ == '__main__':
     run()
-    print('Success')
+    logger.info('Success')
