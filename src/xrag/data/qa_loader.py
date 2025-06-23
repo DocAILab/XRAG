@@ -55,8 +55,8 @@ def build_split(answers, questions, supporting_facts, title2id, title2sentences)
         golden_sentences.append([' '.join(title2sentences[t]) for t in sup_titles])
         filter_questions.append(q)
         filter_answers.append(a)
-    logger.info("questions:", len(questions))
-    logger.info("filter_questions:", len(filter_questions))
+    logger.info(f"questions: {len(questions)}")
+    logger.info(f"filter_questions: {len(filter_questions)}")
     return filter_questions,filter_answers, golden_ids, golden_sentences
 def get_qa_dataset(dataset_name:str,files=None):
     if files is not None:
@@ -496,10 +496,10 @@ def get_qa_dataset(dataset_name:str,files=None):
             del train_data['golden_sources']
             del valid_data['golden_sources']
             del test_data['golden_sources']
-            logger.info("questions:", len(questions))
-            logger.info("train_questions:", len(train_data['question']))
-            logger.info("valid_questions:", len(valid_data['question']))
-            logger.info("test_questions:", len(test_data['question']))
+            logger.info(f"questions: {len(questions)}")
+            logger.info(f"train_questions: {len(train_data['question'])}")
+            logger.info(f"valid_questions: {len(valid_data['question'])}")
+            logger.info(f"test_questions: {len(test_data['question'])}")
             data = dict(
                 train_data=train_data,
                 valid_data=valid_data,
@@ -517,10 +517,10 @@ def get_qa_dataset(dataset_name:str,files=None):
 
         data = dict(**data)
         logger.info("data loaded")
-        logger.info("documents:", len(data['titles']))
-        logger.info("train_questions:", len(data['train_data']['question']))
-        logger.info("valid_questions:", len(data['valid_data']['question']))
-        logger.info("test_questions:", len(data['test_data']['question']))
+        logger.info(f"documents: {len(data['titles'])}")
+        logger.info(f"train_questions: {len(data['train_data']['question'])}")
+        logger.info(f"valid_questions: {len(data['valid_data']['question'])}")
+        logger.info(f"test_questions: {len(data['test_data']['question'])}")
         return data
 
 
