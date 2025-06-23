@@ -36,6 +36,7 @@ def create_default_config(config_file_path):
                 "split_type": "sentence",
                 "chunk_size": 128,
                 "dataset": "hotpot_qa",
+                "dataset_download_timeout": 300,
                 "persist_dir": "storage",
                 "llamaIndexEvaluateModel": "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8",
                 "deepEvalEvaluateModel": "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8",
