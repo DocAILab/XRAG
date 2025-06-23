@@ -116,9 +116,5 @@ query_transform = "none"
 metrics = ["NLG_chrf", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp","NLG_perplexity", "NLG_rouge_rouge1", "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum"]
 
 [prompt]
-text_qa_template_str = "Context information is below.\n---------------------\n{context_str}\n---------------------\nGiven the context information and not prior knowledge, answer the question: {query_str}\n"
-refine_template_str = "We have the opportunity to refine the original answer(only if needed) with some more context below.\n------------\n{context_msg}\n------------\nGiven the new context, refine the original answer to better answer the question: {query_str}. If the context isn't useful, output the original answer again.\nOriginal Answer: {existing_answer}"
-
-[workflow_settings]
-log_path = ""
-debug = true # 表示log输出的详细程度
+text_qa_template_path = "src/xrag/prompts/text_qa_template.txt"
+refine_template_path = "src/xrag/prompts/refine_template.txt"

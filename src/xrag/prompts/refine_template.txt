@@ -1,0 +1,6 @@
+We have the opportunity to refine the original answer (only if needed) with some more context below.
+------------
+{context_msg}
+------------
+Given the new context, refine the original answer to better answer the question: {query_str}. If the context isn't useful, output the original answer again.
+Original Answer: {existing_answer}
