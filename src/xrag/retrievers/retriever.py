@@ -34,26 +34,37 @@ from llama_index.core.node_parser import SentenceSplitter, SentenceWindowNodePar
 from llama_index.llms.openai import OpenAI
 
 from llama_index.core import get_response_synthesizer
-from ..utils import get_module_logger
-logger = get_module_logger(__name__)
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.getLogger().handlers = []
+logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 
 # todo 常规检索模式: bm25检索 向量检索
-def bm25_retriever(index):
-    retriever_bm25 = BM25Retriever.from_defaults(index=index, similarity_top_k=3)
+def bm25_retriever(index,similarity_top_k=3):
+    retriever_bm25 = BM25Retriever.from_defaults(index=index, similarity_top_k=similarity_top_k)
     return retriever_bm25
 
 
-def vector_retriever(index):
+def vector_retriever(index,similarity_top_k=3,show_progress=True,store_nodes_override=True):
     # index = VectorStoreIndex(node)
-    retriever_vector = VectorIndexRetriever(index=index, similarity_top_k=3, show_progress=True,
-                                            store_nodes_override=True)
+    retriever_vector = VectorIndexRetriever(index=index, similarity_top_k=similarity_top_k, show_progress=show_progress,
+                                            store_nodes_override=store_nodes_override)
     return retriever_vector
 
 
 # todo 特定于某种索引的检索器类:汇总索引检索 树索引检索 关键字表索引检索 文档摘要索引检索
 # note index必须为汇总索引 https://docs.llamaindex.ai/en/stable/api_reference/indices/list.html#llama_index.core.indices.list.SummaryIndex
-def summary_retriever(summary_index, mode:int = 0):
+def summary_retriever(summary_index, retriver_type_Summary='normal',similarity_top_k=3):
+    if retriver_type_Summary.lower()=='normal':
+        mode=0
+    elif retriver_type_Summary.lower()=='embed':
+        mode=1
+    elif retriver_type_Summary.lower()=='llm':
+        mode=2
+    else:
+        mode=0
+        warnings.warn(f"Invalid retriver_type_Summary:{retriver_type_Summary}.Using default: 'normal' We support 'normal','embed','llm'.")
     if mode > 2 or mode < 0:
         raise ValueError("Invalid mode for summary retriever."+ str(mode))
     if mode == 0:
@@ -62,16 +73,28 @@ def summary_retriever(summary_index, mode:int = 0):
     elif mode == 1:
         # 基于编码的文档汇总索引
         retriever_summary = SummaryIndexEmbeddingRetriever(index=summary_index, embed_model=Settings.embed_model,
-                                                           similarity_top_k=3)
+                                                           similarity_top_k=similarity_top_k)
     elif mode == 2:
         # 基于大模型的文档汇总索引
-        retriever_summary = SummaryIndexEmbeddingRetriever(index=summary_index, llm=Settings.llm, similarity_top_k=3)
+        retriever_summary = SummaryIndexEmbeddingRetriever(index=summary_index, llm=Settings.llm, similarity_top_k=similarity_top_k)
 
     return retriever_summary
 
 
 # note index必须为树索引 https://docs.llamaindex.ai/en/latest/api_reference/indices/tree.html#llama_index.core.indices.tree.TreeIndex
-def tree_retriever(index, mode=0):
+def tree_retriever(index, retriver_type_TREE='root'):
+    if retriver_type_TREE.lower=='root':
+        mode = 0
+    elif retriver_type_TREE.lower=='allleaf':
+        mode = 1
+    elif retriver_type_TREE.lower=='selectleaf':
+        mode = 2
+    elif retriver_type_TREE.lower=='selectleafembedding':
+        mode = 3
+    else:
+        mode = 0
+        warnings.warn(f"Invalid retriver_type_TREE:{retriver_type_TREE}.Using default: 'root' We support 'root','allleaf','selectleaf','selectleafembedding'.")
+
     if mode > 3 or mode < 0:
         mode = 0
 
@@ -92,9 +115,9 @@ def tree_retriever(index, mode=0):
 
 
 # node index必须为关键字表索引 https://docs.llamaindex.ai/en/stable/api_reference/query/retrievers/table.html
-def keyword_retriever(index, mode=0):
-    if mode > 1 or mode < 0:
-        raise ValueError("Invalid mode for keyword retriever."+ str(mode))
+def keyword_retriever(index):
+    #if mode > 1 or mode < 0:
+    #    raise ValueError("Invalid mode for keyword retriever."+ str(mode))
     # 基本关键字表检索器
 
     # GPT关键字表检索器
@@ -153,12 +176,21 @@ class CustomRetriever(BaseRetriever):
 
 # 融合检索器 其将来自多个文档的索引作为输入，并自动进行问题扩充，以获得多次查询结果用于合并
 # mode: 代表融合模式. 0 代表简单合并. 1: 采用RRF倒数排名融合
-def query_fusion_retriever(index, num_queries=4, similarity_top_k=2, mode=0, retriever_weight=None):
+def query_fusion_retriever(index, num_queries=4, similarity_top_k=2, retriver_type_QUERYFUSION='normal', retriever_weight=None):
     query_fusion_r = None
     if not isinstance(index, list):
         index = [index]
     if retriever_weight is None:
         retriever_weight = [1 / len(index)] * len(index)
+    
+    if retriver_type_QUERYFUSION.lower()=='normal':
+        mode=0
+    elif retriver_type_QUERYFUSION.lower()=='reciprocal_rank':
+        mode=1
+    else:
+        mode=0
+        warnings.warn(f"Invaild retriver_type_QUERYFUSION:{retriver_type_QUERYFUSION}. Use default 'normal'. We support normal,reciprocal_rank")
+
     if mode == 0:
         query_fusion_r = QueryFusionRetriever(
             [index_s.as_retriever() for index_s in index],
@@ -194,18 +226,18 @@ def query_fusion_retriever(index, num_queries=4, similarity_top_k=2, mode=0, ret
 # 自动合并检索
 # 其将自动合并子节点为高级节点，并进行扩增上下文操作 故需要提供节点类
 # 也可使用特殊节点类进行初始化 https://docs.llamaindex.ai/en/latest/examples/retrievers/auto_merging_retriever.html
-def auto_merging_retriever(index, hierarchical_storage_context):
+def auto_merging_retriever(index, hierarchical_storage_context,similarity_top_k):
 
-    auto_merging_r = AutoMergingRetriever(index.as_retriever(similarity_top_k=6), storage_context=hierarchical_storage_context,
+    auto_merging_r = AutoMergingRetriever(index.as_retriever(similarity_top_k=similarity_top_k), storage_context=hierarchical_storage_context,
                                           verbose=True)
     return auto_merging_r
 
 
 # 递归检索 + 句子节点引用rong
-def recursive_retriever(base_nodes):
-    sub_chunk_sizes = [128, 256, 512]
+def recursive_retriever(base_nodes,sub_chunk_sizes=[128, 256, 512],chunk_overlap=20,similarity_top_k=3):
+    sub_chunk_sizes = sub_chunk_sizes
     sub_node_parsers = [
-        SentenceSplitter(chunk_size=c, chunk_overlap=20) for c in sub_chunk_sizes
+        SentenceSplitter(chunk_size=c, chunk_overlap=chunk_overlap) for c in sub_chunk_sizes
     ]
 
     all_nodes = []
@@ -223,7 +255,7 @@ def recursive_retriever(base_nodes):
 
     all_nodes_dict = {n.node_id: n for n in all_nodes}
     vector_index_chunk = VectorStoreIndex(all_nodes, embed_model=Settings.embed_model)
-    vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k=3)
+    vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k=similarity_top_k)
     retriever_chunk = RecursiveRetriever(
         "vector",
         retriever_dict={"vector": vector_retriever_chunk},
@@ -240,10 +272,18 @@ def sentence_window_retriever(index):
     ], )
 
 
-def custom_retriever(index, mode=0):
+def custom_retriever(index, retriver_type_CUSTOM='bm25_and'):
     vector_r = vector_retriever(index)
     bm25_r = bm25_retriever(index)
     keyword_r = keyword_retriever(index)
+    if retriver_type_CUSTOM.lower()=='bm25_and':
+        mode=0
+    elif retriver_type_CUSTOM.lower()=='keyword_or':
+        mode=1
+    else:
+        mode=0
+        warnings.warn(f"Invaild retriver_type_CUSTOM:{retriver_type_CUSTOM}. Using default bm25_and. We support bm25_and,keyword_or")
+
     if mode > 1 or mode < 0:
         raise ValueError("Invalid mode for custom retriever."+ str(mode))
 
@@ -260,9 +300,26 @@ def custom_retriever(index, mode=0):
 # simple_summarize：截断所有文本块以适应单个 LLM 提示。适合快速 摘要目的，但可能会因截断而丢失详细信息。
 # accumulate：给定一组文本块和查询，将查询应用于每个文本 块，同时将响应累积到数组中。返回 all 的串联字符串。当您需要对每个文本分别运行相同查询时，非常有用
 # compact_accumulate：与 accumulate 相同，但会“压缩”每个类似于 的 LLM 提示符，并对每个文本块运行相同查询。compact
-def response_synthesizer(mode=0):
-    if mode > 7:
-        mode = 1
+def response_synthesizer(responce_synthsizer='refine'):
+    if responce_synthsizer.lower()=='refine':
+        mode=0
+    elif responce_synthsizer.lower()=='compact':
+        mode=1
+    elif responce_synthsizer.lower()=='compact_accumulate':
+        mode=2
+    elif responce_synthsizer.lower()=='accumulate':
+        mode=3
+    elif responce_synthsizer.lower()=='tree_summarize':
+        mode=4
+    elif responce_synthsizer.lower()=='simple_summarize':
+        mode=5
+    elif responce_synthsizer.lower()=='no_text':
+        mode=6
+    elif responce_synthsizer.lower()=='generation':
+        mode=7
+    else:
+        mode=0
+        warnings.warn(f"Invalid option '{responce_synthsizer}', using default 'refine'. Supported options:refine, compact, compact_accumulate, accumulate, tree_summarize, simple_summarize, no_text, generation", UserWarning)
     choose = [ResponseMode.REFINE, ResponseMode.COMPACT, ResponseMode.COMPACT_ACCUMULATE, ResponseMode.ACCUMULATE,
               ResponseMode.TREE_SUMMARIZE, ResponseMode.SIMPLE_SUMMARIZE, ResponseMode.NO_TEXT, ResponseMode.GENERATION]
     response_s = get_response_synthesizer(response_mode=choose[mode])
@@ -282,25 +339,25 @@ def response_synthesizer(mode=0):
 # Tree: index必须为树索引 *
 # mode: 1,2,3,0 对应 TreeAllLeafRetriever TreeSelectLeafRetriever TreeSelectLeafEmbeddingRetriever TreeRootRetriever
 # mode确定检索器的模式
-def get_retriver(type: str, index, mode: int = 0, node = None, hierarchical_storage_context = None):
+def get_retriver(type: str, index, mode: int = 0, node = None, hierarchical_storage_context = None,cfg=None):
     if type == "BM25":
-        retriever = bm25_retriever(index)
+        retriever = bm25_retriever(index,cfg.similarity_top_k_BM25)
     elif type == "Vector":
-        retriever = vector_retriever(index)
+        retriever = vector_retriever(index,cfg.similarity_top_k_VECTOR,cfg.show_progress_VECTOR,cfg.shore_nodes_override_VECTOR)
     elif type == "Summary":
-        retriever = summary_retriever(index, mode=mode)
+        retriever = summary_retriever(index,cfg.retriver_type_SUMMARY,cfg.similarity_top_k_SUMMARY)
     elif type == "Tree":
-        retriever = tree_retriever(index, mode=mode)
+        retriever = tree_retriever(index, cfg.retriver_type_TREE)
     elif type == "Keyword":
-        retriever = keyword_retriever(index, mode=mode)
+        retriever = keyword_retriever(index)
     elif type == "Custom":
-        retriever = custom_retriever(index, mode=mode)
+        retriever = custom_retriever(index, cfg.retriver_type_CUSTOM)
     elif type == "QueryFusion":
-        retriever = query_fusion_retriever(index, mode=mode)
+        retriever = query_fusion_retriever(index, cfg.num_quries_QUERYFUSION,cfg.similarity_top_k_QUERYFUSION,cfg.retriver_type_QUERYFUSION,cfg.retriever_weight_QUERYFUSION)
     elif type == "AutoMerging":
-        retriever = auto_merging_retriever(index, hierarchical_storage_context)
+        retriever = auto_merging_retriever(index, hierarchical_storage_context,cfg.similarity_top_k_AUTOMERGING)
     elif type == "Recursive":
-        retriever = recursive_retriever(base_nodes=node)
+        retriever = recursive_retriever(node,cfg.sub_chunk_sizes_RECURSIVE,cfg.chunk_overlap_RECURSIVE,cfg.similarity_top_k_RECURSIVE)
     elif type == "SentenceWindow":
         retriever = sentence_window_retriever(index)
     else:
@@ -465,7 +522,7 @@ if __name__ == '__main__':
     # retriever = recursive_retriever(nodes)  # 可用
     response_syn = response_synthesizer(0)
     nodes = retriever.retrieve("请用中文回答我的毕业设计题目是什么")
-    logger.debug(nodes)
+    print(nodes)
     query_engine = RetrieverQueryEngine(
         retriever=get_retriver("QueryFusion", index_, mode=0),
         response_synthesizer=response_syn,
@@ -474,4 +531,4 @@ if __name__ == '__main__':
     query_e = query_expansion([query_engine],query_number=4,similarity_top_k=3)
     query_engine = RetrieverQueryEngine.from_args(query_e)
     response = query_engine.query("请用中文回答我的毕业设计题目是什么")
-    logger.debug(response)
+    print(response)
