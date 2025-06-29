@@ -1,7 +1,7 @@
 [llm_settings]
 llm = "ollama"
 # openai setting(when llm is openai)
-api_key = "sk-6afea23713344d07a443ab512189e14d"
+api_key = "sk-*****"
 api_base = "https://api.deepseek.com/v1"  # https://api.openai.com/v1
 api_name = "deepseek-chat" # gpt-4o deepseek-chat
 auth_token = "hf_xxx"
