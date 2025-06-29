@@ -37,6 +37,7 @@ dataset_type = "local"
 persist_dir = "storage"
 # if dataset_type is huggingface
 dataset = "hotpot_qa"
+dataset_download_timeout = 300 # seconds
 # if dataset_type is local
 dataset_path = "examples/generated_qa.json"
 

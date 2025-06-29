@@ -1,5 +1,6 @@
 import json
 import os
+import aiohttp
 os.environ['HF_ENDPOINT']='https://hf-mirror.com'
 from datasets import load_dataset
 import random
@@ -162,13 +163,28 @@ def get_qa_dataset(dataset_name:str,files=None):
 
 
     if dataset_name == "rmanluo/RoG-webqsp":
-        dataset =  load_dataset("rmanluo/RoG-webqsp")
+        dataset = load_dataset(
+            "rmanluo/RoG-webqsp",
+            storage_options={
+                "client_kwargs": {
+                    "timeout": aiohttp.ClientTimeout(total=cfg.dataset_download_timeout)
+                }
+            },
+        )
         questions = dataset['train']['question'] + dataset['test']['question'] + dataset['validation']['question']
         answers = dataset['train']['answer'] + dataset['test']['answer'] + dataset['validation']['answer']
         golden_sources = dataset['train']['graph'] + dataset['test']['graph'] + dataset['validation']['graph']
     
     elif dataset_name == "hotpot_qa":
-        dataset = load_dataset("hotpot_qa", "fullwiki")
+        dataset = load_dataset(
+            "hotpot_qa",
+            "fullwiki",
+            storage_options={
+                "client_kwargs": {
+                    "timeout": aiohttp.ClientTimeout(total=cfg.dataset_download_timeout)
+                }
+            },
+        )
 
         questions = dataset['train']['question'] + dataset['validation']['question']
         answers = dataset['train']['answer'] + dataset['validation']['answer']
@@ -237,7 +253,14 @@ def get_qa_dataset(dataset_name:str,files=None):
             "question": "Who scored the first touchdown of the game?"
         }
         """
-        dataset = load_dataset("drop")
+        dataset = load_dataset(
+            "drop",
+            storage_options={
+                "client_kwargs": {
+                    "timeout": aiohttp.ClientTimeout(total=cfg.dataset_download_timeout)
+                }
+            },
+        )
         questions = dataset['train']['question'] + dataset['validation']['question']
         answers = dataset['train']['answers_spans'] + dataset['validation']['answers_spans']
         answers = [x['spans'][0] for x in answers]
@@ -386,7 +409,17 @@ def get_qa_dataset(dataset_name:str,files=None):
             with open('../data/natural_questions.pkl', 'rb') as f:
                 data = pickle.load(f)
         else:
-            dataset = load_dataset("natural_questions", cache_dir='../data')
+            dataset = load_dataset(
+                "natural_questions",
+                cache_dir="../data",
+                storage_options={
+                    "client_kwargs": {
+                        "timeout": aiohttp.ClientTimeout(
+                            total=cfg.dataset_download_timeout
+                        )
+                    }
+                },
+            )
             '''
             Dataset({
         features: ['id', 'document', 'question', 'long_answer_candidates', 'annotations'],
@@ -526,7 +559,15 @@ def get_qa_dataset(dataset_name:str,files=None):
 
 
     elif dataset_name == "trivia_qa":
-        dataset = load_dataset("mandarjoshi/trivia_qa", "rc")
+        dataset = load_dataset(
+            "mandarjoshi/trivia_qa",
+            "rc",
+            storage_options={
+                "client_kwargs": {
+                    "timeout": aiohttp.ClientTimeout(total=cfg.dataset_download_timeout)
+                }
+            },
+        )
 
         questions = dataset['train']['question'] + dataset['validation']['question']
         answers = dataset['train']['answer'] + dataset['validation']['answer']
@@ -623,7 +664,14 @@ def get_qa_dataset(dataset_name:str,files=None):
         raise NotImplementedError(f'dataset {dataset_name} not implemented! Search QA is not supported yet! As its search_results is really searched and each question has a lot of search results. It is not suitable for the RAG system.')
 
     elif dataset_name == "finqa":
-        dataset = load_dataset("dreamerdeo/finqa")
+        dataset = load_dataset(
+            "dreamerdeo/finqa",
+            storage_options={
+                "client_kwargs": {
+                    "timeout": aiohttp.ClientTimeout(total=cfg.dataset_download_timeout)
+                }
+            },
+        )
         questions = dataset['train']['question'] + dataset['validation']['question'] + dataset['test']['question']
         answers = dataset['train']['answer'] + dataset['validation']['answer'] + dataset['test']['answer']
         ids = dataset['train']['id'] + dataset['validation']['id'] + dataset['test']['id']
