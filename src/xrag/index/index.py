@@ -11,8 +11,10 @@ import os
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from llama_index.core.node_parser import LangchainNodeParser
 from llama_index.core.node_parser import HierarchicalNodeParser
+from llama_index.core.node_parser import SemanticSplitterNodeParser
+from llama_index.core import Settings
 
-def get_index(documents, persist_dir, split_type="sentence", chunk_size=1024,chunk_overlap=20,chunk_sizes=[2048, 512, 128]):
+def get_index(documents, persist_dir, split_type="sentence", chunk_size=1024,chunk_overlap=20,chunk_sizes=[2048, 512, 128],semantic_setting=None):
     hierarchical_storage_context = None
     if not os.path.exists(persist_dir):
         # load the documents and create the index
@@ -29,6 +31,17 @@ def get_index(documents, persist_dir, split_type="sentence", chunk_size=1024,chu
         elif split_type == "hierarchical":
             parser = HierarchicalNodeParser.from_defaults(
                 chunk_sizes=chunk_sizes
+            )
+            nodes = parser.get_nodes_from_documents(documents, show_progress=True)
+            print("nodes: " + str(nodes.__len__()))
+            index = VectorStoreIndex(nodes,show_progress=True)
+        elif split_type == "semantic":
+            parser = SemanticSplitterNodeParser(
+                buffer_size=semantic_setting["buffer_size"],
+                embed_model=Settings.embed_model,
+                include_metadata=semantic_setting["include_metadata"],
+                include_prev_next_rel=semantic_setting["include_prev_next_rel"],
+                breakpoint_percentile_threshold=semantic_setting["breakpoint_percentile_threshold"]
             )
             nodes = parser.get_nodes_from_documents(documents, show_progress=True)
             print("nodes: " + str(nodes.__len__()))
