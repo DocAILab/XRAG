@@ -38,8 +38,15 @@ def build_index(documents):
     cfg.persist_dir = cfg.persist_dir + '-' + cfg.dataset + '-' + cfg.embeddings + '-' + cfg.split_type + '-' + str(
         cfg.chunk_size)
 
+    semantic_setting={
+        "buffer_size":cfg.buffer_size,
+        "include_metadata":cfg.include_metadata,
+        "include_prev_next_rel":cfg.include_prev_next_rel,
+        "breakpoint_percentile_threshold":cfg.breakpoint_percentile_threshold
+    }
     index, hierarchical_storage_context = get_index(documents, cfg.persist_dir, split_type=cfg.split_type,
-                                                    chunk_size=cfg.chunk_size,chunk_overlap=cfg.chunk_overlap,chunk_sizes=cfg.chunk_sizes)
+                                                    chunk_size=cfg.chunk_size,chunk_overlap=cfg.chunk_overlap,
+                                                    chunk_sizes=cfg.chunk_sizes,semantic_setting=semantic_setting)
 
 
     return index, hierarchical_storage_context
