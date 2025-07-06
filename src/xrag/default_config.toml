@@ -21,6 +21,7 @@ huggingface_model = "llama" # huggingface model name
 embeddings = "BAAI/bge-large-en-v1.5"
 split_type = "sentence"
 chunk_size = 128
+window_size = 3 # when split_type is sentence_window
 dataset = "hotpot_qa"
 dataset_download_timeout = 300 # seconds
 # dataset_path = "data/xxx.json" # If dataset is custom, set the path to the custom dataset

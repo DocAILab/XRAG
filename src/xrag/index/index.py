@@ -13,8 +13,9 @@ from llama_index.core.node_parser import LangchainNodeParser
 from llama_index.core.node_parser import HierarchicalNodeParser
 from llama_index.core.node_parser import SemanticSplitterNodeParser
 from llama_index.core import Settings
+from llama_index.core.node_parser import SentenceWindowNodeParser
 
-def get_index(documents, persist_dir, split_type="sentence", chunk_size=1024,chunk_overlap=20,chunk_sizes=[2048, 512, 128],semantic_setting=None):
+def get_index(documents, persist_dir, split_type="sentence", chunk_size=1024,chunk_overlap=20,chunk_sizes=[2048, 512, 128],semantic_setting=None, window_size=3):
     hierarchical_storage_context = None
     if not os.path.exists(persist_dir):
         # load the documents and create the index
@@ -23,6 +24,15 @@ def get_index(documents, persist_dir, split_type="sentence", chunk_size=1024,chu
             nodes = parser.get_nodes_from_documents(documents, show_progress=True)
             print("nodes: " + str(nodes.__len__()))
             index = VectorStoreIndex(nodes,show_progress=True)
+        elif split_type == "sentence_window":
+            parser = SentenceWindowNodeParser.from_defaults(
+                window_size=window_size,
+                window_metadata_key="window",
+                original_text_metadata_key="original_text",
+            )
+            nodes = parser.get_nodes_from_documents(documents, show_progress=True)
+            print("nodes: " + str(nodes.__len__()))
+            index = VectorStoreIndex(nodes, show_progress=True)
         elif split_type == "character":
             parser = LangchainNodeParser(RecursiveCharacterTextSplitter())
             nodes = parser.get_nodes_from_documents(documents, show_progress=True)
