@@ -35,6 +35,7 @@ def create_default_config(config_file_path):
                 "embeddings": "BAAI/bge-large-en-v1.5",
                 "split_type": "sentence",
                 "chunk_size": 128,
+                "window_size": 3,
                 "dataset": "hotpot_qa",
                 "dataset_download_timeout": 300,
                 "persist_dir": "storage",

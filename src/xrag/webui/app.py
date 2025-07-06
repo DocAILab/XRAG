@@ -90,7 +90,7 @@ OLLAMA_OPTIONS = {
 }
 
 EMBEDDING_OPTIONS = ["BAAI/bge-large-en-v1.5", "BAAI/bge-m3", "BAAI/bge-base-en-v1.5","BAAI/bge-small-en-v1.5","BAAI/bge-large-zh-v1.5","BAAI/bge-base-zh-v1.5","BAAI/bge-small-zh-v1.5"]  # Add more as needed
-SPLIT_TYPE_OPTIONS = ["sentence", "character", "hierarchical"]
+SPLIT_TYPE_OPTIONS = ["sentence", "sentence_window", "character", "hierarchical"]
 DATASET_OPTIONS = ["hotpot_qa", "drop", "natural_questions","trivia_qa","search_qa","finqa","law"]  # Replace with actual dataset options
 DATASET_DISPLAY_MAP = {
     "hotpot_qa": "HotpotQA",

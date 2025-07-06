@@ -46,7 +46,7 @@ def build_index(documents):
     }
     index, hierarchical_storage_context = get_index(documents, cfg.persist_dir, split_type=cfg.split_type,
                                                     chunk_size=cfg.chunk_size,chunk_overlap=cfg.chunk_overlap,
-                                                    chunk_sizes=cfg.chunk_sizes,semantic_setting=semantic_setting)
+                                                    chunk_sizes=cfg.chunk_sizes,semantic_setting=semantic_setting, window_size=cfg.window_size)
 
 
     return index, hierarchical_storage_context
