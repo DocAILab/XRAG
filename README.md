@@ -37,7 +37,7 @@
 
 ## :mega: Updates
 
-- **2025-07.18: Add Text Splitters, including SemanticSplitterNodeParser, SentenceSplitterNodeParser, and SentenceWindowNodeParser..**
+- **2025-07.18: Add Text Splitters, including SemanticSplitterNodeParser, SentenceSplitterNodeParser, and SentenceWindowNodeParser.**
 - **2025-06.23: Update configuration file，parameters appear clearer.**
 - **2025-01.09: Add API support. Now you can use XRAG as a backend service.**
 - **2025-01.06: Add ollama LLM support.**
