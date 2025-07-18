@@ -37,6 +37,8 @@
 
 ## :mega: Updates
 
+- **2025-07.18: Add chunking methods, including SemanticSplitterNodeParser, SentenceSplitterNodeParser, and SentenceWindowNodeParser..**
+- **2025-06.23: Update configuration file，parameters appear clearer.**
 - **2025-01.09: Add API support. Now you can use XRAG as a backend service.**
 - **2025-01.06: Add ollama LLM support.**
 - **2025-01.05: Add generate command. Now you can generate your own QA pairs from a folder which contains your documents.**
