@@ -23,10 +23,12 @@ embed_batch_size = 16
 
 
 [chunk_settings]
-split_type = "sentence" #sentence,character,hierarchical
+split_type = "sentence" #sentence,sentence_window,character,hierarchical
 # when split_type is sentence
 chunk_size = 128
 chunk_overlap = 20
+# when split_type is sentence_window
+window_size = 3
 # when split_type is hierarchical
 chunk_sizes=[2048, 512, 128]
 # when split_type is semantic
