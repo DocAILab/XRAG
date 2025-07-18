@@ -180,7 +180,7 @@ def query_fusion_retriever(index, num_queries=4, similarity_top_k=2, retriver_ty
     query_fusion_r = None
     if not isinstance(index, list):
         index = [index]
-    if retriever_weight is None:
+    if not retriever_weight:
         retriever_weight = [1 / len(index)] * len(index)
     
     if retriver_type_QUERYFUSION.lower()=='normal':

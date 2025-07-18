@@ -100,7 +100,7 @@ retriver_type_CUSTOM='bm25_and' # bm25_and,keyword_or
 retriver_type_QUERYFUSION='normal' # normal,reciprocal_rank
 num_quries_QUERYFUSION=4
 similarity_top_k_QUERYFUSION=2
-retriever_weight_QUERYFUSION=null  # default: [1 / len(index)] * len(index)
+retriever_weight_QUERYFUSION=[]  # default: [1 / len(index)] * len(index)
 
 # 8.AutoMerging
 similarity_top_k_AUTOMERGING=6
