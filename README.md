@@ -44,6 +44,37 @@
 - **2025-01.05: Add generate command. Now you can generate your own QA pairs from a folder which contains your documents.**
 - **2024-12.23: XRAG Documentation is released**🌈.
 - **2024-12.20: XRAG is released**🎉.
+
+# XRAG Roadmap
+
+Welcome developers, researchers, and enthusiasts to join the XRAG open-source project! 
+
+## 📊 Novel Novel Evaluation Metrics
+- [ ] **Semantic Perplexity (SePer)**
+- [ ] **Entropy** & **Semantic Entropy**
+- [ ] **Auto-J**
+- [ ] **Prometheus**
+
+## 🤖 LLM Experiments (Various Parameter Sizes)
+- [ ] **PGE/GTE/M3E** embeddings
+- [ ] **30B/more-parameter models** via OpenAI API or Ollama
+
+
+## 🧠 Ever-Evolving Agent Workflows
+- [ ] **Adaptive Retrieval**
+- [ ] **Multi-step Approach**
+- [ ] **Self-RAG**
+- [ ] **FLARE**
+- [ ] **Adaptive-RAG**
+
+## 📊 Other Novel RAG modules
+- [ ] **Late Chunking**
+
+> 🙌 Your contributions—code, data, ideas, or feedback—are the heartbeat of XRAG!  
+> Repository: [https://github.com/DocAILab/XRAG](https://github.com/DocAILab/XRAG)
+
+
+
 ---
 ## 📖 Introduction
 <img src="imgs/overall.png" width="100%" align="center" alt="XRAG">
