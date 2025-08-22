@@ -121,7 +121,7 @@ postprocess_rerank = "long_context_reorder"
 
 [query_settings]
 query_transform = "none"
-metrics = ["NLG_chrf", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp","NLG_perplexity", "NLG_rouge_rouge1", "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum"]
+metrics = ["NLG_chrf", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp","NLG_perplexity", "NLG_rouge_rouge1", "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum", "SePer_with_context", "SePer_without_context", "SePer_delta"]
 
 
 [seper]
