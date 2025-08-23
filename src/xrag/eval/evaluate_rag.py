@@ -553,23 +553,26 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
     config = Config()
     seper_config: t.Dict[str, t.Any] = config.config.get("seper", {})
 
-    if getattr(seper_config, "enabled", False):
+    if seper_config.get("enabled", False):
         try:
             seper_result = SePerEvaluate(
                 question, retrieval_context, expected_answer, seper_config
             )
 
             if "SePer_with_context" in metrics:
+                eval_result.metrics_results["SePer_with_context"] = {}
                 eval_result.metrics_results["SePer_with_context"]["score"] = (
                     seper_result.get("seper_with_context", 0.0)
                 )
                 eval_result.metrics_results["SePer_with_context"]["count"] = 1
             if "SePer_without_context" in metrics:
+                eval_result.metrics_results["SePer_without_context"] = {}
                 eval_result.metrics_results["SePer_without_context"]["score"] = (
                     seper_result.get("seper_without_context", 0.0)
                 )
                 eval_result.metrics_results["SePer_without_context"]["count"] = 1
             if "SePer_delta" in metrics:
+                eval_result.metrics_results["SePer_delta_seper"] = {}
                 eval_result.metrics_results["SePer_delta_seper"]["score"] = (
                     seper_result.get("delta_seper", 0.0)
                 )
