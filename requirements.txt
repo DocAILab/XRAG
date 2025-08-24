@@ -33,7 +33,7 @@ llama-index-postprocessor-cohere-rerank==0.2.1
 llama-index-postprocessor-colbert-rerank==0.2.1
 llama-index-postprocessor-flag-embedding-reranker==0.2.0
 sacrebleu
-jiwer
+jiwer==3.1.0
 seqeval==1.2.2
 bert_score
 sentencepiece
@@ -44,3 +44,4 @@ streamlit_card
 fastapi
 uvicorn
 pydantic
+httpx==0.27.2
