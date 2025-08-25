@@ -60,6 +60,19 @@ def create_default_config(config_file_path):
                           "NLG_perplexity", "NLG_rouge_rouge1", "NLG_rouge_rouge2", 
                           "NLG_rouge_rougeL", "NLG_rouge_rougeLsum"]
             },
+            "seper": {
+                "enabled": False,
+                "generation_model": "meta-llama/Llama-2-7b-chat-hf",
+                "entailment_model": "microsoft/deberta-v2-xlarge-mnli",
+                "device": "cuda",
+                "num_generations": 10,
+                "temperature": 1.0,
+                "max_new_tokens": 128,
+                "computation_chunk_size": 8,
+                "prompt_type": "default",
+                "max_context_words": 512,
+                "use_soft_clustering": True
+            },
             "prompt": {
                 "text_qa_template_path": "src/xrag/prompts/text_qa_template.txt",
                 "refine_template_path": "src/xrag/prompts/refine_template.txt"
