@@ -27,7 +27,12 @@ def get_llm(name):
     if name == 'huggingface':
         return get_huggingfacellm(Config().huggingface_model)
     elif name == 'openai':
-        return get_openai(api_base=Config().api_base, api_key=Config().api_key, temperature=Config().temperature, model=Config().api_name)
+        return get_openai(
+            api_base=Config().api_base,
+            api_key=Config().api_key,
+            api_name=Config().api_name,
+            temperature=Config().temperature,
+        )
     elif name == 'ollama':
         return Ollama(model=Config().ollama_model, request_timeout=Config().ollama_request_timeout)
     else:
