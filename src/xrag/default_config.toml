@@ -67,5 +67,12 @@ refine_template_path = "src/xrag/prompts/refine_template.txt"
 
 
 [self_rag]
-enabled = false # when enabled, ignore other settings and use self-rag
+enabled = false # when enabled, ignore other config sections and use self-rag
 model_name = "selfrag/selfrag_llama2_7b"
+retriever_model = "facebook/contriever-msmarco"
+download_dir = ""
+dtype = "half"
+temperature = 0.0
+top_p = 1.0
+max_tokens = 100
+skip_special_tokens = false

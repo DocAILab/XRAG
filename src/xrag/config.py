@@ -79,7 +79,14 @@ def create_default_config(config_file_path):
             },
             "self_rag": {
                 "enabled": False,
-                "model_name": "selfrag/selfrag_llama2_7b"
+                "model_name": "selfrag/selfrag_llama2_7b",
+                "retriever_model": "facebook/contriever-msmarco",
+                "download_dir": "",
+                "dtype": "half",
+                "temperature": 0.0,
+                "top_p": 1.0,
+                "max_tokens": 100,
+                "skip_special_tokens": False
             }
         }
         with open(config_file_path, 'w', encoding='utf-8') as f:
