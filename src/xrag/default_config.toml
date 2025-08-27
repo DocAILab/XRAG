@@ -64,3 +64,8 @@ use_soft_clustering = true
 [prompt]
 text_qa_template_path = "src/xrag/prompts/text_qa_template.txt"
 refine_template_path = "src/xrag/prompts/refine_template.txt"
+
+
+[self_rag]
+enabled = false # when enabled, ignore other settings and use self-rag
+model_name = "selfrag/selfrag_llama2_7b"

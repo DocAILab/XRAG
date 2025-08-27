@@ -76,6 +76,10 @@ def create_default_config(config_file_path):
             "prompt": {
                 "text_qa_template_path": "src/xrag/prompts/text_qa_template.txt",
                 "refine_template_path": "src/xrag/prompts/refine_template.txt"
+            },
+            "self_rag": {
+                "enabled": False,
+                "model_name": "selfrag/selfrag_llama2_7b"
             }
         }
         with open(config_file_path, 'w', encoding='utf-8') as f:
