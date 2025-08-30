@@ -45,3 +45,4 @@ fastapi
 uvicorn
 pydantic
 httpx==0.27.2
+# vllm
