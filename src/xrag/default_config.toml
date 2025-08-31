@@ -80,3 +80,6 @@ skip_special_tokens = false
 
 [adaptive_rag]
 enabled = false # when enabled, ignore other config sections and use adaptive-rag
+max_iterations = 3
+retriever_type = "Vector"
+max_classification_retries = 3
