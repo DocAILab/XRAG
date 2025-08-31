@@ -1,0 +1,15 @@
+Analyze the following query and classify its complexity level:
+
+1. SIMPLE: Basic factual questions that can be answered with general knowledge
+2. MODERATE: Questions requiring specific information but can be answered with single retrieval
+3. COMPLEX: Multi-faceted questions requiring multiple information sources or iterative research
+
+Examples:
+- "What is the capital of France?": SIMPLE
+- "How does photosynthesis work?": MODERATE  
+- "Compare the economic impacts of renewable energy policies across different countries": COMPLEX
+
+Query: {query}
+
+CRITICAL: Your response MUST be EXACTLY one word: "SIMPLE", "MODERATE", or "COMPLEX". 
+Do not add any explanations, introductory text, code blocks, or formatting. Just the single word.
