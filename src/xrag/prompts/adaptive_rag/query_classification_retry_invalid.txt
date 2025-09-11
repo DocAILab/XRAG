@@ -1,14 +1,17 @@
 Analyze the following query and classify its complexity level:
 
-1. SIMPLE: Basic factual questions that can be answered with general knowledge
-2. MODERATE: Questions requiring specific information but can be answered with single retrieval
-3. COMPLEX: Multi-faceted questions requiring multiple information sources or iterative research
+1. simple: Basic factual questions that can be answered with general knowledge
+2. moderate: Questions requiring specific information but can be answered with single retrieval
+3. complex: Multi-faceted questions requiring multiple information sources or iterative research
+
+CRITICAL FORMAT RULES:
+- Output MUST be EXACTLY one of: simple, moderate, complex
+- Do NOT include quotes, punctuation, emojis, symbols, numbering, or any extra words
+- Do NOT provide explanations, reasoning, or any surrounding text
+- Return only the single word on its own line
 
 Previous attempt returned "{previous_response}" which is invalid.
-You must respond with EXACTLY one of: SIMPLE, MODERATE, or COMPLEX
+You must respond with EXACTLY one of: simple, moderate, or complex
+This is a **retry** because your previous response was invalid! Follow the format strictly!
 
 Query: {query}
-
-CRITICAL: Your response MUST be EXACTLY one word: "SIMPLE", "MODERATE", or "COMPLEX". 
-Do not add any explanations, introductory text, code blocks, or formatting. Just the single word.
-This is a retry because your previous response was invalid - follow the format strictly.
