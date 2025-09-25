@@ -1,0 +1,5 @@
+Respond only with the following format, nothing else:
+Answer: [Provide the answer here or 'unsure']
+Rationale: [Provide the rationale here]
+
+Do not include any additional text, headers, or explanations outside this format.

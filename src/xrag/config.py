@@ -87,7 +87,12 @@ def create_default_config(config_file_path):
                 "top_p": 1.0,
                 "max_tokens": 100,
                 "skip_special_tokens": False
-            }
+            },
+            "sim_rag": {
+                "enabled": False,
+                "max_turns": 4,
+                "top_docs": 2
+            },
         }
         with open(config_file_path, 'w', encoding='utf-8') as f:
             toml.dump(default_config, f)
