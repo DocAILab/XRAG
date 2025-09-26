@@ -159,7 +159,7 @@ skip_special_tokens = false
 [sim_rag]
 enabled = false
 max_turns = 4
-top_docs = 2
+top_k = 2
 use_abstain_first_turn = false
 remove_repeat_docs = false
 gate_model = "dyang39/SIM-RAG-Llama3-2B"

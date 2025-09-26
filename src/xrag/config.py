@@ -91,7 +91,7 @@ def create_default_config(config_file_path):
             "sim_rag": {
                 "enabled": False,
                 "max_turns": 4,
-                "top_docs": 2,
+                "top_k": 2,
                 "use_abstain_first_turn": False,
                 "remove_repeat_docs": False,
                 "gate_model": "dyang39/SIM-RAG-Llama3-2B",
