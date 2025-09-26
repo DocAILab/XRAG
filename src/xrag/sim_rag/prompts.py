@@ -29,6 +29,10 @@ force_answer_prompt = _interpolate(
     _read_required("force_answer_prompt.txt"),
     {"formatting_answer": formatting2},
 )
+abstain_force_answer_prompt = _interpolate(
+    _read_required("abstain_force_answer_prompt.txt"),
+    {"formatting_answer_or_unsure": formatting_abstain},
+)
 search_query_prompt = _interpolate(
     _read_required("search_query_prompt.txt"),
     {"formatting_json": formatting},
