@@ -105,7 +105,7 @@ class SimRAGPipeline:
     def _llm_predict(self, system_prompt: str, content: str) -> str:
         prompt = f"{system_prompt}\n\n{content}"
         try:
-            return Settings.llm.predict(prompt)
+            return Settings.llm.complete(prompt).text
         except Exception as e:
             logger.exception("LLM prediction failed")
             raise e
@@ -247,10 +247,7 @@ def get_simrag_pipeline(cfg: Optional[Config] = None) -> SimRAGPipeline:
 
 
 def run_simrag(
-    question: str,
-    documents: Optional[List[Document]] = None,
-    cfg: Optional[Config] = None,
-    retriever: Any = None,
+    question: str, cfg: Optional[Config] = None, retriever: Any = None
 ) -> Dict[str, Any]:
     pipeline = get_simrag_pipeline(cfg)
-    return pipeline.answer(question, documents=documents, retriever=retriever)
+    return pipeline.answer(question, retriever=retriever)
