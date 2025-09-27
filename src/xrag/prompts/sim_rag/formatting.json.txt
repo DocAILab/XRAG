@@ -1,0 +1,7 @@
+The output should be a markdown code snippet formatted in the following schema, including the leading and trailing "```json" and "```":
+
+```json
+{
+ "search_query": string  // The search query, as a unique string.
+ "reasoning": string  // Any reasoning or notes or comments you have, as a unique string.
+}

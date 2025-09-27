@@ -17,6 +17,7 @@ from ..process.query_transform import transform_and_query
 import random
 import numpy as np
 import torch
+from ..sim_rag import run_simrag
 def seed_everything(seed):
     random.seed(seed)
     np.random.seed(seed)
@@ -117,13 +118,47 @@ def run(cli=True, custom_dataset=None):
     else:
         print('Using huggingface dataset')
         qa_dataset = get_qa_dataset(cfg.dataset, cfg.dataset_path)
-    index, hierarchical_storage_context = build_index(qa_dataset['documents'])
-    query_engine = build_query_engine(index, hierarchical_storage_context)
-    if cli:
-        evaluateResults = eval_cli(qa_dataset, query_engine)
+    # If Sim-RAG is enabled (nested section), use its inference pipeline instead of the standard RetrieverQueryEngine
+    sim_rag_cfg = cfg.config.get('sim_rag', {}) if hasattr(cfg, 'config') else {}
+    if bool(sim_rag_cfg.get('enabled', False)):
+        evaluateResults = EvaluationResult(metrics=cfg.metrics)
+        evalAgent = EvalModelAgent(cfg)
+        # Build embeddings/index once to speed up retrieval within Sim-RAG
+        index, hierarchical_storage_context = build_index(qa_dataset['documents'])
+        retriever = get_retriver(cfg.retriever, index, hierarchical_storage_context=hierarchical_storage_context, cfg=cfg)
+        # Iterate questions and call Sim-RAG
+        limit = cfg.test_init_total_number_documents if cfg.experiment_1 else cfg.n
+        for question, expected_answer, golden_context, golden_context_ids in zip(
+                qa_dataset['test_data']['question'][:limit],
+                qa_dataset['test_data']['expected_answer'][:limit],
+                qa_dataset['test_data']['golden_context'][:limit],
+                qa_dataset['test_data']['golden_context_ids'][:limit]
+        ):
+            sim_out = run_simrag(question, retriever=retriever, cfg=cfg)
+            actual_response = sim_out["response"]
+            retrieval_context = sim_out["retrieved_texts"]
+            retrieval_ids = sim_out["retrieved_ids"]
+            # Build a lightweight response-like object to satisfy evaluators that expect .response and .source_nodes
+            class _Resp:
+                def __init__(self, text, texts):
+                    self.response = text
+                    from llama_index.core.schema import TextNode, NodeWithScore
+                    self.source_nodes = [NodeWithScore(node=TextNode(text=t)) for t in texts]
+            response = _Resp(actual_response, retrieval_context)
+            eval_result = evaluating(question, response, actual_response, retrieval_context, retrieval_ids,
+                                     expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
+                                     evalAgent)
+            evaluateResults.add(eval_result)
+            evaluateResults.print_results()
         return evaluateResults
     else:
-        return query_engine, qa_dataset
+        index, hierarchical_storage_context = build_index(qa_dataset['documents'])
+        query_engine = build_query_engine(index, hierarchical_storage_context)
+        if cli:
+            evaluateResults = eval_cli(qa_dataset, query_engine)
+            return evaluateResults
+        else:
+            return query_engine, qa_dataset
 
 
 
