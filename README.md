@@ -77,7 +77,7 @@ Welcome developers, researchers, and enthusiasts to join the XRAG open-source pr
 
 ---
 ## 📖 Introduction
-<img src="imgs/overall.png" width="100%" align="center" alt="XRAG">
+<img src="imgs/Framework.png" width="100%" align="center" alt="XRAG">
 XRAG is a benchmarking framework designed to evaluate the foundational components of advanced Retrieval-Augmented Generation (RAG) systems. By dissecting and analyzing each core module, XRAG provides insights into how different configurations and components impact the overall performance of RAG systems.
 
 ---
