@@ -1,0 +1,7 @@
+Based on the current information and the original query, determine if enough information has been gathered to provide a complete answer.
+
+Original Query: {query}
+Current Information: {context}
+
+Is the information sufficient to answer the query completely? Respond with only "YES" or "NO".
+If NO, suggest what additional information is needed in one sentence.

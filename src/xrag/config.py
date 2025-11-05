@@ -87,6 +87,12 @@ def create_default_config(config_file_path):
                 "top_p": 1.0,
                 "max_tokens": 100,
                 "skip_special_tokens": False
+            },
+            "adaptive_rag": {
+                "enabled": False,
+                "max_iterations": 3,
+                "retriever_type": "Vector",
+                "max_classification_retries": 3
             }
         }
         with open(config_file_path, 'w', encoding='utf-8') as f:
