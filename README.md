@@ -36,6 +36,7 @@
 - [:books: Citation](#-citation)
 
 ## :mega: Updates
+- **2025-11.18: Add orchestrators: SIM-rag.**
 - **2025-11.05: Add orchestrators: self-rag, adaptive-rag.**
 - **2025-07.18: Add Text Splitters, including SemanticSplitterNodeParser, SentenceSplitterNodeParser, and SentenceWindowNodeParser.**
 - **2025-06.23: Update configuration file，parameters appear clearer.**
@@ -400,7 +401,7 @@ We value feedback from our users. If you have suggestions, feature requests, or 
 
 ## :round_pushpin: Acknowledgement
 
-- Organizers: [Qianren Mao](https://github.com/qianrenmao), [Yangyifei Luo (罗杨一飞)](https://github.com/lyyf2002), [Qili Zhang (张启立)](https://github.com/xiaolizhang77), [Yashuo Luo (罗亚硕)](https://github.com/luoyashuo), [Zhilong Cao(曹之龙)](https://github.com/afdafczl), [Jinlong Zhang (张金龙)](https://github.com/therealoliver), [Hanwen Hao (郝瀚文)](https://github.com/TheSleepGod), [Zhenting Huang (黄振庭)](https://github.com/hztBUAA), [Weifeng Jiang (蒋为峰)](https://github.com/therealoliver).
+- Organizers: [Qianren Mao](https://github.com/qianrenmao), [Yangyifei Luo (罗杨一飞)](https://github.com/lyyf2002), [Qili Zhang (张启立)](https://github.com/xiaolizhang77), [Yashuo Luo (罗亚硕)](https://github.com/luoyashuo), [Zhilong Cao(曹之龙)](https://github.com/afdafczl), [Jinlong Zhang (张金龙)](https://github.com/therealoliver), [Hanwen Hao (郝瀚文)](https://github.com/TheSleepGod), [Zhenting Huang (黄振庭)](https://github.com/hztBUAA), [Feng Yan(闫丰)](https://github.com/WnRock), [Weifeng Jiang (蒋为峰)](https://github.com/therealoliver).
 
 - This project is inspired by [RAGLAB](https://github.com/fate-ubw/RAGLab), [FlashRAG](https://github.com/RUC-NLPIR/FlashRAG), [FastRAG](https://github.com/IntelLabs/fastRAG), [AutoRAG](https://github.com/Marker-Inc-Korea/AutoRAG), [LocalRAG](https://github.com/jasonyux/LocalRQA).
 
