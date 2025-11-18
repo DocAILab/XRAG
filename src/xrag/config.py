@@ -99,6 +99,12 @@ def create_default_config(config_file_path):
                 "weighted": False,
                 "max_new_tokens": 1
             },
+            "adaptive_rag": {
+                "enabled": False,
+                "max_iterations": 3,
+                "retriever_type": "Vector",
+                "max_classification_retries": 3
+            }
         }
         with open(config_file_path, 'w', encoding='utf-8') as f:
             toml.dump(default_config, f)
