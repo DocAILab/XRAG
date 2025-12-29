@@ -14,7 +14,7 @@ class SelfRAGPipeline:
     Complete Self-RAG pipeline.
     """
 
-    def __init__(self, config: Optional[Config] = None):
+    def __init__(self, config: Optional[Config] = None, external_retriever: Optional[Any] = None):
         """
         Initialize the Self-RAG pipeline.
 
@@ -24,8 +24,9 @@ class SelfRAGPipeline:
         self.config = config or Config()
         self.self_rag_config = self.config.config.get("self_rag", {})
 
-        self.model = SelfRAGModel(config)
-        self.retriever = SelfRAGRetriever(config)
+        self.model = SelfRAGModel(self.config)
+        self.retriever = SelfRAGRetriever(self.config)
+        self.external_retriever = external_retriever
         self.parser = SelfRAGResponseParser()
 
         self.default_n_docs = 100
@@ -37,7 +38,7 @@ class SelfRAGPipeline:
         self.w_use = 0.5  # utility weight
         self.use_seqscore = False
 
-        logger.info("Initialized SelfRAGPipeline")
+        logger.info("Initialized SelfRAGPipeline (external retriever: %s)" % (self.external_retriever is not None))
 
     def setup_retriever(self, passages_path: str, embeddings_path: str = None):
         """
@@ -88,7 +89,14 @@ class SelfRAGPipeline:
         retrieved_docs = []
         evidences = []
 
-        retrieved_docs = self.retriever.search_documents(query, n_docs)
+        if self.external_retriever is not None:
+            try:
+                retrieved_docs = self._external_search(query, n_docs)
+            except Exception as e:
+                logger.warning(f"External retriever failed ({e}); falling back to internal SelfRAG retriever")
+                retrieved_docs = self.retriever.search_documents(query, n_docs)
+        else:
+            retrieved_docs = self.retriever.search_documents(query, n_docs)
         evidences = [
             {"title": doc.get("title", ""), "text": doc.get("text", "")}
             for doc in retrieved_docs
@@ -123,6 +131,32 @@ class SelfRAGPipeline:
             },
             "all_responses": all_results,
         }
+
+    def _external_search(self, query: str, n_docs: int) -> List[Dict[str, Any]]:
+        """Run retrieval through provided external retriever (llama_index retriever)."""
+        try:
+            nodes = self.external_retriever.retrieve(query)  # llama_index retriever
+        except AttributeError:
+            base_ret = getattr(self.external_retriever, "_retriever", None)
+            if base_ret is None:
+                raise
+            nodes = base_ret.retrieve(query)
+
+        docs = []
+        for rank, node_with_score in enumerate(nodes[:n_docs], start=1):
+            node = getattr(node_with_score, "node", node_with_score)
+            metadata = getattr(node, "metadata", {}) or {}
+            doc_id = metadata.get("id", getattr(node, "node_id", str(rank)))
+            title = metadata.get("title", f"doc_{doc_id}")
+            text = getattr(node, "text", None) or getattr(node, "get_content", lambda: "")()
+            docs.append({
+                "id": str(doc_id),
+                "title": title,
+                "text": text,
+                "score": float(getattr(node_with_score, "score", 1.0)),
+                "rank": rank,
+            })
+        return docs
 
     def _call_model_rerank_w_scores_batch(
         self,
@@ -340,9 +374,7 @@ class SelfRAGPipeline:
 
         elif not do_retrieve:
             prompt_no_retrieval = prompt + SelfRAGTokens.NO_RETRIEVAL.value
-            response = self.model.generate_single(
-                prompt_no_retrieval, max_new_tokens=max_new_tokens
-            )
+            response = self.model.generate_single(prompt_no_retrieval)
             # Parse the no-retrieval response
             parsed_response = self.parser.parse_response(response)
             results["no_retrieval"] = {

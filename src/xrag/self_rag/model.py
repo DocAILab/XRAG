@@ -1,10 +1,20 @@
 from ..config import Config
 from .utils import SelfRAGTokens
 from typing import List, Optional
-from vllm import LLM, SamplingParams
+from dataclasses import dataclass
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
 from ..utils import get_module_logger
 
 logger = get_module_logger(__name__)
+
+
+@dataclass
+class SamplingParams:
+    temperature: float = 0.0
+    top_p: float = 1.0
+    max_tokens: int = 100
+    skip_special_tokens: bool = False
 
 
 class SelfRAGModel:
@@ -24,21 +34,40 @@ class SelfRAGModel:
         self._initialize_model()
 
     def _initialize_model(self):
-        """Initialize the VLLM model and sampling parameters."""
+        """Initialize the transformers model, tokenizer, and sampling parameters."""
         try:
             model_name = self.self_rag_config.get(
                 "model_name", "selfrag/selfrag_llama2_7b"
             )
-            download_dir = self.self_rag_config.get("download_dir", None)
+            cache_dir = self.self_rag_config.get("download_dir", None)
             dtype = self.self_rag_config.get("dtype", "half")
 
-            # Initialize model
-            model_kwargs = {"dtype": dtype}
-            if download_dir:
-                model_kwargs["download_dir"] = download_dir
+            dtype_map = {
+                "half": torch.float16,
+                "float16": torch.float16,
+                "bfloat16": torch.bfloat16,
+                "bf16": torch.bfloat16,
+                "float32": torch.float32,
+                "fp32": torch.float32,
+            }
+            torch_dtype = dtype_map.get(str(dtype).lower(), torch.float16)
+
+            device = "cuda" if torch.cuda.is_available() else "cpu"
 
             logger.info(f"Initializing Self-RAG model: {model_name}")
-            self.model = LLM(model_name, **model_kwargs)
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                model_name, cache_dir=cache_dir, use_fast=True
+            )
+            if self.tokenizer.pad_token is None:
+                self.tokenizer.pad_token = self.tokenizer.eos_token
+
+            self.model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                cache_dir=cache_dir,
+                torch_dtype=torch_dtype,
+                low_cpu_mem_usage=True,
+            ).to(device)
+            self.model.eval()
 
             # Initialize sampling parameters
             temperature = self.self_rag_config.get("temperature", 0.0)
@@ -105,8 +134,31 @@ class SelfRAGModel:
         # Generate responses
         try:
             logger.info(f"Generating responses for {len(queries)} queries")
-            predictions = self.model.generate(prompts, self.sampling_params)
-            responses = [pred.outputs[0].text for pred in predictions]
+            device = next(self.model.parameters()).device
+            enc = self.tokenizer(
+                prompts, return_tensors="pt", padding=True, truncation=False
+            ).to(device)
+            with torch.no_grad():
+                gen_outputs = self.model.generate(
+                    **enc,
+                    do_sample=(self.sampling_params.temperature > 0),
+                    temperature=self.sampling_params.temperature
+                    if self.sampling_params.temperature > 0
+                    else None,
+                    top_p=self.sampling_params.top_p,
+                    max_new_tokens=self.sampling_params.max_tokens,
+                    pad_token_id=self.tokenizer.pad_token_id,
+                    eos_token_id=self.tokenizer.eos_token_id,
+                )
+            responses = []
+            for i, prompt in enumerate(prompts):
+                prompt_len = enc.input_ids[i].shape[0]
+                generated_ids = gen_outputs[i][prompt_len:]
+                text = self.tokenizer.decode(
+                    generated_ids,
+                    skip_special_tokens=self.sampling_params.skip_special_tokens,
+                )
+                responses.append(text)
             logger.info("Response generation completed")
             return responses
         except Exception as e:
@@ -145,41 +197,60 @@ class SelfRAGModel:
             raise RuntimeError("Model not initialized. Call _initialize_model() first.")
 
         prompt = self.format_prompt(query, paragraph)
-
-        # Create sampling params with logprobs enabled
-        sampling_params = SamplingParams(
-            temperature=self.sampling_params.temperature,
-            top_p=self.sampling_params.top_p,
-            max_tokens=max_new_tokens,
-            skip_special_tokens=self.sampling_params.skip_special_tokens,
-            logprobs=5000,
-        )
+        device = next(self.model.parameters()).device
 
         try:
             logger.debug(
                 f"Generating response with logprobs for query: {query[:50]}..."
             )
-            predictions = self.model.generate([prompt], sampling_params)
-            pred = predictions[0]
+            enc = self.tokenizer([prompt], return_tensors="pt").to(device)
+            with torch.no_grad():
+                outputs = self.model.generate(
+                    **enc,
+                    do_sample=(self.sampling_params.temperature > 0),
+                    temperature=self.sampling_params.temperature
+                    if self.sampling_params.temperature > 0
+                    else None,
+                    top_p=self.sampling_params.top_p,
+                    max_new_tokens=max_new_tokens,
+                    output_scores=True,
+                    return_dict_in_generate=True,
+                    pad_token_id=self.tokenizer.pad_token_id,
+                    eos_token_id=self.tokenizer.eos_token_id,
+                )
+
+            full_sequence = outputs.sequences[0]
+            prompt_len = enc.input_ids.shape[1]
+            generated_ids = full_sequence[prompt_len:]
+            text = self.tokenizer.decode(
+                generated_ids,
+                skip_special_tokens=self.sampling_params.skip_special_tokens,
+            )
+
+            logprobs_list = []
+            cumulative_logprob = 0.0
+            top_k_store = 5000
+            for step, (scores_step, token_id) in enumerate(
+                zip(outputs.scores, generated_ids)
+            ):
+                probs_log = torch.log_softmax(scores_step[0], dim=-1)
+                chosen_logprob = probs_log[token_id].item()
+                cumulative_logprob += chosen_logprob
+                vocab_size = probs_log.size(0)
+                k = min(top_k_store, vocab_size)
+                top_logprobs_vals, top_indices = torch.topk(probs_log, k)
+                step_dict = {
+                    int(idx): float(val)
+                    for idx, val in zip(top_indices.tolist(), top_logprobs_vals.tolist())
+                }
+                logprobs_list.append(step_dict)
 
             response = {
-                "text": pred.outputs[0].text,
-                "logprobs": [],
-                "token_ids": pred.outputs[0].token_ids,
-                "cumulative_logprob": pred.outputs[0].cumulative_logprob,
+                "text": text,
+                "logprobs": logprobs_list,
+                "token_ids": generated_ids.tolist(),
+                "cumulative_logprob": cumulative_logprob,
             }
-
-            # Extract logprobs if available
-            if pred.outputs[0].logprobs:
-                for token_logprobs in pred.outputs[0].logprobs:
-                    if token_logprobs:
-                        # Convert to dict mapping token_id -> logprob
-                        logprob_dict = {
-                            token_id: logprob.logprob
-                            for token_id, logprob in token_logprobs.items()
-                        }
-                        response["logprobs"].append(logprob_dict)
-
             return response
 
         except Exception as e:
@@ -196,7 +267,7 @@ class SelfRAGModel:
         if not self.model:
             raise RuntimeError("Model not initialized. Call _initialize_model() first.")
 
-        tokenizer = self.model.get_tokenizer()
+        tokenizer = self.tokenizer
 
         # Retrieval tokens
         ret_tokens = {
