@@ -71,6 +71,19 @@ class AdaptiveRAG:
 
         # Select and execute strategy
         strategy = self.strategies[complexity]
-        response = strategy.execute(query_str)
+        response_obj = strategy.execute(query_str)
 
-        return {"response": response, "strategy_used": complexity, "query": query_str}
+        # Normalize to text
+        if hasattr(response_obj, "response"):
+            response_text = response_obj.response
+        elif hasattr(response_obj, "text"):
+            response_text = response_obj.text
+        else:
+            response_text = str(response_obj)
+
+        return {
+            "response": response_text,
+            "strategy_used": complexity,
+            "query": query_str,
+            "response_obj": response_obj,
+        }

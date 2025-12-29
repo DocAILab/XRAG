@@ -6,6 +6,12 @@ from llama_index.core.query_engine import RetrieverQueryEngine
 from ..retrievers.retriever import get_retriver, response_synthesizer
 
 
+class SimpleResponse:
+    def __init__(self, text: str):
+        self.response = text
+        self.source_nodes = []
+
+
 class AdaptiveStrategy:
     """
     Base class for adaptive RAG strategies.
@@ -43,7 +49,7 @@ class DirectGenerationStrategy(AdaptiveStrategy):
             config = Config()
             self.llm = get_llm(config.llm)
 
-    def execute(self, query: str, **kwargs) -> str:
+    def execute(self, query: str, **kwargs) -> SimpleResponse:
         """
         Generate response directly using LLM.
 
@@ -54,8 +60,8 @@ class DirectGenerationStrategy(AdaptiveStrategy):
         Returns:
             Generated response
         """
-        response = self.llm.complete(query)
-        return response.text
+        resp = self.llm.complete(query)
+        return SimpleResponse(resp.text)
 
 
 class SingleRetrievalStrategy(AdaptiveStrategy):
@@ -82,7 +88,7 @@ class SingleRetrievalStrategy(AdaptiveStrategy):
             "retriever_type", "Vector"
         )
 
-    def execute(self, query: str, **kwargs) -> str:
+    def execute(self, query: str, **kwargs):
         """
         Execute single retrieval and generation.
 
@@ -99,9 +105,7 @@ class SingleRetrievalStrategy(AdaptiveStrategy):
         query_engine = RetrieverQueryEngine(
             retriever=retriever, response_synthesizer=synthesizer
         )
-
-        response = query_engine.query(query)
-        return response.response
+        return query_engine.query(query)
 
 
 class IterativeRetrievalStrategy(AdaptiveStrategy):
@@ -132,69 +136,33 @@ class IterativeRetrievalStrategy(AdaptiveStrategy):
             "retriever_type", "Vector"
         )
 
-    def _is_information_sufficient(self, query: str, context: str) -> tuple[bool, str]:
-        """
-        Check if retrieved information is sufficient.
-
-        Params:
-            query (str): Original query
-            context (str): Retrieved context
-
-        Returns:
-            Tuple of (is_sufficient, additional_info_needed)
-        """
+    def _is_information_sufficient(self, query: str, context: str):
         sufficiency_prompt = load_prompt("information_sufficiency")
 
         prompt = sufficiency_prompt.format(query=query, context=context)
-        response = self.llm.complete(prompt)
-
-        response_text = response.text.strip()
-        decision = "YES" in response_text.upper()
-        additional_info = response_text.replace("YES", "").replace("NO", "").strip()
-
+        resp = self.llm.complete(prompt)
+        text = resp.text.strip()
+        decision = "YES" in text.upper()
+        additional_info = text.replace("YES", "").replace("NO", "").strip()
         return decision, additional_info
 
-    def execute(self, query: str, **kwargs) -> str:
-        """
-        Execute iterative retrieval and generation.
-
-        Params:
-            query (str): Input query
-            **kwargs: Additional parameters
-
-        Returns:
-            Generated response
-        """
+    def execute(self, query: str, **kwargs):
         retriever = get_retriver(self.retriever_type, self.index, cfg=self.config)
         all_context = []
         current_query = query
-
-        for iteration in range(self.max_iterations):
+        for _ in range(self.max_iterations):
             nodes = retriever.retrieve(QueryBundle(query_str=current_query))
-
-            # Extract context from nodes
-            context_texts = [node.node.get_content() for node in nodes]
-            all_context.extend(context_texts)
-
-            # Check if information is sufficient
-            combined_context = "\n".join(all_context)
-            is_sufficient, additional_info = self._is_information_sufficient(
-                query, combined_context
-            )
-
-            if is_sufficient or iteration == self.max_iterations - 1:
+            ctx_texts = [n.node.get_content() for n in nodes]
+            all_context.extend(ctx_texts)
+            combined = "\n".join(all_context)
+            sufficient, info = self._is_information_sufficient(query, combined)
+            if sufficient:
                 break
-
-            # Generate refined query for next iteration
-            current_query = f"{query}\nAdditional information needed: {additional_info}"
-
-        # Generate final response
+            current_query = f"{query}\nAdditional information needed: {info}"
         synthesizer = response_synthesizer(self.config.responce_synthsizer)
-        combined_context = "\n".join(all_context)
-        context_aware_query = f"Query: {query}\n\nRelevant Context:\n{combined_context}"
-
+        combined = "\n".join(all_context)
+        context_query = f"Query: {query}\n\nRelevant Context:\n{combined}"
         query_engine = RetrieverQueryEngine(
             retriever=retriever, response_synthesizer=synthesizer
         )
-        final_response = query_engine.query(context_aware_query)
-        return final_response.response
+        return query_engine.query(context_query)

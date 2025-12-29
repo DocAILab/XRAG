@@ -2,6 +2,9 @@ from typing import Literal
 from ..llms import get_llm
 from ..config import Config
 from .utils import load_prompt
+from ..utils import get_module_logger
+
+logger = get_module_logger(__name__)
 
 
 class QueryClassificationError(Exception):
@@ -49,6 +52,8 @@ class QueryComplexityClassifier:
                 response = self.llm.complete(prompt)
                 classification = response.text.strip().upper()
 
+                logger.info(f"Classification attempt {attempt + 1}: {classification}")
+
                 if classification in ["SIMPLE", "MODERATE", "COMPLEX"]:
                     return classification
 
@@ -60,6 +65,8 @@ class QueryComplexityClassifier:
                     )
 
             except Exception as e:
+                logger.error(f"Error during classification attempt {attempt + 1}: {e}")
+
                 if attempt < max_retries - 1:
                     # Prepare retry prompt with error context
                     retry_prompt = load_prompt("query_classification_retry_error")
