@@ -18,6 +18,9 @@ import random
 import numpy as np
 import torch
 from ..sim_rag import run_simrag
+from ..self_rag import SelfRAGPipeline
+from llama_index.core.schema import NodeWithScore, TextNode
+from ..adaptive_rag.engine import AdaptiveRAG
 def seed_everything(seed):
     random.seed(seed)
     np.random.seed(seed)
@@ -108,6 +111,90 @@ def eval_cli(qa_dataset, query_engine):
         evaluateResults.print_results()
         print("总数：" + str(all_num))
     return evaluateResults
+
+def eval_self_rag(qa_dataset):
+    cfg = Config()
+    try:
+        index, hierarchical_storage_context = build_index(qa_dataset['documents'])
+        external_retriever = get_retriver(cfg.retriever, index, hierarchical_storage_context=hierarchical_storage_context, cfg=cfg)
+    except Exception as e:
+        warnings.warn(f"Failed to build standard retriever for Self-RAG; fallback to internal retriever. Error: {e}")
+        external_retriever = None
+
+    pipeline = SelfRAGPipeline(cfg, external_retriever=external_retriever)
+    evaluateResults = EvaluationResult(metrics=cfg.metrics)
+    evalAgent = EvalModelAgent(cfg)
+
+    class _SelfRAGResponseAdapter:
+        def __init__(self, answer, retrieved_docs):
+            self.response = answer
+            self.source_nodes = []
+            for d in retrieved_docs:
+                node = TextNode(text=d.get("text", ""), metadata={"id": d.get("id", str(d.get("rank", 0)))})
+                self.source_nodes.append(NodeWithScore(node=node, score=d.get("score", 1.0)))
+
+    total = cfg.test_init_total_number_documents if not cfg.experiment_1 else min(
+        cfg.test_init_total_number_documents, len(qa_dataset['test_data']['question'])
+    )
+
+    for q_idx, (question, expected_answer, golden_context, golden_context_ids) in enumerate(zip(
+            qa_dataset['test_data']['question'][:total],
+            qa_dataset['test_data']['expected_answer'][:total],
+            qa_dataset['test_data']['golden_context'][:total],
+            qa_dataset['test_data']['golden_context_ids'][:total]
+    )):
+        out = pipeline.query(question)
+        retrieved_docs = out.get("retrieved_documents", []) or []
+        adapter = _SelfRAGResponseAdapter(out.get("response", ""), retrieved_docs)
+        retrieval_ids = [d.get("id", str(i)) for i, d in enumerate(retrieved_docs)]
+        retrieval_context = [d.get("text", "") for d in retrieved_docs]
+        actual_response = out.get("response", "")
+        eval_result = evaluating(question, adapter, actual_response, retrieval_context, retrieval_ids,
+                                 expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
+                                 evalAgent)
+        evaluateResults.add(eval_result)
+        evaluateResults.print_results()
+    return evaluateResults
+def eval_adaptive_rag(qa_dataset, index):
+    cfg = Config()
+
+    engine = AdaptiveRAG(index=index, config=cfg)
+    evaluateResults = EvaluationResult(metrics=cfg.metrics)
+    evalAgent = EvalModelAgent(cfg)
+
+    class _AdaptiveAdapter:
+        def __init__(self, underlying):
+            self.response = getattr(underlying, "response", getattr(underlying, "text", ""))
+            self.source_nodes = getattr(underlying, "source_nodes", [])
+
+    total = cfg.test_init_total_number_documents if not cfg.experiment_1 else min(
+        cfg.test_init_total_number_documents, len(qa_dataset['test_data']['question'])
+    )
+
+    for question, expected_answer, golden_context, golden_context_ids in zip(
+            qa_dataset['test_data']['question'][:total],
+            qa_dataset['test_data']['expected_answer'][:total],
+            qa_dataset['test_data']['golden_context'][:total],
+            qa_dataset['test_data']['golden_context_ids'][:total]
+    ):
+        out = engine.query(question)
+        underlying = out.get("response_obj")
+        adapter = _AdaptiveAdapter(underlying)
+        retrieval_ids = []
+        retrieval_context = []
+        for node_with_score in adapter.source_nodes:
+            try:
+                retrieval_ids.append(node_with_score.node.metadata.get('id'))
+                retrieval_context.append(node_with_score.node.get_content())
+            except Exception:
+                pass
+        actual_response = adapter.response
+        eval_result = evaluating(question, adapter, actual_response, retrieval_context, retrieval_ids,
+                                 expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
+                                 evalAgent)
+        evaluateResults.add(eval_result)
+        evaluateResults.print_results()
+    return evaluateResults
 def run(cli=True, custom_dataset=None):
 
     seed_everything(42)
@@ -117,7 +204,23 @@ def run(cli=True, custom_dataset=None):
         qa_dataset = get_qa_dataset(cfg.dataset, cfg.dataset_path)
     else:
         print('Using huggingface dataset')
-        qa_dataset = get_qa_dataset(cfg.dataset, cfg.dataset_path)
+        qa_dataset = get_qa_dataset(cfg.dataset)
+
+
+    if cfg.config.get("self_rag", {}).get("enabled", False):
+        if cli:
+            return eval_self_rag(qa_dataset)
+        else:
+            return None, qa_dataset
+
+    if cfg.config.get("adaptive_rag", {}).get("enabled", False):
+        index, hierarchical_storage_context = build_index(qa_dataset['documents'])
+        if cli:
+            return eval_adaptive_rag(qa_dataset, index)
+        else:
+            adaptive_engine = AdaptiveRAG(index=index, config=cfg)
+            return adaptive_engine, qa_dataset
+
     # If Sim-RAG is enabled (nested section), use its inference pipeline instead of the standard RetrieverQueryEngine
     sim_rag_cfg = cfg.config.get('sim_rag', {}) if hasattr(cfg, 'config') else {}
     if bool(sim_rag_cfg.get('enabled', False)):
