@@ -35,6 +35,8 @@ logger = get_module_logger(__name__)
 
 ppl_bug_number = 0
 
+_seper_evaluator = None
+
 LLAMA_CUSTOM_FAITHFULNESS_TEMPLATE = PromptTemplate(
     "Please tell if the context supports the given information related to the question.\n"
     "You need to answer with either YES or NO.\n"
@@ -87,6 +89,8 @@ class EvaluationResult:
                              "NLG_perplexity",
                                "NLG_rouge_rouge1", "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum"
                               ]
+        evaluation_metrics += ["SePer_with_context", "SePer_without_context", "SePer_delta"]
+
         self.evaluationName = evaluation_metrics
         for i in Map_Uptrain_metrics_truth_val.keys():
             evaluation_metrics.append(i)
@@ -363,21 +367,24 @@ def SePerEvaluate(
         Dictionary with SePer evaluation results
     """
     try:
-        evaluator = SePerEvaluator(
-            generation_model_path=seper_config.get(
-                "generation_model", "meta-llama/Llama-2-7b-chat-hf"
-            ),
-            entailment_model_path=seper_config.get(
-                "entailment_model", "microsoft/deberta-v2-xlarge-mnli"
-            ),
-            device=seper_config.get("device", "cuda"),
-            num_generations=seper_config.get("num_generations", 10),
-            temperature=seper_config.get("temperature", 1.0),
-            max_new_tokens=seper_config.get("max_new_tokens", 128),
-            computation_chunk_size=seper_config.get("computation_chunk_size", 8),
-            max_context_words=seper_config.get("max_context_words", 512),
-            prompt_type=seper_config.get("prompt_type", "default"),
-        )
+        global _seper_evaluator
+        if _seper_evaluator is None:
+            _seper_evaluator = SePerEvaluator(
+                generation_model_path=seper_config.get(
+                    "generation_model", "meta-llama/Llama-2-7b-chat-hf"
+                ),
+                entailment_model_path=seper_config.get(
+                    "entailment_model", "microsoft/deberta-v2-xlarge-mnli"
+                ),
+                device=seper_config.get("device", "cuda"),
+                num_generations=seper_config.get("num_generations", 10),
+                temperature=seper_config.get("temperature", 1.0),
+                max_new_tokens=seper_config.get("max_new_tokens", 128),
+                computation_chunk_size=seper_config.get("computation_chunk_size", 8),
+                max_context_words=seper_config.get("max_context_words", 512),
+                prompt_type=seper_config.get("prompt_type", "default"),
+            )
+        evaluator = _seper_evaluator
 
         if isinstance(retrieval_context, list):
             context = " ".join(retrieval_context)
@@ -395,7 +402,7 @@ def SePerEvaluate(
             ground_truth_answers=gt_answers,
             use_soft_clustering=seper_config.get("use_soft_clustering", True),
         )
-        evaluator.cleanup()
+        # evaluator.cleanup()
 
         return {
             "seper_with_context": result.seper_with_context,
@@ -430,7 +437,7 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
     upTrain_metrics = list()
     # region llama_index evaluation
     for i in eval_result.evaluationName:
-        if i in metrics and i[0:8] != "DeepEval" and i[0:7] != "UpTrain" and i[0:3] != "NLG":
+        if i in metrics and i[0:8] != "DeepEval" and i[0:7] != "UpTrain" and i[0:3] != "NLG" and i[0:5] != "SePer":
             print("now run " + i)
 
             count = 2
@@ -572,15 +579,11 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
                 )
                 eval_result.metrics_results["SePer_without_context"]["count"] = 1
             if "SePer_delta" in metrics:
-                eval_result.metrics_results["SePer_delta_seper"] = {}
-                eval_result.metrics_results["SePer_delta_seper"]["score"] = (
+                eval_result.metrics_results["SePer_delta"] = {}
+                eval_result.metrics_results["SePer_delta"]["score"] = (
                     seper_result.get("delta_seper", 0.0)
                 )
-                eval_result.metrics_results["SePer_delta_seper"]["count"] = 1
-
-            logger.info(
-                f"SePer evaluation completed: delta_SePer = {seper_result.get('delta_seper', 0.0)}"
-            )
+                eval_result.metrics_results["SePer_delta"]["count"] = 1
 
         except Exception as e:
             logger.error(f"SePer evaluation failed: {str(e)}")
