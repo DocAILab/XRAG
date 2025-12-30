@@ -194,6 +194,11 @@ pip install examinationrag
 
 # Install 'jury' without dependencies to avoid conflicts
 pip install jury --no-deps
+
+# Adjust some package versions
+pip install requests==2.27.1
+pip install urllib3==1.25.11
+pip install jiwer<4.0.0
 ```
 ---
 
