@@ -15,6 +15,8 @@ def get_postprocessor(cfg):
     elif cfg.postprocess_rerank == 'cohere_rerank':
         return CohereRerank()
     elif cfg.postprocess_rerank == 'bge-reranker-base':
-        return FlagEmbeddingReranker(model="BAAI/bge-reranker-base")
+        return FlagEmbeddingReranker(model="BAAI/bge-reranker-base", top_k=10)
+    elif cfg.postprocess_rerank == 'jinaai/jina-reranker-v2-base-multilingual':
+        return FlagEmbeddingReranker(model="jinaai/jina-reranker-v2-base-multilingual", top_k=10)
     else:
         raise Exception("postprocess_rerank not supported: %s" % cfg.postprocess_rerank)
