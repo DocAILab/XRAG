@@ -95,3 +95,18 @@ enabled = false # when enabled, ignore other config sections and use adaptive-ra
 max_iterations = 3
 retriever_type = "Vector"
 max_classification_retries = 3
+
+[open_rag]
+enabled = false
+model_name = "shayekh/openrag_llama2_7b_8x135m"
+mode = "adaptive_retrieval"
+n_docs = 3
+max_new_tokens = 100
+threshold = 0.0
+use_groundness = true
+use_utility = true
+use_seqscore = true
+w_rel = 1.0
+w_sup = 1.0
+w_use = 0.5
+trust_remote_code = true

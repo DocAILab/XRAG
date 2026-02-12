@@ -1,4 +1,4 @@
-import warnings
+﻿import warnings
 from streamlit_card import card
 import streamlit as st
 import pandas as pd
@@ -11,6 +11,10 @@ from xrag.eval.evaluate_rag import EvaluationResult
 from xrag.process.query_transform import transform_and_query
 from xrag.launcher import build_index, build_query_engine
 from xrag.data.qa_loader import get_qa_dataset
+from xrag.open_rag import OpenRAGPipeline
+from xrag.retrievers.retriever import get_retriver
+from llama_index.core.schema import NodeWithScore, TextNode
+
 
 AVAILABLE_METRICS = [
     "NLG_chrf", "NLG_meteor", "NLG_wer", "NLG_cer", "NLG_chrf_pp",
@@ -61,6 +65,19 @@ HF_MODEL_OPTIONS = [
     'mpt',        # mosaicml/mpt-7b-chat
     'yi',         # 01-ai/Yi-6B-Chat
 ]
+
+ORCHESTRATOR_OPTIONS = ["default", "self", "adaptive", "sim", "open"]
+
+def get_default_orchestrator(cfg):
+    if cfg.config.get("self_rag", {}).get("enabled", False):
+        return "self"
+    if cfg.config.get("adaptive_rag", {}).get("enabled", False):
+        return "adaptive"
+    if cfg.config.get("sim_rag", {}).get("enabled", False):
+        return "sim"
+    if cfg.config.get("open_rag", {}).get("enabled", False):
+        return "open"
+    return "default"
 
 # ollama cascade dict
 OLLAMA_OPTIONS = {
@@ -269,11 +286,11 @@ def main():
             .card {
                 background-color: white !important;
             }
-            /* 修改 iframe 的高度 */
+            /* 娣囶喗鏁?iframe 閻ㄥ嫰鐝惔?*/
             iframe.stCustomComponentV1 {
-                height: 400px !important;  /* 调整这个值来改变卡片高度 */
+                height: 400px !important;  /* 鐠嬪啯鏆ｆ潻娆庨嚋閸婂吋娼甸弨鐟板綁閸楋紕澧栨妯哄 */
             }
-            /* 减少卡片之间的间距 */
+            /* 閸戝繐鐨崡锛勫娑斿妫块惃鍕？鐠?*/
             div[data-testid="column"] {
                 margin-top: 0 !important;
                 margin-bottom: 0 !important;
@@ -290,7 +307,7 @@ def main():
                 is_selected = st.session_state.dataset == dataset_name
 
                 features_text = "\n".join([
-                    f"• {k}: {'✓' if v else '✗'}"
+                    f"- {k}: {'Yes' if v else 'No'}"
                     for k, v in info['features'].items()
                 ])
 
@@ -303,10 +320,10 @@ def main():
                 clicked = card(
                     title=dataset_name,
                     text=(
-                        f"📊 Dataset Size:\n{size_text}\n"
-                        f"📚 Corpus:\n"
-                        f"• Documents: {info['corpus']['documents']}"
-                        # f"✨ Features:\n{features_text}"
+                        f"棣冩惓 Dataset Size:\n{size_text}\n"
+                        f"棣冩憥 Corpus:\n"
+                        f"閳?Documents: {info['corpus']['documents']}"
+                        # f"閴?Features:\n{features_text}"
                     ),
                     image="https://hotpotqa.github.io/img/home-bg.jpg",
                     styles={
@@ -315,21 +332,21 @@ def main():
                             "height": "300px",
                             "border-radius": "10px",
                             "box-shadow": "0 0 10px rgba(0,0,0,0.1)",
-                            "background-color": "#ffffff",  # 设置背景色为白色
+                            "background-color": "#ffffff",  # 鐠佸墽鐤嗛懗灞炬珯閼硅弓璐熼惂鍊熷
                             "border": "4px solid #2E86C1" if is_selected else "1px solid #e0e0e0",
                         },
                         "title": {
                             "font-size": "20px",
                             "font-weight": "bold",
-                            "color": "#ffffff",  # 标题改为黑色
-                            "margin-bottom": "10px"
+                            "color": "#ffffff",
+                            "margin-bottom": "10px",
                         },
                         "text": {
                             "font-size": "14px",
                             "line-height": "1.5",
                             "white-space": "pre-line",
-                            "color": "#ffffff"  # 文本改为黑色
-                        }
+                            "color": "#ffffff",
+                        },
                     }
                 )
 
@@ -408,8 +425,7 @@ def main():
                         from xrag.data.qa_loader import generate_qa_from_folder
                         qa_pairs = generate_qa_from_folder(folder_path, output_file, num_questions, sentence_length=sentence_length)
                         st.success(f"Successfully generated {len(qa_pairs)} QA pairs!")
-                        # 自动加载生成的数据集
-                        st.session_state.qa_dataset = get_qa_dataset_("custom", output_file)
+                        # 閼奉亜濮╅崝鐘烘祰閻㈢喐鍨氶惃鍕殶閹诡噣娉?                        st.session_state.qa_dataset = get_qa_dataset_("custom", output_file)
                         cfg.dataset = "custom"
                         st.session_state.step = 2
                         st.rerun()
@@ -454,8 +470,7 @@ def main():
         # cfg.source_dir = st.text_input("Source Directory", value=cfg.source_dir)
         cfg.persist_dir = st.text_input("Persist Directory", value=cfg.persist_dir)
 
-        # 返回或者继续
-        c1,c_,c2 = st.columns([1,4,1])
+        # 鏉╂柨娲栭幋鏍偓鍛埛缂?        c1,c_,c2 = st.columns([1,4,1])
         with c1:
             if st.button("Back"):
                 st.session_state.step = 1
@@ -470,6 +485,32 @@ def main():
 
     if st.session_state.step == 3:
         st.header("Configure your RAG Query Engine")
+
+        if "orchestrator" not in st.session_state:
+            st.session_state.orchestrator = get_default_orchestrator(cfg)
+
+        st.session_state.orchestrator = st.selectbox(
+            "Orchestrator",
+            options=ORCHESTRATOR_OPTIONS,
+            index=ORCHESTRATOR_OPTIONS.index(st.session_state.orchestrator),
+            format_func=lambda x: {
+                "default": "Default",
+                "self": "Self-RAG",
+                "adaptive": "Adaptive-RAG",
+                "sim": "SIM-RAG",
+                "open": "Open-RAG",
+            }[x],
+        )
+
+        selected_orchestrator = st.session_state.orchestrator
+
+        # 閸氬本顒為柊宥囩枂瀵偓閸忕绱欐穱婵婄槈閸欘亜绱戞稉鈧稉顏庣礆
+        cfg.config.setdefault("self_rag", {})["enabled"] = (selected_orchestrator == "self")
+        cfg.config.setdefault("adaptive_rag", {})["enabled"] = (selected_orchestrator == "adaptive")
+        cfg.config.setdefault("sim_rag", {})["enabled"] = (selected_orchestrator == "sim")
+        cfg.config.setdefault("open_rag", {})["enabled"] = (selected_orchestrator == "open")
+
+
         cfg.retriever = st.selectbox("Advanced Retriever", options=RETRIEVER_OPTIONS, index=RETRIEVER_OPTIONS.index(
             cfg.retriever) if cfg.retriever in RETRIEVER_OPTIONS else 0)
         cfg.retriever_mode = st.selectbox("Retriever Mode", options=[0, 1], index=cfg.retriever_mode)
@@ -492,18 +533,55 @@ def main():
             if st.button("Build Query Engine"):
                 st.session_state.step = 4
                 with st.spinner("Building Query Engine..."):
-                    st.session_state.query_engine = get_query_engine()
+                    selected_orchestrator = st.session_state.get("orchestrator", "default")
+
+                    if selected_orchestrator == "open":
+                        retriever = get_retriver(
+                            cfg.retriever,
+                            st.session_state.index,
+                            hierarchical_storage_context=st.session_state.hierarchical_storage_context,
+                            cfg=cfg,
+                        )
+                        st.session_state.open_rag_engine = OpenRAGPipeline(cfg, external_retriever=retriever)
+                        if "query_engine" in st.session_state:
+                            del st.session_state["query_engine"]
+                    else:
+                        st.session_state.query_engine = get_query_engine()
+                        if "open_rag_engine" in st.session_state:
+                            del st.session_state["open_rag_engine"]
                 st.rerun()
     if st.session_state.step == 4:
         st.header("Evaluate your RAG Model with single question")
         prompt = st.text_input('Input your question here')
         if st.button("Evaluate Your Question"):
-            response = transform_and_query(prompt, cfg, st.session_state.query_engine)
-            st.write(response.response)
+            selected_orchestrator = st.session_state.get("orchestrator", "default")
 
-            # Display source text
-            with st.expander('Source Text'):
-                st.write(response.get_formatted_sources(length=1024))
+            if selected_orchestrator == "open":
+                if "open_rag_engine" not in st.session_state:
+                    st.error("Open-RAG engine not built. Please go back to Step 3 and build it.")
+                    st.stop()
+                out = st.session_state.open_rag_engine.query(prompt)
+                st.write(out.get("response", ""))
+
+                retrieved_docs = out.get("retrieved_documents", []) or []
+                with st.expander("Source Text"):
+                    if not retrieved_docs:
+                        st.write("No retrieved documents.")
+                    else:
+                        for i, d in enumerate(retrieved_docs, start=1):
+                            st.markdown(f"### Doc {i}")
+                            st.markdown(f"- id: `{d.get('id', i)}`")
+                            st.markdown(f"- title: {d.get('title', '')}")
+                            st.markdown(f"- score: {d.get('score', 0.0)}")
+                            st.markdown(d.get("text", ""))
+                            st.markdown("---")
+            else:
+                response = transform_and_query(prompt, cfg, st.session_state.query_engine)
+                st.write(response.response)
+
+                with st.expander('Source Text'):
+                    st.write(response.get_formatted_sources(length=1024))
+
 
         c1, c_, c2 = st.columns([1, 4, 1])
         with c1:
@@ -519,23 +597,20 @@ def main():
     if st.session_state.step == 5:
         st.header("Evaluate your RAG Model with your dataset")
         
-        # 确保默认选中的 metrics 按 AVAILABLE_METRICS 的顺序排列
         sorted_default_metrics = [metric for metric in AVAILABLE_METRICS if metric in cfg.metrics]
         sorted_frontend_default_metrics = [METRIC_DISPLAY_MAP.get(metric, metric) for metric in sorted_default_metrics]
         
-        # 用户在前端选择评测指标
         selected_frontend_metrics = st.multiselect(
             "Evaluation Metrics",
             options=FRONTEND_AVAILABLE_METRICS,
             default=sorted_frontend_default_metrics
         )
         
-        # 将前端选择的显示名称映射回后端的真实名称
         selected_backend_metrics = [DISPLAY_TO_BACKEND_METRIC_MAP.get(metric, metric) for metric in selected_frontend_metrics]
         cfg.metrics = selected_backend_metrics
 
         
-        # 其他输入
+        # 閸忔湹绮潏鎾冲弳
         cfg.test_init_total_number_documents = st.number_input(
             "Total number of documents to evaluate", 
             min_value=1, 
@@ -559,28 +634,57 @@ def main():
             if cfg.experiment_1:
                 if len(st.session_state.qa_dataset) < cfg.test_init_total_number_documents:
                     warnings.filterwarnings('default')
-                    warnings.warn("使用的数据集长度大于数据集本身的最大长度，请修改。 本轮代码无法运行", UserWarning)
+                    warnings.warn("娴ｈ法鏁ら惃鍕殶閹诡噣娉﹂梹鍨婢堆傜艾閺佺増宓侀梿鍡樻拱闊偆娈戦張鈧径褔鏆辨惔锔肩礉鐠囪渹鎱ㄩ弨骞库偓?閺堫剝鐤嗘禒锝囩垳閺冪姵纭舵潻鎰攽", UserWarning)
             else:
                 cfg.test_init_total_number_documents = cfg.n
+            selected_orchestrator = st.session_state.get("orchestrator", "default")
+
+            class _OpenRAGResponseAdapter:
+                def __init__(self, answer, retrieved_docs):
+                    self.response = answer
+                    self.source_nodes = []
+                    for i, d in enumerate(retrieved_docs):
+                        node = TextNode(
+                            text=d.get("text", ""),
+                            metadata={"id": d.get("id", str(i)), "title": d.get("title", "")}
+                        )
+                        self.source_nodes.append(
+                            NodeWithScore(node=node, score=float(d.get("score", 0.0) or 0.0))
+                        )
+
             for question, expected_answer, golden_context, golden_context_ids in zip(
                     st.session_state.qa_dataset['test_data']['question'][:cfg.test_init_total_number_documents],
                     st.session_state.qa_dataset['test_data']['expected_answer'][:cfg.test_init_total_number_documents],
                     st.session_state.qa_dataset['test_data']['golden_context'][:cfg.test_init_total_number_documents],
                     st.session_state.qa_dataset['test_data']['golden_context_ids'][:cfg.test_init_total_number_documents]
             ):
-                response = transform_and_query(question, cfg, st.session_state.query_engine)
-                # 返回node节点
-                retrieval_ids = []
-                retrieval_context = []
-                for source_node in response.source_nodes:
-                    retrieval_ids.append(source_node.metadata['id'])
-                    retrieval_context.append(source_node.get_content())
-                actual_response = response.response
+                if selected_orchestrator == "open":
+                    if "open_rag_engine" not in st.session_state:
+                        st.error("Open-RAG engine not built. Please go back to Step 3 and build it.")
+                        st.stop()
+                    out = st.session_state.open_rag_engine.query(question)
+                    retrieved_docs = out.get("retrieved_documents", []) or []
+
+                    actual_response = out.get("response", "") or out.get("raw_response", "")
+                    response = _OpenRAGResponseAdapter(actual_response, retrieved_docs)
+                    retrieval_ids = [d.get("id", str(i)) for i, d in enumerate(retrieved_docs)]
+                    retrieval_context = [d.get("text", "") for d in retrieved_docs]
+                else:
+                    response = transform_and_query(question, cfg, st.session_state.query_engine)
+                    actual_response = response.response
+                    retrieval_ids = []
+                    retrieval_context = []
+                    for source_node in response.source_nodes:
+                        retrieval_ids.append(source_node.metadata['id'])
+                        retrieval_context.append(source_node.get_content())
+
                 eval_result = evaluating(
                     question, response, actual_response, retrieval_context, retrieval_ids,
                     expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
                     evalAgent
                 )
+                # 閸氬酣娼伴惃鍕潔缁€?accumulate 闁槒绶穱婵囧瘮娴ｇ姴甯弶銉ф畱
+
                 with st.expander(question):
                     st.markdown("### Answer")
                     st.markdown(response.response)
@@ -632,3 +736,5 @@ def display_results(results: EvaluationResult):
 
 if __name__ == "__main__":
     main()
+
+

@@ -104,6 +104,21 @@ def create_default_config(config_file_path):
                 "max_iterations": 3,
                 "retriever_type": "Vector",
                 "max_classification_retries": 3
+            },
+            "open_rag": {
+                "enabled": False,
+                "model_name": "shayekh/openrag_llama2_7b_8x135m",
+                "mode": "adaptive_retrieval",  # adaptive_retrieval / always_retrieve / no_retrieval
+                "n_docs": 3,
+                "max_new_tokens": 100,
+                "threshold": 0.0,
+                "use_groundness": True,
+                "use_utility": True,
+                "use_seqscore": True,
+                "w_rel": 1.0,
+                "w_sup": 1.0,
+                "w_use": 0.5,
+                "trust_remote_code": True
             }
         }
         with open(config_file_path, 'w', encoding='utf-8') as f:
@@ -165,6 +180,13 @@ class Config:
 
     def update_config(self, overrides):
         for key, value in overrides.items():
+
+            if "." in key:
+                ok = self._update_nested_config(key, value)
+                if not ok:
+                    logger.warning(f"Invalid configuration key: {key}")
+                continue
+
             if hasattr(self, key):
                 old_value = getattr(self, key)
                 new_value = self._convert_type(value, type(old_value))
@@ -172,18 +194,43 @@ class Config:
             else:
                 logger.warning(f"Invalid configuration key: {key}")
 
+    def _update_nested_config(self, dotted_key: str, raw_value: str) -> bool:
+        parts = dotted_key.split(".")
+        cur = self.config
+        
+        for part in parts[:-1]:
+            if part not in cur or not isinstance(cur[part], dict):
+                return False
+            cur = cur[part]
+
+        leaf = parts[-1]
+        if leaf not in cur:
+            return False
+
+        old_value = cur[leaf]
+        new_value = self._convert_type(raw_value, type(old_value))
+        cur[leaf] = new_value
+        
+        if hasattr(self, leaf):
+            setattr(self, leaf, new_value)
+        return True
+
     def _convert_type(self, value, to_type):
         try:
             if to_type == bool:
-                return value.lower() in ('true', '1', 'yes')
-            elif to_type == int:
+                if isinstance(value, bool):
+                    return value
+                if isinstance(value, (int, float)):
+                    return bool(value)
+                return str(value).strip().lower() in ("true", "1", "yes", "y", "on")
+
+            if to_type == int:
                 return int(value)
-            elif to_type == float:
+            if to_type == float:
                 return float(value)
-            elif to_type == str:
-                return value
-            else:
-                return value  # For other types
+            if to_type == str:
+                return str(value)
+            return value
         except ValueError:
             logger.error(f"Could not convert value '{value}' to type {to_type.__name__}")
             return value
