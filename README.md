@@ -36,7 +36,7 @@
 - [:books: Citation](#-citation)
 
 ## :mega: Updates
-- **2026-02.24: Paper accepted by ICDE 2026.**🎉🎉🎉🎉🎉
+- **2026-02.24: Paper accepted by ICDE 2026.** 🎉🎉🎉🎉🎉
 - **2025-11.18: Add orchestrators: SIM-rag.**
 - **2025-11.05: Add orchestrators: self-rag, adaptive-rag.**
 - **2025-07.18: Add Text Splitters, including SemanticSplitterNodeParser, SentenceSplitterNodeParser, and SentenceWindowNodeParser.**
@@ -47,29 +47,29 @@
 - **2024-12.23: XRAG Documentation is released**🌈.
 - **2024-12.20: XRAG is released**🎉.
 
-# XRAG Roadmap
+## XRAG Roadmap
 
 Welcome developers, researchers, and enthusiasts to join the XRAG open-source project! 
 
-## 📊 Novel Novel Evaluation Metrics
+### 📊 Novel Novel Evaluation Metrics
 - [ ] **Semantic Perplexity (SePer)**
 - [ ] **Entropy** & **Semantic Entropy**
 - [ ] **Auto-J**
 - [ ] **Prometheus**
 
-## 🤖 LLM Experiments (Various Parameter Sizes)
+### 🤖 LLM Experiments (Various Parameter Sizes)
 - [ ] **PGE/GTE/M3E** embeddings
 - [ ] **30B/more-parameter models** via OpenAI API or Ollama
 
 
-## 🧠 Ever-Evolving Agent Workflows
+### 🧠 Ever-Evolving Agent Workflows
 - [ ] **Adaptive Retrieval**
 - [ ] **Multi-step Approach**
 - [ ] **Self-RAG**
 - [ ] **FLARE**
 - [ ] **Adaptive-RAG**
 
-## 📊 Other Novel RAG modules
+### 📊 Other Novel RAG modules
 - [ ] **Late Chunking**
 
 > 🙌 Your contributions—code, data, ideas, or feedback—are the heartbeat of XRAG!  
@@ -118,6 +118,13 @@ XRAG is a benchmarking framework designed to evaluate the foundational component
   - Command-line interface with rich options
   - Web UI for interactive evaluation
   - Detailed evaluation reports and visualizations
+
+---
+
+## 🧠 Agentic RAG
+
+<img src="imgs/Orchestrators.png" width="100%" align="center" alt="Orchestrator">
+Orchestrators are used to organize and manage the execution logic and workflow of RAG components in XRAG. As illustrated in figure, the XRAG framework includes five types of orchestrators: sequential, conditional, iterative, parallel, and hybrid.
 
 ---
 
