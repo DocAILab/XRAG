@@ -124,7 +124,7 @@ XRAG is a benchmarking framework designed to evaluate the foundational component
 ## 🧠 Agentic RAG
 
 <img src="imgs/Orchestrators.png" width="100%" align="center" alt="Orchestrator">
-Orchestrators are used to organize and manage the execution logic and workflow of RAG components, thereby achieving agentic RAG methods in XRAG.. As illustrated in figure, the XRAG framework includes five types of orchestrators: sequential, conditional, iterative, parallel, and hybrid.
+Orchestrators are used to organize and manage the execution logic and workflow of RAG components, thereby achieving agentic RAG methods in XRAG. As illustrated in figure, the XRAG framework includes five types of orchestrators: sequential, conditional, iterative, parallel, and hybrid.
 
 ---
 
