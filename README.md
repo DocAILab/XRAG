@@ -36,6 +36,7 @@
 - [:books: Citation](#-citation)
 
 ## :mega: Updates
+- **2026-02.24: Paper accepted by ICDE 2026.**🎉🎉🎉🎉🎉
 - **2025-11.18: Add orchestrators: SIM-rag.**
 - **2025-11.05: Add orchestrators: self-rag, adaptive-rag.**
 - **2025-07.18: Add Text Splitters, including SemanticSplitterNodeParser, SentenceSplitterNodeParser, and SentenceWindowNodeParser.**
