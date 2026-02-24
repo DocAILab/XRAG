@@ -79,7 +79,7 @@ Welcome developers, researchers, and enthusiasts to join the XRAG open-source pr
 
 ---
 ## 📖 Introduction
-<img src="imgs/Framework.png" width="100%" align="center" alt="XRAG">
+<img src="imgs/Framework.png" width="100%" align="center" alt="XRAG_Framework">
 XRAG is a benchmarking framework designed to evaluate the foundational components of advanced Retrieval-Augmented Generation (RAG) systems. By dissecting and analyzing each core module, XRAG provides insights into how different configurations and components impact the overall performance of RAG systems.
 
 ---
@@ -124,7 +124,7 @@ XRAG is a benchmarking framework designed to evaluate the foundational component
 ## 🧠 Agentic RAG
 
 <img src="imgs/Orchestrators.png" width="100%" align="center" alt="Orchestrator">
-Orchestrators are used to organize and manage the execution logic and workflow of RAG components in XRAG. As illustrated in figure, the XRAG framework includes five types of orchestrators: sequential, conditional, iterative, parallel, and hybrid.
+Orchestrators are used to organize and manage the execution logic and workflow of RAG components, thereby achieving agentic RAG methods in XRAG.. As illustrated in figure, the XRAG framework includes five types of orchestrators: sequential, conditional, iterative, parallel, and hybrid.
 
 ---
 
