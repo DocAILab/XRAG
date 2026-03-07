@@ -118,6 +118,8 @@ def create_default_config(config_file_path):
                 "w_rel": 1.0,
                 "w_sup": 1.0,
                 "w_use": 0.5,
+                "closed": False,
+                "use_stopping_criteria": True,
                 "trust_remote_code": True
             }
         }

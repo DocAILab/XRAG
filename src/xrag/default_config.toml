@@ -109,4 +109,6 @@ use_seqscore = true
 w_rel = 1.0
 w_sup = 1.0
 w_use = 0.5
+closed = false
+use_stopping_criteria = true
 trust_remote_code = true
