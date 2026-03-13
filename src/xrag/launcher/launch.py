@@ -21,6 +21,7 @@ from ..sim_rag import run_simrag
 from ..self_rag import SelfRAGPipeline
 from llama_index.core.schema import NodeWithScore, TextNode
 from ..adaptive_rag.engine import AdaptiveRAG
+from ..open_rag import OpenRAGPipeline
 def seed_everything(seed):
     random.seed(seed)
     np.random.seed(seed)
@@ -195,6 +196,67 @@ def eval_adaptive_rag(qa_dataset, index):
         evaluateResults.add(eval_result)
         evaluateResults.print_results()
     return evaluateResults
+
+def eval_open_rag(qa_dataset):
+    cfg = Config()
+
+    try:
+        index, hierarchical_storage_context = build_index(qa_dataset['documents'])
+        external_retriever = get_retriver(cfg.retriever, index, hierarchical_storage_context=hierarchical_storage_context, cfg=cfg)
+
+    except Exception as e:
+        warnings.warn(f"Failed to build standard retriever for Open-RAG; fallback to internal/no retriever. Error: {e}")
+        external_retriever = None
+
+    pipeline = OpenRAGPipeline(cfg, external_retriever=external_retriever)
+    evaluateResults = EvaluationResult(metrics=cfg.metrics)
+    evalAgent = EvalModelAgent(cfg)
+
+    class _OpenRAGResponseAdapter:
+        def __init__(self, answer, retrieved_docs):
+            self.response = answer
+            self.source_nodes = []
+            for i, d in enumerate(retrieved_docs):
+                node = TextNode(
+                    text=d.get("text", ""),
+                    metadata={"id": d.get("id", str(i)),
+                              "title": d.get("title", "")          
+                    }
+                )
+                self.source_nodes.append(
+                    NodeWithScore(node=node, score=float(d.get("score", 0.0) or 0.0))
+                )
+
+    total = cfg.test_init_total_number_documents if not cfg.experiment_1 else min(
+        cfg.test_init_total_number_documents, len(qa_dataset['test_data']['question'])
+    )
+
+    for question, expected_answer, golden_context, golden_context_ids in zip(
+            qa_dataset['test_data']['question'][:total],
+            qa_dataset['test_data']['expected_answer'][:total],
+            qa_dataset['test_data']['golden_context'][:total],
+            qa_dataset['test_data']['golden_context_ids'][:total]
+    ):
+        
+        out = pipeline.query(question)
+        retrieved_docs = out.get("retrieved_documents", []) or []
+
+        actual_response = out.get("response", "") or out.get("raw_response", "")
+        adapter = _OpenRAGResponseAdapter(actual_response, retrieved_docs)
+
+        retrieval_ids = [d.get("id", str(i)) for i, d in enumerate(retrieved_docs)]
+        retrieval_context = [d.get("text", "") for d in retrieved_docs]
+
+        eval_result = evaluating(
+            question, adapter, actual_response, retrieval_context, retrieval_ids,
+            expected_answer, golden_context, golden_context_ids, evaluateResults.metrics,
+            evalAgent
+        )
+        evaluateResults.add(eval_result)
+        evaluateResults.print_results()
+
+    return evaluateResults
+    
 def run(cli=True, custom_dataset=None):
 
     seed_everything(42)
@@ -205,6 +267,19 @@ def run(cli=True, custom_dataset=None):
     else:
         print('Using huggingface dataset')
         qa_dataset = get_qa_dataset(cfg.dataset)
+
+    enabled_orchestrators = []
+    if cfg.config.get("self_rag", {}).get("enabled", False):
+        enabled_orchestrators.append("self_rag")
+    if cfg.config.get("adaptive_rag", {}).get("enabled", False):
+        enabled_orchestrators.append("adaptive_rag")
+    if cfg.config.get("open_rag", {}).get("enabled", False):
+        enabled_orchestrators.append("open_rag")
+    if cfg.config.get("sim_rag", {}).get("enabled", False):
+        enabled_orchestrators.append("sim_rag")
+
+    if len(enabled_orchestrators) > 1:
+        raise ValueError(f"Only one orchestrator can be enabled, got: {enabled_orchestrators}")
 
 
     if cfg.config.get("self_rag", {}).get("enabled", False):
@@ -220,6 +295,18 @@ def run(cli=True, custom_dataset=None):
         else:
             adaptive_engine = AdaptiveRAG(index=index, config=cfg)
             return adaptive_engine, qa_dataset
+
+    if cfg.config.get("open_rag", {}).get("enabled", False):
+        if cli:
+            return eval_open_rag(qa_dataset)
+        else:
+            index, hierarchical_storage_context = build_index(qa_dataset['documents'])
+            external_retriever = get_retriver(
+                cfg.retriever, index,
+                hierarchical_storage_context=hierarchical_storage_context, cfg=cfg
+            )
+            openrag_engine = OpenRAGPipeline(cfg, external_retriever=external_retriever)
+            return openrag_engine, qa_dataset
 
     # If Sim-RAG is enabled (nested section), use its inference pipeline instead of the standard RetrieverQueryEngine
     sim_rag_cfg = cfg.config.get('sim_rag', {}) if hasattr(cfg, 'config') else {}
