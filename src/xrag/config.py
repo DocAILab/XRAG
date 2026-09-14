@@ -1,7 +1,7 @@
 import os
 import toml
 import shutil
-import pkg_resources
+import importlib.resources as resources
 from .utils import get_module_logger
 
 logger = get_module_logger(__name__)
@@ -11,10 +11,11 @@ def create_default_config(config_file_path):
     """Create a default config file if it doesn't exist."""
     try:
         # Get the default config file from the package
-        default_config = pkg_resources.resource_filename('xrag', 'default_config.toml')
-        # Copy it to the target location
-        shutil.copy2(default_config, config_file_path)
-    except Exception:
+        with resources.as_file(
+            resources.files("xrag").joinpath("default_config.toml")
+        ) as default_config:
+            shutil.copy2(default_config, config_file_path)
+    except (FileNotFoundError):
         # If package resource not found, create a new config file with default values
         default_config = {
             "api_keys": {

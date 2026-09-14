@@ -40,7 +40,9 @@ def build_index(documents):
     Settings.embed_model = embeddings
     # pip install llama-index-embeddings-langchain
 
-    cfg.persist_dir = cfg.persist_dir + '-' + cfg.dataset + '-' + cfg.embeddings + '-' + cfg.split_type + '-' + str(
+    # Keep the configured base directory stable across repeated builds.
+    # Mutating cfg.persist_dir here used to append the suffix again on every run.
+    persist_dir = cfg.persist_dir + '-' + cfg.dataset + '-' + cfg.embeddings + '-' + cfg.split_type + '-' + str(
         cfg.chunk_size)
 
     semantic_setting={
@@ -49,7 +51,7 @@ def build_index(documents):
         "include_prev_next_rel":cfg.include_prev_next_rel,
         "breakpoint_percentile_threshold":cfg.breakpoint_percentile_threshold
     }
-    index, hierarchical_storage_context = get_index(documents, cfg.persist_dir, split_type=cfg.split_type,
+    index, hierarchical_storage_context = get_index(documents, persist_dir, split_type=cfg.split_type,
                                                     chunk_size=cfg.chunk_size,chunk_overlap=cfg.chunk_overlap,
                                                     chunk_sizes=cfg.chunk_sizes,semantic_setting=semantic_setting, window_size=cfg.window_size)
 

@@ -56,7 +56,10 @@ def main():
     run_parser.add_argument('-c', '--custom_dataset', default='', type=str, help='Custom dataset json path')
 
     # Other commands
-    subparsers.add_parser('webui', help='Run the web UI')
+    webui_parser = subparsers.add_parser('webui', help='Run the web UI')
+    webui_parser.add_argument('--host', type=str, default='127.0.0.1', help='WebUI bind host (default: 127.0.0.1)')
+    webui_parser.add_argument('--port', type=int, default=8765, help='WebUI bind port (default: 8765)')
+    webui_parser.add_argument('--no-browser', action='store_true', help='Do not open the default browser automatically')
     subparsers.add_parser('version', help='Show version')
     subparsers.add_parser('help', help='Show help')
     
@@ -96,7 +99,7 @@ def main():
             else:
                 run()
         elif args.command == Command.WEBUI:
-            run_web_ui()
+            run_web_ui(host=args.host, port=args.port, open_browser=not args.no_browser)
         elif args.command == Command.VER:
             print(WELCOME)
         elif args.command == Command.HELP or args.command is None:
@@ -113,3 +116,7 @@ def main():
         from .utils.error_view import show_error_view
 
         show_error_view(e)
+
+
+if __name__ == "__main__":
+    main()

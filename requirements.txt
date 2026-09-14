@@ -44,5 +44,6 @@ streamlit_card
 fastapi
 uvicorn
 pydantic
+python-multipart
 httpx==0.27.2
 # vllm
