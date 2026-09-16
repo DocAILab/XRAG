@@ -425,16 +425,17 @@ We value feedback from our users. If you have suggestions, feature requests, or 
 If you find this work helpful, please cite our paper:
 
 ```bibtex
-@article{mao2025xragexaminingcore,
-      title={XRAG: eXamining the Core -- Benchmarking Foundational Components in Advanced Retrieval-Augmented Generation}, 
-      author={Qianren Mao and Yangyifei Luo and Qili Zhang and Yashuo Luo and Zhilong Cao and Jinlong Zhang and HanWen Hao and Zhijun Chen and Weifeng Jiang and Junnan Liu and Xiaolong Wang and Zhenting Huang and Zhixing Tan and Sun Jie and Bo Li and Xudong Liu and Richong Zhang and Jianxin Li},
-      year={2025},
-      eprint={2412.15529},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2412.15529}, 
-}
+@INPROCEEDINGS{11629265,
+  author={Zhang, Qili and Mao, Qianren and Luo, Yangyifei and Luo, Yashuo and Hao, Hanwen and Cao, Zhilong and Jiang, Weifeng and Chen, Zhijun and Liu, Junnan and Yan, Feng and Wang, Xiaolong and Zhang, Jinlong and Huang, Zhenting and Tan, Zhixing and Sun, Jie and Li, Bo and Li, Jianxin and Yu, Philip S.},
+  booktitle={2026 IEEE 42nd International Conference on Data Engineering (ICDE)}, 
+  title={XRAG: Examining the Core - Benchmarking Foundational Components in Advanced Retrieval-Augmented Generation}, 
+  year={2026},
+  pages={2697-2710},
+  keywords={Modeling;Retrieval augmented generation;Context;Measurement;Large language models;Printing;Indexes;Indexing;Generative Pre-trained transformer;Modules (abstract algebra);Database;Retrieval-Augmented Generation;Evaluation;Benchmark;Data Management},
+  doi={10.1109/ICDE65706.2026.00201}}
 ```
+
+Or access via [arXiv](https://arxiv.org/abs/2412.15529).
 
 ## 🙏 Thank You
 
