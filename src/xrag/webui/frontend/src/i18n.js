@@ -1,7 +1,7 @@
 export const messages = {
   en: {
     nav: { workflow: 'Workflow', features: 'Features', demo: 'Demo', github: 'GitHub' },
-    footer: { copyright: '© 2024 XRAG. All rights reserved.', github: 'GitHub', docs: 'Docs', ram: 'RAM: ' },
+    footer: { copyright: '© XRAG', github: 'GitHub', docs: 'Docs', ram: 'RAM: ' },
     hero: {
       title: 'XRAG: eXamining the Core - Benchmarking Foundational Components in Advanced Retrieval-Augmented Generation',
       subtitle: 'A powerful benchmarking framework for evaluating foundational components in advanced RAG systems',
@@ -35,7 +35,7 @@ export const messages = {
   },
   zh: {
     nav: { workflow: '使用流程', features: '特性', demo: '演示', github: 'GitHub' },
-    footer: { copyright: '© 2026 XRAG。保留所有权利。', github: 'GitHub', docs: '文档', ram: '内存：' },
+    footer: { copyright: '© XRAG', github: 'GitHub', docs: '文档', ram: '内存：' },
     hero: { title: 'XRAG: eXamining the Core - Benchmarking Foundational Components in Advanced Retrieval-Augmented Generation', subtitle: '用于评估 RAG 系统基础组件的基准测试框架', demo: '在线演示' },
     steps: ['构建数据集', '构建向量库', '配置 LLM', '配置检索', '设置评测指标', '查看测试结果'],
     common: { previous: '上一步', next: '下一步', runEvaluation: '运行评测', cancel: '取消', close: '关闭', startOver: '重新开始', loading: '加载中…' },

@@ -445,6 +445,13 @@ textarea {
   transform: rotate(180deg);
 }
 
+.collapse-chevron svg,
+.collapse-chevron img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .custom-dataset-panel {
   margin-top: 16px;
 }
@@ -772,7 +779,7 @@ textarea {
   flex: 0 0 auto;
   width: 22px;
   height: 22px;
-  margin: -3px -4px -3px 0;
+  margin: 0 -4px 0 0;
   padding: 0;
   border: 0;
   background: transparent;
@@ -781,12 +788,20 @@ textarea {
   cursor: pointer;
 }
 
-.alert-close svg,
-.toast-close svg {
+.alert-close,
+.toast-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-close {
   display: block;
   width: 16px;
   height: 16px;
-  fill: currentColor;
+  background-color: currentColor;
+  -webkit-mask: var(--close-icon) no-repeat center / contain;
+  mask: var(--close-icon) no-repeat center / contain;
 }
 
 .alert-close:hover {

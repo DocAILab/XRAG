@@ -11,6 +11,9 @@ import RetrievalStep from './components/steps/RetrievalStep.vue';
 import MetricsStep from './components/steps/MetricsStep.vue';
 import ResultsStep from './components/steps/ResultsStep.vue';
 import logoUrl from '../../static/logo-mark.png';
+import closeUrl from '../../static/close.svg';
+
+const closeIconStyle = { '--close-icon': `url(${closeUrl})` };
 
 const { lang, t, format } = useLocale();
 const stepComponents = [DatasetStep, VectorStep, LlmStep, RetrievalStep, MetricsStep, ResultsStep];
@@ -185,7 +188,7 @@ onBeforeUnmount(() => {
       <div v-if="store.toastError" class="toast toast-error" role="alert" aria-live="assertive">
         <span class="toast-icon" aria-hidden="true">!</span>
         <span class="toast-message">{{ store.toastError }}</span>
-        <button class="toast-close" type="button" :aria-label="t.common.close" @click="dismissToast"><svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></button>
+        <button class="toast-close" type="button" :aria-label="t.common.close" @click="dismissToast"><span class="icon-close" :style="closeIconStyle" aria-hidden="true"></span></button>
       </div>
     </Transition>
     <header class="app-header"><div class="container">
@@ -212,11 +215,11 @@ onBeforeUnmount(() => {
       <WorkflowStepper :step="store.step" :steps="t.steps" @goto="gotoStep" />
       <div v-if="store.error" class="alert alert-error" role="alert">
         <span class="alert-message">{{ store.error }}</span>
-        <button class="alert-close" type="button" :aria-label="t.common.close" @click="store.error = ''"><svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></button>
+        <button class="alert-close" type="button" :aria-label="t.common.close" @click="store.error = ''"><span class="icon-close" :style="closeIconStyle" aria-hidden="true"></span></button>
       </div>
       <div v-if="store.notice" class="alert alert-info" role="status">
         <span class="alert-message">{{ store.notice }}</span>
-        <button class="alert-close" type="button" :aria-label="t.common.close" @click="store.notice = ''"><svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></button>
+        <button class="alert-close" type="button" :aria-label="t.common.close" @click="store.notice = ''"><span class="icon-close" :style="closeIconStyle" aria-hidden="true"></span></button>
       </div>
       <component :is="currentStep" :store="store" :options="store.options" :t="t" @load-preset="loadPreset"
         @upload-json="uploadJson" @generate-folder="generateFromFolder" @restart="gotoStep(1)"
@@ -228,9 +231,12 @@ onBeforeUnmount(() => {
               t.common.runEvaluation }}</span><span v-else>{{ t.common.next }}</span></button></div>
     </main>
     <footer class="app-footer">
-      <div class="container"><span>{{ t.footer.copyright }}</span>
-        <div class="footer-meta"><span class="ram-usage" role="status">{{ t.footer.ram }}{{ store.ramUsageMb == null ? '--' : store.ramUsageMb.toFixed(1) }} MB</span><a href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener">{{ t.footer.github }}</a><a
-            href="https://docailab.github.io/XRAG/" target="_blank" rel="noopener">{{ t.footer.docs }}</a></div>
+      <div class="container"><span lang="en">© XRAG</span>
+        <div class="footer-meta">
+          <span class="ram-usage" role="status">{{ t.footer.ram }}<span lang="en">{{ store.ramUsageMb == null ? '--' : store.ramUsageMb.toFixed(1) }} MB</span></span>
+          <a href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener">{{ t.footer.github }}</a>
+          <a href="https://docailab.github.io/XRAG/" target="_blank" rel="noopener">{{ t.footer.docs }}</a>
+        </div>
       </div>
     </footer>
   </div>

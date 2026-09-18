@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import chevronUrl from '../../../../static/chevron-down.svg';
 
 defineProps({ store: Object, t: Object });
 const emit = defineEmits(['load-preset', 'upload-json', 'generate-folder']);
@@ -46,7 +47,7 @@ function loadSelectedPreset(store) { if (store.presetDataset && !store.presetLoa
       @click="customExpanded = !customExpanded"
     >
       <span>{{ t.dataset.custom }}</span>
-      <span class="collapse-chevron" :class="{ 'is-expanded': customExpanded }" aria-hidden="true"><svg focusable="false" aria-hidden="true" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg></span>
+      <span class="collapse-chevron" :class="{ 'is-expanded': customExpanded }" aria-hidden="true"><img class="icon" :src="chevronUrl" alt="" /></span>
     </button>
     <div v-if="customExpanded" id="custom-dataset-panel" class="upload-grid custom-dataset-panel">
       <div class="upload-card">

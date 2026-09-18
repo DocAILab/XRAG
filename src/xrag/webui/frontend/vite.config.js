@@ -8,6 +8,7 @@ export default defineConfig({
     outDir: '../static',
     emptyOutDir: false,
     assetsDir: 'assets',
+    assetsInlineLimit: 0,
   },
   server: {
     proxy: {
