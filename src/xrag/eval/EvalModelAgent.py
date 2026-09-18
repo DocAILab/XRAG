@@ -1,15 +1,5 @@
 import argparse
 
-import deepeval.api
-import torch
-from deepeval.models import GPTModel
-from langchain_openai import ChatOpenAI
-from llama_index.llms.huggingface import HuggingFaceLLM
-from llama_index.llms.openai import OpenAI
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from deepeval.models.base_model import DeepEvalBaseLLM
-from uptrain import Settings
-from .DeepEvalLocalModel import DeepEvalLocalModel
 from ..utils import get_module_logger
 
 logger = get_module_logger(__name__)
@@ -29,19 +19,29 @@ def qwen_completion_to_prompt(completion):
         add_generation_prompt=True
     )
 class EvalModelAgent():
-    def __init__(self, args):
+    def __init__(self, args, metrics=None):
         self.args = args
+        selected_metrics = set(metrics if metrics is not None else getattr(args, "metrics", []))
+        load_all = metrics is None and not selected_metrics
+        needs_llama = load_all or any(metric.startswith("Llama_") for metric in selected_metrics)
+        needs_deepeval = load_all or any(metric.startswith("DeepEval_") for metric in selected_metrics)
+        needs_uptrain = load_all or any(metric.startswith("UpTrain_") for metric in selected_metrics)
         llamaIndex_LocalmodelName = self.args.llamaIndexEvaluateModel
         deepEval_LocalModelName = self.args.deepEvalEvaluateModel
         uptrain_LocalModelName = self.args.upTrainEvaluateModel
         api_name = self.args.api_name
         api_key = self.args.api_key
         api_base = self.args.api_base
+        if api_name == "" and (needs_llama or needs_deepeval):
+            import torch
+            from transformers import AutoModelForCausalLM, AutoTokenizer
         logger.info("EvalModelName:")
         logger.info(api_name)
         logger.info("EvalModelAPI:")
         logger.info(api_key)
-        if api_name == "":
+        if needs_llama and api_name == "":
+            from llama_index.llms.huggingface import HuggingFaceLLM
+
             self._llama_model = AutoModelForCausalLM.from_pretrained(llamaIndex_LocalmodelName,
                                                      torch_dtype=torch.float16,
                                                      device_map="auto").eval()
@@ -54,11 +54,20 @@ class EvalModelAgent():
                               model=self._llama_model,
                               tokenizer=self._llama_tokenizer,
                               device_map="cuda:0",)
-        else:
+        elif needs_llama:
+            from llama_index.llms.openai import OpenAI
+
             self.llamaModel = OpenAI(api_key=api_key, api_base=api_base,
                       model=api_name)
-        if api_name == "":
+        if needs_deepeval and api_name == "":
+            from .DeepEvalLocalModel import DeepEvalLocalModel
+
             if deepEval_LocalModelName == llamaIndex_LocalmodelName:
+                if not needs_llama:
+                    self._llama_model = AutoModelForCausalLM.from_pretrained(
+                        llamaIndex_LocalmodelName, torch_dtype=torch.float16, device_map="auto"
+                    ).eval()
+                    self._llama_tokenizer = AutoTokenizer.from_pretrained(llamaIndex_LocalmodelName)
                 self._deepEval_model = self._llama_model
                 self._deepEval_tokenizer = self._llama_tokenizer
             else:
@@ -68,18 +77,21 @@ class EvalModelAgent():
                 self._deepEval_tokenizer = AutoTokenizer.from_pretrained(deepEval_LocalModelName)
             self.deepEvalModel = DeepEvalLocalModel(model=self._deepEval_model,
                                                     tokenizer=self._deepEval_tokenizer)
-        else:
-            # 不再有效了
-            # deepeval.api.API_BASE_URL = 'https://uiuiapi.com/v1'
-            # self.deepEvalModel = api_name
+        elif needs_deepeval:
+            from langchain_openai import ChatOpenAI
+            from .DeepEvalLocalModel import DeepEvalLocalModel
 
             self._deepEval_model = ChatOpenAI(openai_api_key=api_key, openai_api_base=api_base,
                       model_name=api_name)
             self.deepEvalModel = DeepEvalLocalModel(model=self._deepEval_model,
                                                     tokenizer="")
-        if api_name == "":
+        if needs_uptrain and api_name == "":
+            from uptrain import Settings
+
             self.uptrainSetting = Settings(model="ollama/"+uptrain_LocalModelName)
-        else:
+        elif needs_uptrain:
+            from uptrain import Settings
+
             self.uptrainSetting = Settings(
                     model=api_name,
                     openai_api_key=api_key,

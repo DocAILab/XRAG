@@ -19,7 +19,7 @@ def create_default_config(config_file_path):
         # If package resource not found, create a new config file with default values
         default_config = {
             "api_keys": {
-                "api_key": "sk-xxxx",
+                "api_key": "",
                 "api_base": "https://api.openai.com/v1",
                 "api_name": "gpt-4",
                 "auth_token": "hf_xxx"

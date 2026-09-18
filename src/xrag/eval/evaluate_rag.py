@@ -243,13 +243,6 @@ NLG_EVALUATION_METRICS = [
 #
 
 def NLGEvaluate(questions, actual_responses, expect_answers, golden_context_ids, metrics):
-    # omit_metrics = []
-    # for metric in NLG_EVALUATION_METRICS:
-    #     if metric not in metrics:
-    #         omit_metrics.append(metric)
-
-
-    # n = NLGEval(metrics_to_omit=omit_metrics)
     references = []
     if type(expect_answers) == list:
         references = [str(response) for response in expect_answers]
@@ -261,34 +254,35 @@ def NLGEvaluate(questions, actual_responses, expect_answers, golden_context_ids,
     elif type(actual_responses) == str:
         predictions = [actual_responses]
 
-    # Individual Metrics
-    # scores = n.compute_individual_metrics(ref=reference, hyp=hypothesis)
-    scorer = Jury(metrics=["chrf", "meteor", "rouge", "wer", "cer"])
     scores = {}
-    # chrf++
-    chrf_plus = evaluate.load("chrf")
-    score = chrf_plus.compute(predictions=predictions, references=[references], word_order=2)
-    scores["chrf_pp"] = score["score"] / 100
-    # perplexity:model id are needed
-    perplexity = jury.load_metric("perplexity")
-    score = perplexity.compute(predictions=predictions, references=references, model_id="openai-community/gpt2")
-    scores["perplexity"] = score["mean_perplexity"]
-    if int(scores["perplexity"]) > 1600:
-        global ppl_bug_number
-        ppl_bug_number = ppl_bug_number + 1
-        print("\n\n" + "ppl_bug_number:" + str(ppl_bug_number) + "\n\n")
-        scores["perplexity"] = 0
-    #
-    score = scorer(predictions=predictions, references=[references])
-    scores["chrf"] = score["chrf"]["score"]
-    scores["meteor"] = score["meteor"]["score"]
-    #'rouge1': 0.6666666666666665, 'rouge2': 0.5714285714285715, 'rougeL': 0.6666666666666665, 'rougeLsum': 0.6666666666666665
-    scores["rouge_rouge1"] = score["rouge"]["rouge1"]
-    scores["rouge_rouge2"] = score["rouge"]["rouge2"]
-    scores["rouge_rougeL"] = score["rouge"]["rougeL"]
-    scores["rouge_rougeLsum"] = score["rouge"]["rougeLsum"]
-    scores["wer"] = score["wer"]["score"]
-    scores["cer"] = score["cer"]["score"]
+    requested = set(metrics)
+    if "chrf_pp" in requested:
+        chrf_plus = evaluate.load("chrf")
+        score = chrf_plus.compute(predictions=predictions, references=[references], word_order=2)
+        scores["chrf_pp"] = score["score"] / 100
+    if "perplexity" in requested:
+        perplexity = jury.load_metric("perplexity")
+        score = perplexity.compute(predictions=predictions, references=references, model_id="openai-community/gpt2")
+        scores["perplexity"] = score["mean_perplexity"]
+        if int(scores["perplexity"]) > 1600:
+            global ppl_bug_number
+            ppl_bug_number = ppl_bug_number + 1
+            scores["perplexity"] = 0
+
+    jury_metrics = []
+    for metric in ("chrf", "meteor", "wer", "cer"):
+        if metric in requested:
+            jury_metrics.append(metric)
+    rouge_metrics = {"rouge_rouge1", "rouge_rouge2", "rouge_rougeL", "rouge_rougeLsum"}
+    if requested & rouge_metrics:
+        jury_metrics.append("rouge")
+    if jury_metrics:
+        result = Jury(metrics=jury_metrics)(predictions=predictions, references=[references])
+        for metric in ("chrf", "meteor", "wer", "cer"):
+            if metric in requested:
+                scores[metric] = result[metric]["score"]
+        for metric in requested & rouge_metrics:
+            scores[metric] = result["rouge"][metric.removeprefix("rouge_")]
     return scores
 
 def UptrainEvaluate(evalModelAgent,question, actual_response, retrieval_context, expected_answer, gold_context, checks, local_model="qwen:7b-chat-v1.5-q8_0"):
@@ -529,8 +523,8 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
                     if len(deepeval_metric.verdicts) == 0:
                         raise Exception("deepeval verdicts is zero")
 
-                    if deepeval_metric.score:
-                        eval_result.metrics_results[i]["score"] = 1
+                    if deepeval_metric.score is not None and 0 <= deepeval_metric.score <= 1:
+                        eval_result.metrics_results[i]["score"] = deepeval_metric.score
                     eval_result.metrics_results[i]["count"] = 1
                     break
                 except Exception as e:
@@ -549,7 +543,7 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
             NLG_metrics.append(i[4:])
     if NLG_metrics.__len__() != 0:
         result = NLGEvaluate(question, actual_response, expected_answer, golden_context_ids, NLG_metrics)
-        for i in NLG_EVALUATION_METRICS:
+        for i in NLG_metrics:
             eval_result.metrics_results["NLG_"+i]["score"] = result[i]
             eval_result.metrics_results["NLG_"+i]["count"] = 1
 

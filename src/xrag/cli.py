@@ -2,9 +2,7 @@ import argparse
 import sys
 from enum import Enum, unique
 from .webui import run_web_ui
-from .launcher import run
 from .config import Config
-from .data.qa_loader import generate_qa_from_folder
 from .utils import get_module_logger
 
 logger = get_module_logger(__name__)
@@ -81,6 +79,8 @@ def main():
     try:
         # Handle commands
         if args.command == Command.RUN:
+            from .launcher import run
+
             # Parse overrides
             config_overrides = {}
             if args.override:
@@ -105,6 +105,8 @@ def main():
         elif args.command == Command.HELP or args.command is None:
             parser.print_help()
         elif args.command == Command.GENERATE:
+            from .data.qa_loader import generate_qa_from_folder
+
             generate_qa_from_folder(args.input, args.output, args.num, args.sentence_length)
         elif args.command == Command.API:
             from .api.server import run_api_server

@@ -36,6 +36,7 @@
 
 * {
   box-sizing: border-box;
+  font-family: sans-serif;
 }
 
 html, body {
@@ -263,6 +264,18 @@ a:hover { text-decoration: underline; }
   margin-top: 16px;
 }
 
+.llm-model-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.llm-model-control .button {
+  min-width: 126px;
+  white-space: nowrap;
+}
+
 input[type="text"],
 input[type="password"],
 input[type="number"],
@@ -329,6 +342,7 @@ textarea {
   font-size: 15px;
   color: var(--text-1);
   margin-bottom: 4px;
+  margin-right: 4px;
 }
 
 .preset-card .preset-desc {
@@ -343,6 +357,96 @@ textarea {
 
 .preset-card:hover:not(.is-selected) {
   border-color: var(--primary);
+}
+
+.preset-card:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.dataset-load-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.dataset-load-progress {
+  margin-top: 14px;
+}
+
+.dataset-load-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.progress-indeterminate .fill {
+  width: 36%;
+  animation: dataset-progress 1.15s ease-in-out infinite;
+}
+
+@keyframes dataset-progress {
+  from { transform: translateX(-105%); }
+  to { transform: translateX(280%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-indeterminate .fill {
+    width: 100%;
+    animation: none;
+  }
+}
+
+.custom-dataset-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin: 22px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--neutral-300);
+  border-radius: 6px;
+  background: var(--neutral-100);
+  color: var(--text-1);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.custom-dataset-toggle:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.custom-dataset-toggle:focus-visible {
+  outline: 0;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.collapse-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  font-size: 20px;
+  line-height: 1;
+  transition: transform 0.18s ease;
+}
+
+.collapse-chevron.is-expanded {
+  transform: rotate(180deg);
+}
+
+.custom-dataset-panel {
+  margin-top: 16px;
 }
 
 .upload-grid {
@@ -451,6 +555,45 @@ textarea {
 .nav-buttons .right { margin-left: auto; }
 
 /* ---- Evaluation metrics step ----------------------------------------- */
+.metric-presets {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.metric-presets-label {
+  margin-right: 4px;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.metric-preset {
+  padding: 7px 12px;
+  border: 1px solid var(--neutral-300);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.metric-preset:hover,
+.metric-preset.active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.metric-selection-summary {
+  margin-bottom: 16px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+
 .metric-group {
   border: 1px solid var(--neutral-200);
   border-radius: var(--radius);
@@ -465,7 +608,41 @@ textarea {
   gap: 8px;
   font-weight: 600;
   font-size: 14px;
+  margin: 0;
+}
+
+.metric-group-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 12px;
+}
+
+.metric-code,
+.metric-flair {
+  border: 1px solid var(--neutral-200);
+  border-radius: 4px;
+  background: var(--neutral-100);
+  color: var(--text-3);
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+
+.metric-section + .metric-section {
+  margin-top: 16px;
+}
+
+.metric-section-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .metric-grid {
@@ -481,9 +658,24 @@ textarea {
   font-size: 13px;
   color: var(--text-2);
   cursor: pointer;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .metric-check input { margin: 0; }
+.metric-check.disabled { cursor: not-allowed; opacity: 0.55; }
+.metric-name { overflow-wrap: anywhere; }
+
+.metric-note {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 9px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.metric-unavailable { color: var(--danger); }
 
 /* ---- Results / progress ---------------------------------------------- */
 .progress-card {
@@ -585,6 +777,70 @@ textarea {
   color: var(--primary);
 }
 
+.toast {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 10px;
+  width: min(420px, calc(100vw - 32px));
+  padding: 12px 12px 12px 14px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(44, 62, 80, 0.18);
+}
+
+.toast-error {
+  background: #FBE9E7;
+  border-color: #F5B7B1;
+  color: var(--danger);
+}
+
+.toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--danger);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.toast-message {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+
+.toast-close {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: currentColor;
+  font: inherit;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.toast-enter-active,
+.toast-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
 /* ---- Footer ---------------------------------------------------------- */
 .app-footer {
   background: #2C3E50;
@@ -648,5 +904,11 @@ textarea {
   }
   .lang-toggle button {
     padding: 5px 8px;
+  }
+  .llm-model-control {
+    grid-template-columns: 1fr;
+  }
+  .llm-model-control .button {
+    width: 100%;
   }
 }

@@ -128,4 +128,4 @@ async def health_check():
 
 def run_api_server(host: str = "0.0.0.0", port: int = 8000, json_path: str = '', dataset_folder: str = ''):
     app_instance = init_app(json_path, dataset_folder)
-    uvicorn.run(app_instance, host=host, port=port) 
+    uvicorn.run(app_instance, host=host, port=port,reload=True) 

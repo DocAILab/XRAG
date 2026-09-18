@@ -1,7 +1,21 @@
+export class ApiError extends Error {
+  constructor(message, { code = '', details = {}, status = 0 } = {}) {
+    super(message);
+    this.name = 'ApiError';
+    this.code = code;
+    this.details = details;
+    this.status = status;
+  }
+}
+
 async function request(url, options, fallback) {
   const response = await fetch(url, options);
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.detail || fallback);
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const details = data.detail && typeof data.detail === 'object' ? data.detail : {};
+    const message = typeof data.detail === 'string' ? data.detail : fallback;
+    throw new ApiError(message, { code: details.code, details, status: response.status });
+  }
   return data;
 }
 
@@ -16,6 +30,7 @@ export const api = {
   options: () => request('/api/options', undefined, 'Failed to load options'),
   config: () => request('/api/config', undefined, 'Failed to load config'),
   updateLLM: body => request('/api/config/llm', jsonPost(body), 'LLM update failed'),
+  listLLMModels: body => request('/api/llm/models', jsonPost(body), 'Automatic model lookup failed'),
   updateVector: body => request('/api/config/vector', jsonPost(body), 'Vector update failed'),
   updateRetrieval: body => request('/api/config/retrieval', jsonPost(body), 'Retrieval update failed'),
   presetDataset: name => request('/api/dataset/preset', jsonPost({ name }), 'Failed to load dataset'),

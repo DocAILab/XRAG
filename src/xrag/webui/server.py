@@ -8,8 +8,9 @@ prototype screenshots in the README.
 from __future__ import annotations
 
 import json
+import urllib.error
+import urllib.request
 import logging
-import os
 import queue
 import shutil
 import threading
@@ -54,11 +55,7 @@ HF_MODEL_OPTIONS = [
 EMBEDDING_OPTIONS = [
     "BAAI/bge-large-en-v1.5",
     "BAAI/bge-m3",
-    "BAAI/bge-base-en-v1.5",
-    "BAAI/bge-small-en-v1.5",
-    "BAAI/bge-large-zh-v1.5",
-    "BAAI/bge-base-zh-v1.5",
-    "BAAI/bge-small-zh-v1.5",
+    "jinaai/jina-embedding-l-en-v1"
 ]
 SPLIT_TYPE_OPTIONS = ["sentence", "sentence_window", "character", "hierarchical"]
 RESPONSE_SYNTHESIZER_OPTIONS = [
@@ -150,59 +147,111 @@ ORCHESTRATOR_DISPLAY = {
     "open": "Open-RAG",
 }
 
-# Metrics grouped exactly as in the prototype (Step 5).
-METRIC_GROUPS: Dict[str, List[Dict[str, str]]] = {
-    "NLG Evaluation": [
-        {"id": "NLG_chrf", "label": "ChrF"},
-        {"id": "NLG_meteor", "label": "METEOR"},
-        {"id": "NLG_wer", "label": "WER"},
-        {"id": "NLG_cer", "label": "CER"},
-        {"id": "NLG_chrf_pp", "label": "ChrF++"},
-        {"id": "NLG_perplexity", "label": "PPL"},
-        {"id": "NLG_rouge_rouge1", "label": "ROUGE1"},
-        {"id": "NLG_rouge_rouge2", "label": "ROUGE2"},
-        {"id": "NLG_rouge_rougeL", "label": "ROUGEL"},
-        {"id": "NLG_rouge_rougeLsum", "label": "ROUGELSUM"},
-        {"id": "nlg-em", "label": "EM"},
-    ],
-    "LLaMA Evaluation": [
-        {"id": "Llama_retrieval_Faithfulness", "label": "Llama-Response-Faithfulness"},
-        {"id": "Llama_retrieval_Relevancy", "label": "Llama-Response-Relevance"},
-        {"id": "Llama_response_correctness", "label": "Llama-Response-Correctness"},
-        {"id": "Llama_response_semanticSimilarity", "label": "Llama-Response-Similarity"},
-        {"id": "Llama_response_answerRelevancy", "label": "Llama-Response-Relevance++"},
-        {"id": "Llama_retrieval_FaithfulnessG", "label": "Llama-Response-Faithfulness+"},
-        {"id": "Llama_retrieval_RelevancyG", "label": "Llama-Response-Relevance+"},
-    ],
-    "DeepEval Evaluation": [
-        {"id": "DeepEval_retrieval_contextualPrecision", "label": "DeepEval-Context-Recall"},
-        {"id": "DeepEval_retrieval_contextualRecall", "label": "DeepEval-Context-Relevance"},
-        {"id": "DeepEval_retrieval_contextualRelevancy", "label": "Uptrain-Context-Consistency"},
-        {"id": "DeepEval_retrieval_faithfulness", "label": "DeepEval-Context-Faithfulness"},
-        {"id": "DeepEval_response_answerRelevancy", "label": "DeepEval-Response-Relevancy"},
-        {"id": "DeepEval_response_hallucination", "label": "DeepEval-Context-Hallucination"},
-    ],
-    "UpTrain Evaluation": [
-        {"id": "UpTrain_Response_Completeness", "label": "Uptrain-Response-Completeness"},
-        {"id": "UpTrain_Response_Conciseness", "label": "Uptrain-Response-Conciseness"},
-        {"id": "UpTrain_Response_Relevance", "label": "Uptrain-Response-Relevance"},
-        {"id": "UpTrain_Response_Valid", "label": "Uptrain-Response-Valid"},
-        {"id": "UpTrain_Response_Consistency", "label": "Uptrain-Response-Consistency"},
-        {"id": "UpTrain_Response_Response_Matching", "label": "Uptrain-Response-Matching"},
-        {"id": "UpTrain_Retrieval_Context_Relevance", "label": "Uptrain-Context-Relevance"},
-        {"id": "UpTrain_Retrieval_Context_Utilization", "label": "Uptrain-Factual-Accuracy"},
-        {"id": "UpTrain_Retrieval_Factual_Accuracy", "label": "Uptrain-Factual-Accuracy"},
-        {"id": "UpTrain_Retrieval_Context_Conciseness", "label": "Uptrain-Context-Conciseness"},
-        {"id": "UpTrain_Retrieval_Code_Hallucination", "label": "Uptrain-Retrieval-Code-Hallucination"},
-    ],
-    "SePer Evaluation": [
-        {"id": "SePer_with_context", "label": "SePer with Context"},
-        {"id": "SePer_without_context", "label": "SePer without Context"},
-        {"id": "SePer_delta", "label": "SePer Delta"},
-    ],
-}
-ALL_METRIC_IDS: List[str] = [
-    metric["id"] for group in METRIC_GROUPS.values() for metric in group
+CONR_METRICS = ["F1", "em", "mrr", "hit1", "hit10", "MAP", "NDCG", "DCG", "IDCG"]
+CONG_METRICS = [
+    "NLG_chrf", "NLG_chrf_pp", "NLG_meteor", "NLG_rouge_rouge1",
+    "NLG_rouge_rouge2", "NLG_rouge_rougeL", "NLG_rouge_rougeLsum",
+    "NLG_wer", "NLG_cer", "NLG_perplexity",
+]
+COGL_METRICS = [
+    "UpTrain_Retrieval_Context_Relevance", "UpTrain_Retrieval_Context_Conciseness",
+    "Llama_retrieval_Relevancy", "Llama_response_correctness",
+    "Llama_response_semanticSimilarity", "Llama_response_answerRelevancy",
+    "DeepEval_response_answerRelevancy", "UpTrain_Response_Completeness",
+    "UpTrain_Response_Conciseness", "UpTrain_Response_Relevance",
+    "UpTrain_Response_Valid", "UpTrain_Response_Response_Matching",
+    "DeepEval_retrieval_contextualPrecision", "DeepEval_retrieval_contextualRecall",
+    "DeepEval_retrieval_contextualRelevancy", "DeepEval_retrieval_faithfulness",
+    "DeepEval_response_hallucination", "Llama_retrieval_Faithfulness",
+    "UpTrain_Response_Consistency", "UpTrain_Retrieval_Context_Utilization",
+    "UpTrain_Retrieval_Factual_Accuracy", "UpTrain_Retrieval_Code_Hallucination",
+]
+SEPER_METRICS = ["SePer_with_context", "SePer_without_context", "SePer_delta"]
+GOLDEN_CONTEXT_METRICS = ["Llama_retrieval_FaithfulnessG", "Llama_retrieval_RelevancyG"]
+
+METRIC_GROUPS: List[Dict[str, Any]] = [
+    {
+        "id": "conr", "code": "ConR", "label": "Retrieval Quality",
+        "sections": [{"id": "retrieval", "metrics": [
+            {"id": "F1", "label": "F1", "direction": "higher"},
+            {"id": "em", "label": "EM", "direction": "higher"},
+            {"id": "mrr", "label": "MRR", "direction": "higher"},
+            {"id": "hit1", "label": "Hit@1", "direction": "higher"},
+            {"id": "hit10", "label": "Hit@10", "direction": "higher"},
+            {"id": "MAP", "label": "MAP", "direction": "higher"},
+            {"id": "NDCG", "label": "NDCG", "direction": "higher"},
+            {"id": "DCG", "label": "DCG", "direction": "higher"},
+            {"id": "IDCG", "label": "IDCG", "direction": "higher"},
+        ]}],
+    },
+    {
+        "id": "cong", "code": "ConG", "label": "Answer Text Matching",
+        "sections": [{"id": "text_matching", "metrics": [
+            {"id": "NLG_chrf", "label": "ChrF", "direction": "higher"},
+            {"id": "NLG_chrf_pp", "label": "ChrF++", "direction": "higher"},
+            {"id": "NLG_meteor", "label": "METEOR", "direction": "higher"},
+            {"id": "NLG_rouge_rouge1", "label": "ROUGE-1", "direction": "higher"},
+            {"id": "NLG_rouge_rouge2", "label": "ROUGE-2", "direction": "higher"},
+            {"id": "NLG_rouge_rougeL", "label": "ROUGE-L", "direction": "higher"},
+            {"id": "NLG_rouge_rougeLsum", "label": "ROUGE-Lsum", "direction": "higher"},
+            {"id": "NLG_wer", "label": "WER", "direction": "lower"},
+            {"id": "NLG_cer", "label": "CER", "direction": "lower"},
+            {"id": "NLG_perplexity", "label": "Perplexity", "direction": "lower", "cost": "high"},
+        ]}],
+    },
+    {
+        "id": "cogl", "code": "CogL", "label": "Semantic Evaluation",
+        "sections": [
+            {"id": "context_quality", "metrics": [
+                {"id": "UpTrain_Retrieval_Context_Relevance", "label": "Context Relevance", "provider": "UpTrain"},
+                {"id": "UpTrain_Retrieval_Context_Conciseness", "label": "Context Conciseness", "provider": "UpTrain"},
+                {"id": "Llama_retrieval_Relevancy", "label": "Retrieval Relevancy", "provider": "LlamaIndex"},
+            ]},
+            {"id": "answer_quality", "metrics": [
+                {"id": "Llama_response_correctness", "label": "Answer Correctness", "provider": "LlamaIndex"},
+                {"id": "Llama_response_semanticSimilarity", "label": "Semantic Similarity", "provider": "LlamaIndex"},
+                {"id": "Llama_response_answerRelevancy", "label": "Answer Relevancy", "provider": "LlamaIndex"},
+                {"id": "DeepEval_response_answerRelevancy", "label": "Answer Relevancy", "provider": "DeepEval"},
+                {"id": "UpTrain_Response_Completeness", "label": "Response Completeness", "provider": "UpTrain"},
+                {"id": "UpTrain_Response_Conciseness", "label": "Response Conciseness", "provider": "UpTrain"},
+                {"id": "UpTrain_Response_Relevance", "label": "Response Relevance", "provider": "UpTrain"},
+                {"id": "UpTrain_Response_Valid", "label": "Response Validity", "provider": "UpTrain"},
+                {"id": "UpTrain_Response_Response_Matching", "label": "Response Matching", "provider": "UpTrain"},
+            ]},
+            {"id": "grounding", "metrics": [
+                {"id": "DeepEval_retrieval_contextualPrecision", "label": "Contextual Precision", "provider": "DeepEval"},
+                {"id": "DeepEval_retrieval_contextualRecall", "label": "Contextual Recall", "provider": "DeepEval"},
+                {"id": "DeepEval_retrieval_contextualRelevancy", "label": "Contextual Relevancy", "provider": "DeepEval"},
+                {"id": "DeepEval_retrieval_faithfulness", "label": "Faithfulness", "provider": "DeepEval"},
+                {"id": "DeepEval_response_hallucination", "label": "Hallucination", "provider": "DeepEval", "direction": "lower"},
+                {"id": "Llama_retrieval_Faithfulness", "label": "Faithfulness", "provider": "LlamaIndex"},
+                {"id": "UpTrain_Response_Consistency", "label": "Response Consistency", "provider": "UpTrain"},
+                {"id": "UpTrain_Retrieval_Context_Utilization", "label": "Context Utilization", "provider": "UpTrain"},
+                {"id": "UpTrain_Retrieval_Factual_Accuracy", "label": "Factual Accuracy", "provider": "UpTrain"},
+                {"id": "UpTrain_Retrieval_Code_Hallucination", "label": "Code Hallucination", "provider": "UpTrain", "direction": "lower"},
+            ]},
+        ],
+    },
+    {
+        "id": "advanced", "label": "Advanced Evaluation",
+        "sections": [
+            {"id": "retrieval_utility", "metrics": [{
+                "id": "seper", "metric_ids": SEPER_METRICS, "label": "SePer Retrieval Utility",
+                "provider": "SePer", "cost": "high", "experimental": True,
+            }]},
+            {"id": "golden_context", "metrics": [
+                {"id": "Llama_retrieval_FaithfulnessG", "label": "Faithfulness (Golden Context)", "provider": "LlamaIndex", "experimental": True},
+                {"id": "Llama_retrieval_RelevancyG", "label": "Relevancy (Golden Context)", "provider": "LlamaIndex", "experimental": True},
+            ]},
+        ],
+    },
+]
+
+ALL_METRIC_IDS = CONR_METRICS + CONG_METRICS + COGL_METRICS + SEPER_METRICS + GOLDEN_CONTEXT_METRICS
+METRIC_PRESETS = [
+    {"id": "quick", "metric_ids": ["F1", "mrr", "hit10", "NDCG", "NLG_chrf_pp", "NLG_rouge_rougeL", "NLG_wer"]},
+    {"id": "paper", "metric_ids": CONR_METRICS + CONG_METRICS},
+    {"id": "complete", "metric_ids": CONR_METRICS + CONG_METRICS + COGL_METRICS},
 ]
 
 DEFAULT_PROMPT_QA = (
@@ -323,6 +372,11 @@ class LLMUpdate(BaseModel):
     ollama_model: Optional[str] = None
     ollama_request_timeout: Optional[int] = None
     temperature: Optional[float] = None
+
+
+class LLMModelsRequest(BaseModel):
+    api_key: Optional[str] = None
+    api_base: Optional[str] = None
 
 
 class VectorDBUpdate(BaseModel):
@@ -493,6 +547,23 @@ def _reset_engines() -> None:
     STATE.orchestrator = "default"
 
 
+def _metric_groups_for_config(cfg: Config) -> List[Dict[str, Any]]:
+    groups = json.loads(json.dumps(METRIC_GROUPS))
+    seper_config = cfg.config.get("seper", {})
+    seper_enabled = bool(seper_config.get("enabled", False))
+    for group in groups:
+        for section in group["sections"]:
+            for metric in section["metrics"]:
+                if metric["id"] == "seper":
+                    metric["available"] = seper_enabled
+                    metric["requirements"] = {
+                        "generation_model": seper_config.get("generation_model"),
+                        "entailment_model": seper_config.get("entailment_model"),
+                        "device": seper_config.get("device", "cuda"),
+                    }
+    return groups
+
+
 # ---------------------------------------------------------------------------
 # FastAPI app and routes.
 # ---------------------------------------------------------------------------
@@ -520,6 +591,7 @@ def health() -> Dict[str, Any]:
 
 @app.get("/api/options")
 def get_options() -> Dict[str, Any]:
+    cfg = Config()
     return {
         "llms": LLM_OPTIONS,
         "hf_models": HF_MODEL_OPTIONS,
@@ -537,7 +609,8 @@ def get_options() -> Dict[str, Any]:
             {"id": k, "label": ORCHESTRATOR_DISPLAY[k]} for k in ORCHESTRATOR_OPTIONS
         ],
         "response_synthesizers": RESPONSE_SYNTHESIZER_OPTIONS,
-        "metric_groups": METRIC_GROUPS,
+        "metric_groups": _metric_groups_for_config(cfg),
+        "metric_presets": METRIC_PRESETS,
         "default_templates": {
             "text_qa_template": DEFAULT_PROMPT_QA,
             "refine_template": DEFAULT_PROMPT_REFINE,
@@ -577,6 +650,35 @@ def update_llm(body: LLMUpdate) -> Dict[str, Any]:
     return {"ok": True, "config": _cfg_to_dict(cfg)["llm"]}
 
 
+@app.post("/api/llm/models")
+def list_llm_models(body: LLMModelsRequest) -> Dict[str, Any]:
+    """Fetch model IDs from an OpenAI-compatible endpoint without exposing the key."""
+    cfg = Config()
+    api_key = body.api_key or getattr(cfg, "api_key", None)
+    api_base = (body.api_base or getattr(cfg, "api_base", None) or "https://api.openai.com/v1").rstrip("/")
+    if not api_key:
+        raise HTTPException(400, detail={"code": "models_query_failed"})
+    request = urllib.request.Request(
+        f"{api_base}/models",
+        headers={"Authorization": f"Bearer {api_key}", "Accept": "application/json"},
+        method="GET",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=15) as response:
+            if response.status < 200 or response.status >= 300:
+                raise HTTPException(502, detail={"code": "models_query_failed"})
+            payload = json.loads(response.read().decode("utf-8"))
+        models = sorted({item["id"] for item in payload.get("data", []) if isinstance(item, dict) and item.get("id")})
+        if not models:
+            raise ValueError("models response did not contain model IDs")
+        return {"models": models}
+    except HTTPException:
+        raise
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError, json.JSONDecodeError) as exc:
+        logger.warning("Automatic model lookup failed: %s", type(exc).__name__)
+        raise HTTPException(502, detail={"code": "models_query_failed"}) from exc
+
+
 @app.post("/api/config/vector")
 def update_vector(body: VectorDBUpdate) -> Dict[str, Any]:
     cfg = Config()
@@ -606,12 +708,22 @@ def load_preset_dataset(body: PresetDatasetRequest) -> Dict[str, Any]:
         raise HTTPException(400, f"Unknown preset dataset: {name}")
     cfg = Config()
     # The loader pulls from HuggingFace; this can take a while.
-    from xrag.data.qa_loader import get_qa_dataset
+    from xrag.data import qa_loader
+
     try:
-        qa = get_qa_dataset(name)
+        qa = qa_loader.get_qa_dataset(name)
+    except qa_loader.DatasetNotFoundError as exc:
+        logger.warning("Preset dataset not found: %s", exc.dataset_name)
+        raise HTTPException(
+            404,
+            detail={"code": "dataset_not_found", "dataset_name": name},
+        ) from exc
     except Exception as exc:
         logger.exception("Failed to load preset dataset")
-        raise HTTPException(500, f"Failed to load dataset: {exc}") from exc
+        raise HTTPException(
+            500,
+            detail={"code": "dataset_load_failed", "dataset_name": name},
+        ) from exc
     cfg.dataset = name
     STATE.qa_dataset = qa
     STATE.dataset = _summary_for_dataset(qa, name, "preset")
@@ -860,7 +972,7 @@ def _run_evaluation_inner(task: EvalTask, metrics: List[str], num_samples: int) 
         task.finished_at = time.time()
         return
 
-    eval_agent = EvalModelAgent(cfg)
+    eval_agent = EvalModelAgent(cfg, metrics)
     results = EvaluationResult(metrics=metrics)
 
     qa = STATE.qa_dataset
@@ -923,7 +1035,7 @@ def _run_evaluation_inner(task: EvalTask, metrics: List[str], num_samples: int) 
             task.samples.append(sample)
             task.completed = idx + 1
             task.progress = task.completed / max(1, task.total)
-            task.summary = _summary_from_results(results)
+            task.summary = _summary_from_results(results, metrics)
             task.queue.put({
                 "event": "progress",
                 "completed": task.completed,
@@ -940,24 +1052,25 @@ def _run_evaluation_inner(task: EvalTask, metrics: List[str], num_samples: int) 
             task.queue.put({"event": "sample_error", "index": idx, "error": str(exc)})
 
     task.status = "done"
-    task.summary = _summary_from_results(results)
+    task.summary = _summary_from_results(results, metrics)
     STATE.last_evaluation = task.summary
     _set_experiment_status(task, "done", result=task.summary, failed=task.failed)
     task.queue.put({"event": "done", "summary": task.summary})
     task.finished_at = time.time()
 
 
-def _summary_from_results(results) -> Dict[str, Any]:
+def _summary_from_results(results, selected_metrics: Optional[List[str]] = None) -> Dict[str, Any]:
+    selected = set(selected_metrics or results.metrics)
     summary = {
         "n": results.results["n"],
         "global": {},
         "metrics": {},
     }
     for key, value in results.results.items():
-        if key in results.metrics:
+        if key in selected:
             summary["global"][key] = value / max(1, results.results["n"])
     for key, value in results.metrics_results.items():
-        if key in results.metrics and not key.endswith("_rev"):
+        if key in selected and not key.endswith("_rev"):
             if value["count"] == 0:
                 summary["metrics"][key] = {"score": 0.0, "valid_count": 0}
             else:
@@ -978,6 +1091,12 @@ def start_evaluation(body: EvaluationRequest) -> Dict[str, Any]:
     if unknown_metrics:
         raise HTTPException(400, f"Unsupported metrics: {', '.join(unknown_metrics)}")
     cfg = Config()
+    if set(body.metrics) & set(SEPER_METRICS):
+        if not bool(cfg.config.get("seper", {}).get("enabled", False)):
+            raise HTTPException(
+                400,
+                detail={"code": "metric_unavailable", "metric": "seper"},
+            )
     cfg.metrics = list(body.metrics)
     if body.experiment_1 is not None:
         cfg.experiment_1 = body.experiment_1

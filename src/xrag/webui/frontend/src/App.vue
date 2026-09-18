@@ -16,14 +16,43 @@ const { lang, t, format } = useLocale();
 const stepComponents = [DatasetStep, VectorStep, LlmStep, RetrievalStep, MetricsStep, ResultsStep];
 const currentStep = computed(() => stepComponents[store.step - 1]);
 const canGotoNext = computed(() => {
-  if (store.step === 1) return Boolean(store.dataset);
+  if (store.step === 1) {
+    if (!store.dataset) return false;
+    return !store.presetDataset || (
+      store.dataset.source === 'preset' && store.dataset.name === store.presetDataset
+    );
+  }
   if (store.step === 5) return store.selectedMetrics.length > 0;
   return store.step >= 2 && store.step <= 4;
 });
 
-function setError(message) { store.error = message; store.notice = ''; }
+let toastTimer = null;
+function dismissToast() {
+  store.toastError = '';
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = null;
+}
+function setError(message) {
+  store.error = message;
+  store.notice = '';
+  dismissToast();
+  if (!message) return;
+  store.toastError = message;
+  toastTimer = setTimeout(dismissToast, 5000);
+}
 function setNotice(message) { store.notice = message; store.error = ''; }
 function gotoStep(step) { if (step >= 1 && step <= 6) store.step = step; }
+
+function datasetDisplayName(name) {
+  return store.options?.preset_datasets?.find(item => item.id === name)?.label || name;
+}
+
+function datasetErrorMessage(error, fallbackName) {
+  const name = datasetDisplayName(error.details?.dataset_name || fallbackName);
+  if (error.code === 'dataset_not_found') return format(t.value.messages.datasetNotFound, { name });
+  if (error.code === 'dataset_load_failed') return format(t.value.messages.datasetLoadFailed, { name });
+  return error.message || t.value.messages.datasetLoadFailed;
+}
 
 async function init() {
   try {
@@ -51,8 +80,9 @@ async function init() {
       textQaTemplate: config.templates?.text_qa_template || options.default_templates.text_qa_template,
       refineTemplate: config.templates?.refine_template || options.default_templates.refine_template,
     });
-    const available = Object.values(options.metric_groups).flatMap(group => group.map(metric => metric.id));
-    store.selectedMetrics = Array.isArray(retrieval.metrics) ? retrieval.metrics.filter(metric => available.includes(metric)) : [];
+    const quickPreset = options.metric_presets?.find(preset => preset.id === 'quick');
+    store.selectedMetrics = quickPreset ? [...quickPreset.metric_ids] : [];
+    store.metricPreset = quickPreset ? 'quick' : '';
   } catch (error) {
     setError(`${t.value.messages.initFailed} ${error.message}`);
   }
@@ -82,15 +112,15 @@ async function next() {
 }
 
 async function loadPreset(name) {
-  store.loading = true; setError('');
+  store.loading = true; store.presetLoading = true; setError('');
   try { const result = await api.presetDataset(name); store.dataset = result.dataset; setNotice(format(t.value.messages.loaded, { name: result.dataset.display })); }
-  catch (error) { setError(error.message); }
-  finally { store.loading = false; }
+  catch (error) { setError(datasetErrorMessage(error, name)); }
+  finally { store.loading = false; store.presetLoading = false; }
 }
 async function uploadJson() {
   if (!store.uploadFile) return setError(t.value.messages.chooseJson);
   store.loading = true; setError('');
-  try { const result = await api.uploadJson(store.uploadFile); store.dataset = result.dataset; setNotice(format(t.value.messages.uploaded, { name: store.uploadFile.name })); }
+  try { const result = await api.uploadJson(store.uploadFile); store.dataset = result.dataset; store.presetDataset = ''; setNotice(format(t.value.messages.uploaded, { name: store.uploadFile.name })); }
   catch (error) { setError(error.message); }
   finally { store.loading = false; }
 }
@@ -99,6 +129,7 @@ async function generateFromFolder() {
   try {
     const result = await api.fromFolder({ folder_path: store.folderPath, output_json: store.folderOutput, num_questions: store.folderNum, sentence_length: store.folderSentenceLen });
     store.dataset = result.dataset;
+    store.presetDataset = '';
     setNotice(format(t.value.messages.generated, { count: result.num_generated_qa_pairs }));
   } catch (error) { setError(error.message); }
   finally { store.loading = false; }
@@ -127,23 +158,36 @@ async function startEvaluation() {
 async function cancelEvaluation() { if (store.evalTaskId) await api.cancelEvaluation(store.evalTaskId); }
 
 onMounted(init);
-onBeforeUnmount(closeEvalStream);
+onBeforeUnmount(() => { closeEvalStream(); dismissToast(); });
 </script>
 
 <template>
   <div class="app-shell">
+    <Transition name="toast">
+      <div v-if="store.toastError" class="toast toast-error" role="alert" aria-live="assertive">
+        <span class="toast-icon" aria-hidden="true">!</span>
+        <span class="toast-message">{{ store.toastError }}</span>
+        <button class="toast-close" type="button" :aria-label="t.common.close" @click="dismissToast">×</button>
+      </div>
+    </Transition>
     <header class="app-header"><div class="container">
-        <div class="brand"><img class="brand-logo" :src="logoUrl" alt="XRAG" />XRAG</div>
-        <nav class="nav"><a href="#workflow">{{ t.nav.workflow }}</a><a href="#features">{{ t.nav.features }}</a><a
-            href="#demo">{{ t.nav.demo }}</a><a href="https://github.com/DocAILab/XRAG" target="_blank"
-            rel="noopener">{{ t.nav.github }}</a>
-          <div class="lang-toggle"><button :class="{ active: lang === 'zh' }" @click="lang = 'zh'">中</button><button
-              :class="{ active: lang === 'en' }" @click="lang = 'en'">En</button></div>
+        <div class="brand" lang="en"><img class="brand-logo" :src="logoUrl" alt="XRAG" />XRAG</div>
+        <nav class="nav">
+          <a href="#workflow">{{ t.nav.workflow }}</a>
+          <!--
+          <a href="#features">{{ t.nav.features }}</a>
+          <a href="#demo">{{ t.nav.demo }}</a>
+          -->
+          <a href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener">{{ t.nav.github }}</a>
+          <div class="lang-toggle">
+            <button :class="{ active: lang === 'zh' }" @click="lang = 'zh'">中</button>
+            <button :class="{ active: lang === 'en' }" @click="lang = 'en'">EN</button>
+          </div>
         </nav>
       </div></header>
     <main id="workflow" class="container">
       <div class="hero">
-        <h1>{{ t.hero.title }}</h1>
+        <h1 lang="en">{{ t.hero.title }}</h1>
         <p class="subtitle">{{ t.hero.subtitle }}</p>
       </div>
       <h2 class="section-heading">{{ t.hero.demo }}</h2>
@@ -152,7 +196,7 @@ onBeforeUnmount(closeEvalStream);
       <div v-if="store.notice" class="alert alert-info">{{ store.notice }}</div>
       <component :is="currentStep" :store="store" :options="store.options" :t="t" @load-preset="loadPreset"
         @upload-json="uploadJson" @generate-folder="generateFromFolder" @restart="gotoStep(1)"
-        @cancel="cancelEvaluation" />
+        @cancel="cancelEvaluation" @error="setError" @notice="setNotice" />
       <div v-if="store.step <= 5" class="nav-buttons"><button class="button button-secondary"
           :disabled="store.step === 1 || store.loading" @click="gotoStep(store.step - 1)">{{ t.common.previous
           }}</button><button class="button button-primary" :disabled="!canGotoNext || store.loading" @click="next"><span
@@ -162,7 +206,7 @@ onBeforeUnmount(closeEvalStream);
     <footer class="app-footer">
       <div class="container"><span>{{ t.footer.copyright }}</span>
         <div><a href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener">{{ t.footer.github }}</a><a
-            href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener">{{ t.footer.docs }}</a></div>
+            href="https://docailab.github.io/XRAG/" target="_blank" rel="noopener">{{ t.footer.docs }}</a></div>
       </div>
     </footer>
   </div>

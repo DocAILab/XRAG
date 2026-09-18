@@ -2,7 +2,12 @@ import json
 import os
 import aiohttp
 os.environ['HF_ENDPOINT']='https://hf-mirror.com'
-from datasets import load_dataset
+from datasets import load_dataset as _load_dataset
+from datasets.exceptions import (
+    DataFilesNotFoundError,
+    DatasetNotFoundError as HFDatasetNotFoundError,
+    FileNotFoundDatasetsError,
+)
 import random
 from tqdm import tqdm
 from ..config import GlobalVar
@@ -15,6 +20,22 @@ from ..utils import get_module_logger
 
 logger = get_module_logger(__name__)
 cfg = Config()
+
+
+class DatasetNotFoundError(Exception):
+    """Raised when a named dataset cannot be resolved locally or remotely."""
+
+    def __init__(self, dataset_name: str):
+        self.dataset_name = dataset_name
+        super().__init__(f"Dataset not found: {dataset_name}")
+
+
+def load_dataset(dataset_name, *args, **kwargs):
+    """Wrap datasets.load_dataset without leaking provider-specific errors."""
+    try:
+        return _load_dataset(dataset_name, *args, **kwargs)
+    except (HFDatasetNotFoundError, DataFilesNotFoundError, FileNotFoundDatasetsError) as exc:
+        raise DatasetNotFoundError(str(dataset_name)) from exc
 
 test_init_total_number_documents = cfg.test_init_total_number_documents
 extra_number_documents = cfg.extra_number_documents
@@ -161,7 +182,6 @@ def get_qa_dataset(dataset_name:str,files=None):
             documents=documents,
             dataset=files)
 
-
     if dataset_name == "rmanluo/RoG-webqsp":
         dataset = load_dataset(
             "rmanluo/RoG-webqsp",
@@ -174,7 +194,6 @@ def get_qa_dataset(dataset_name:str,files=None):
         questions = dataset['train']['question'] + dataset['test']['question'] + dataset['validation']['question']
         answers = dataset['train']['answer'] + dataset['test']['answer'] + dataset['validation']['answer']
         golden_sources = dataset['train']['graph'] + dataset['test']['graph'] + dataset['validation']['graph']
-    
     elif dataset_name == "hotpot_qa":
         dataset = load_dataset(
             "hotpot_qa",
@@ -242,7 +261,6 @@ def get_qa_dataset(dataset_name:str,files=None):
             title2id=title2id,
             documents=documents,
             dataset=dataset)
-    
     elif dataset_name == "drop":
         """
         {
