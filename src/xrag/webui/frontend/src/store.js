@@ -2,7 +2,7 @@
 import { reactive } from 'vue';
 
 export const store = reactive({
-  step: 1, options: null, capabilities: null, config: null, error: '', notice: '', toastError: '', loading: false,
+  step: 1, options: null, capabilities: null, config: null, error: '', notice: '', toastError: '', loading: false, ramUsageMb: null,
   dataset: null, presetDataset: '', presetLoading: false, uploadFile: null,
   folderPath: './data/documents', folderNum: 3, folderSentenceLen: -1,
   folderOutput: './data/generated_qa.json',

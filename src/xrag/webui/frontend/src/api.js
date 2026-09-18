@@ -26,6 +26,7 @@ const jsonPost = body => ({
 });
 
 export const api = {
+  health: () => request('/health', undefined, 'Health check failed'),
   capabilities: () => request('/api/capabilities', undefined, 'Failed to load capabilities'),
   options: () => request('/api/options', undefined, 'Failed to load options'),
   config: () => request('/api/config', undefined, 'Failed to load config'),

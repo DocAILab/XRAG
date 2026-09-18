@@ -27,6 +27,7 @@ const canGotoNext = computed(() => {
 });
 
 let toastTimer = null;
+let healthTimer = null;
 function dismissToast() {
   store.toastError = '';
   if (toastTimer) clearTimeout(toastTimer);
@@ -38,7 +39,7 @@ function setError(message) {
   dismissToast();
   if (!message) return;
   store.toastError = message;
-  toastTimer = setTimeout(dismissToast, 5000);
+  toastTimer = setTimeout(dismissToast, 8000);
 }
 function setNotice(message) { store.notice = message; store.error = ''; }
 function gotoStep(step) { if (step >= 1 && step <= 6) store.step = step; }
@@ -85,6 +86,15 @@ async function init() {
     store.metricPreset = quickPreset ? 'quick' : '';
   } catch (error) {
     setError(`${t.value.messages.initFailed} ${error.message}`);
+  }
+}
+
+async function refreshHealth() {
+  try {
+    const health = await api.health();
+    store.ramUsageMb = Number.isFinite(health.memory_mb) ? health.memory_mb : null;
+  } catch {
+    store.ramUsageMb = null;
   }
 }
 
@@ -157,8 +167,16 @@ async function startEvaluation() {
 }
 async function cancelEvaluation() { if (store.evalTaskId) await api.cancelEvaluation(store.evalTaskId); }
 
-onMounted(init);
-onBeforeUnmount(() => { closeEvalStream(); dismissToast(); });
+onMounted(() => {
+  init();
+  refreshHealth();
+  healthTimer = setInterval(refreshHealth, 5000);
+});
+onBeforeUnmount(() => {
+  closeEvalStream();
+  dismissToast();
+  if (healthTimer) clearInterval(healthTimer);
+});
 </script>
 
 <template>
@@ -167,18 +185,18 @@ onBeforeUnmount(() => { closeEvalStream(); dismissToast(); });
       <div v-if="store.toastError" class="toast toast-error" role="alert" aria-live="assertive">
         <span class="toast-icon" aria-hidden="true">!</span>
         <span class="toast-message">{{ store.toastError }}</span>
-        <button class="toast-close" type="button" :aria-label="t.common.close" @click="dismissToast">×</button>
+        <button class="toast-close" type="button" :aria-label="t.common.close" @click="dismissToast"><svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></button>
       </div>
     </Transition>
     <header class="app-header"><div class="container">
         <div class="brand" lang="en"><img class="brand-logo" :src="logoUrl" alt="XRAG" />XRAG</div>
         <nav class="nav">
-          <a href="#workflow">{{ t.nav.workflow }}</a>
           <!--
+          <a href="#workflow">{{ t.nav.workflow }}</a>
           <a href="#features">{{ t.nav.features }}</a>
           <a href="#demo">{{ t.nav.demo }}</a>
           -->
-          <a href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener">{{ t.nav.github }}</a>
+          <a href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener" lang="en">{{ t.nav.github }}</a>
           <div class="lang-toggle">
             <button :class="{ active: lang === 'zh' }" @click="lang = 'zh'">中</button>
             <button :class="{ active: lang === 'en' }" @click="lang = 'en'">EN</button>
@@ -192,8 +210,14 @@ onBeforeUnmount(() => { closeEvalStream(); dismissToast(); });
       </div>
       <h2 class="section-heading">{{ t.hero.demo }}</h2>
       <WorkflowStepper :step="store.step" :steps="t.steps" @goto="gotoStep" />
-      <div v-if="store.error" class="alert alert-error">{{ store.error }}</div>
-      <div v-if="store.notice" class="alert alert-info">{{ store.notice }}</div>
+      <div v-if="store.error" class="alert alert-error" role="alert">
+        <span class="alert-message">{{ store.error }}</span>
+        <button class="alert-close" type="button" :aria-label="t.common.close" @click="store.error = ''"><svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></button>
+      </div>
+      <div v-if="store.notice" class="alert alert-info" role="status">
+        <span class="alert-message">{{ store.notice }}</span>
+        <button class="alert-close" type="button" :aria-label="t.common.close" @click="store.notice = ''"><svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg></button>
+      </div>
       <component :is="currentStep" :store="store" :options="store.options" :t="t" @load-preset="loadPreset"
         @upload-json="uploadJson" @generate-folder="generateFromFolder" @restart="gotoStep(1)"
         @cancel="cancelEvaluation" @error="setError" @notice="setNotice" />
@@ -205,7 +229,7 @@ onBeforeUnmount(() => { closeEvalStream(); dismissToast(); });
     </main>
     <footer class="app-footer">
       <div class="container"><span>{{ t.footer.copyright }}</span>
-        <div><a href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener">{{ t.footer.github }}</a><a
+        <div class="footer-meta"><span class="ram-usage" role="status">{{ t.footer.ram }}{{ store.ramUsageMb == null ? '--' : store.ramUsageMb.toFixed(1) }} MB</span><a href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener">{{ t.footer.github }}</a><a
             href="https://docailab.github.io/XRAG/" target="_blank" rel="noopener">{{ t.footer.docs }}</a></div>
       </div>
     </footer>

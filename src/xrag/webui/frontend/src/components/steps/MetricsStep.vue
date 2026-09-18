@@ -59,7 +59,6 @@ function applyPreset(preset) {
             <input type="checkbox" :checked="isSelected(metric)" :disabled="metric.available === false"
               @change="toggleIds(metricIds(metric), $event.target.checked)" />
             <span class="metric-name">{{ metric.label }}</span>
-            <span v-if="metric.direction" class="metric-flair">{{ metric.direction === 'lower' ? '↓' : '↑' }}</span>
             <span v-if="metric.provider" class="metric-flair">{{ metric.provider }}</span>
             <span v-if="metric.cost === 'high'" class="metric-flair">{{ t.metrics.highCost }}</span>
             <span v-if="metric.experimental" class="metric-flair">{{ t.metrics.experimental }}</span>

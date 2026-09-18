@@ -752,11 +752,45 @@ textarea {
 
 /* ---- Toasts / inline alerts ------------------------------------------ */
 .alert {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   padding: 10px 14px;
   border-radius: 6px;
   font-size: 13px;
   margin-bottom: 12px;
   border: 1px solid transparent;
+}
+
+.alert-message {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.alert-close {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  margin: -3px -4px -3px 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: currentColor;
+  font: inherit;
+  cursor: pointer;
+}
+
+.alert-close svg,
+.toast-close svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.alert-close:hover {
+  opacity: 0.72;
 }
 
 .alert-error {
@@ -825,8 +859,6 @@ textarea {
   background: transparent;
   color: currentColor;
   font: inherit;
-  font-size: 22px;
-  line-height: 1;
   cursor: pointer;
 }
 
@@ -856,6 +888,17 @@ textarea {
   font-size: 13px;
 }
 
+.footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ram-usage {
+  color: rgba(255, 255, 255, 0.78);
+  white-space: nowrap;
+}
+
 .app-footer a {
   color: #ffffff;
   margin-left: 16px;
@@ -875,6 +918,10 @@ textarea {
     flex-direction: column;
     gap: 8px;
     text-align: center;
+  }
+  .footer-meta {
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .app-header .container {
     height: auto;

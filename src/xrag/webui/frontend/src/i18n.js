@@ -1,7 +1,7 @@
 export const messages = {
   en: {
     nav: { workflow: 'Workflow', features: 'Features', demo: 'Demo', github: 'GitHub' },
-    footer: { copyright: '© 2024 XRAG. All rights reserved.', github: 'GitHub', docs: 'Docs' },
+    footer: { copyright: '© 2024 XRAG. All rights reserved.', github: 'GitHub', docs: 'Docs', ram: 'RAM: ' },
     hero: {
       title: 'XRAG: eXamining the Core - Benchmarking Foundational Components in Advanced Retrieval-Augmented Generation',
       subtitle: 'A powerful benchmarking framework for evaluating foundational components in advanced RAG systems',
@@ -18,7 +18,7 @@ export const messages = {
       loaded: 'Loaded', documents: 'documents', questions: 'test questions', source: 'source', sources: { preset: 'preset', json: 'JSON upload', folder: 'document folder' },
     },
     vector: { title: 'Build Vector Database', embedding: 'Embedding Model', splitType: 'Split Type', chunkSize: 'Chunk Size', chunkOverlap: 'Chunk Overlap', windowSize: 'Sentence Window Size', chunkSizes: 'Hierarchy Chunk Sizes', persistDir: 'Persist Directory', splitTypes: {} },
-    llm: { title: 'Configure LLM', select: 'Select Language Model Endpoint type', apiKey: 'API Key', apiBase: 'API Base URL', modelName: 'Model Name', queryModels: 'Auto-detect models', modelsFound: 'Found {count} models.', modelsQueryFailed: 'Automatic model lookup failed. Enter a model name manually.', hfModel: 'HuggingFace Model', authToken: 'Auth Token', ollamaModel: 'Ollama Model', timeout: 'Request Timeout (seconds)', temperature: 'Temperature' },
+    llm: { title: 'Configure LLM', select: 'Select Language Model Endpoint type', apiKey: 'API Key', apiBase: 'API Base URL', modelName: 'Model Name', queryModels: 'Fetch models from URL', modelsFound: 'Found {count} models.', modelsQueryFailed: 'Automatic model lookup failed. Enter a model name manually.', hfModel: 'HuggingFace Model', authToken: 'Auth Token', ollamaModel: 'Ollama Model', timeout: 'Request Timeout (seconds)', temperature: 'Temperature' },
     retrieval: {
       title: 'Configure Retrieval', type: 'Retriever Type', retrieval: 'Retrieval', mode: 'Retriever Mode', modeValue: 'Mode', topK: 'Top K Results', pre: 'Pre-retrieval Process', noneProcess: 'No Processing', rerank: 'Post-process Rerank', noneRerank: 'No Reranking', orchestrator: 'Orchestrator', synthesizer: 'Response Synthesizer', qaTemplate: 'QA Template', refineTemplate: 'Refine Template', rerankers: { long_context_reorder: 'Long context reorder (LlamaIndex)', colbertv2_rerank: 'colbert-ir/colbertv2.0', 'bge-reranker-base': 'BAAI/bge-reranker-base' }
     },
@@ -35,7 +35,7 @@ export const messages = {
   },
   zh: {
     nav: { workflow: '使用流程', features: '特性', demo: '演示', github: 'GitHub' },
-    footer: { copyright: '© 2026 XRAG。保留所有权利。', github: 'GitHub', docs: '文档' },
+    footer: { copyright: '© 2026 XRAG。保留所有权利。', github: 'GitHub', docs: '文档', ram: '内存：' },
     hero: { title: 'XRAG: eXamining the Core - Benchmarking Foundational Components in Advanced Retrieval-Augmented Generation', subtitle: '用于评估 RAG 系统基础组件的基准测试框架', demo: '在线演示' },
     steps: ['构建数据集', '构建向量库', '配置 LLM', '配置检索', '设置评测指标', '查看测试结果'],
     common: { previous: '上一步', next: '下一步', runEvaluation: '运行评测', cancel: '取消', close: '关闭', startOver: '重新开始', loading: '加载中…' },
@@ -48,7 +48,7 @@ export const messages = {
       loaded: '已加载', documents: '篇文档', questions: '个测试问题', source: '来源', sources: { preset: '预设数据集', json: 'JSON 上传', folder: '文档文件夹' },
     },
     vector: { title: '构建向量数据库', embedding: '嵌入模型', splitType: '切分方式', chunkSize: '文本块大小', chunkOverlap: '文本块重叠大小', windowSize: '句子窗口大小', chunkSizes: '分层文本块大小', persistDir: '持久化目录', splitTypes: { sentence: '按句子', sentence_window: '句子窗口', character: '按字符', hierarchical: '分层切分' } },
-    llm: { title: '配置大语言模型', select: '选择LLM接入端点类型', apiKey: 'API 密钥', apiBase: 'API Base URL', modelName: '模型名称', queryModels: '自动读取模型', modelsFound: '已找到 {count} 个模型。', modelsQueryFailed: '自动查询失败，请手动填写模型名称。', hfModel: 'HuggingFace 模型', authToken: '访问令牌', ollamaModel: 'Ollama 模型', timeout: '请求超时（秒）', temperature: '温度' },
+    llm: { title: '配置大语言模型', select: '选择LLM接入端点类型', apiKey: 'API 密钥', apiBase: 'API Base URL', modelName: '模型名称', queryModels: '从URL读取模型列表', modelsFound: '已找到 {count} 个模型。', modelsQueryFailed: '自动查询失败，请手动填写模型名称。', hfModel: 'HuggingFace 模型', authToken: '访问令牌', ollamaModel: 'Ollama 模型', timeout: '请求超时（秒）', temperature: '温度' },
     retrieval: {
       title: '配置检索', type: '检索器类型', retrieval: '检索', mode: '检索器模式', modeValue: '模式', topK: '返回结果数（Top K）', pre: '检索前处理', noneProcess: '无', rerank: '检索后重排', noneRerank: '无', orchestrator: '编排器', synthesizer: '回答合成器', qaTemplate: '问答模板', refineTemplate: '优化模板', rerankers: { long_context_reorder: 'Long context reorder (LlamaIndex)', colbertv2_rerank: 'colbert-ir/colbertv2.0', 'bge-reranker-base': 'BAAI/bge-reranker-base' }
     },

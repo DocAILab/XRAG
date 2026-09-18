@@ -586,7 +586,14 @@ def _startup() -> None:
 
 @app.get("/health")
 def health() -> Dict[str, Any]:
-    return {"status": "ok", "engine_status": "initialized"}
+    memory_mb = None
+    try:
+        import psutil
+
+        memory_mb = round(psutil.Process().memory_info().rss / (1024 * 1024), 1)
+    except (ImportError, OSError):
+        pass
+    return {"status": "ok", "engine_status": "initialized", "memory_mb": memory_mb}
 
 
 @app.get("/api/options")

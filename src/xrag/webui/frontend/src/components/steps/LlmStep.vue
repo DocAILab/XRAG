@@ -36,7 +36,7 @@ async function queryModels() {
             <option v-for="model in models" :key="model" :value="model">{{ model }}</option>
           </select>
           <input v-else v-model="store.apiName" type="text" placeholder="gpt-4o" />
-          <button class="button button-secondary" type="button" :disabled="loadingModels" @click="queryModels">
+          <button class="button button-primary" type="button" :disabled="loadingModels" @click="queryModels">
             {{ loadingModels ? t.common.loading : t.llm.queryModels }}
           </button>
         </div>
