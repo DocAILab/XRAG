@@ -38,7 +38,7 @@ class EvalModelAgent():
         logger.info("EvalModelName:")
         logger.info(api_name)
         logger.info("EvalModelAPI:")
-        logger.info(api_key)
+        logger.info(api_key[0:4] + "***" + api_key[-4:])
         if needs_llama and api_name == "":
             from llama_index.llms.huggingface import HuggingFaceLLM
 
