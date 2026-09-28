@@ -114,7 +114,13 @@ def main():
         else:
             logger.error(f"Unknown command: {args.command}")
             
-    except (Exception, KeyboardInterrupt) as e:
+    except KeyboardInterrupt:
+        logger.info("XRAG CLI interrupted by user")
+        raise SystemExit(130)
+    except Exception as e:
+        # The Rich error panel is presentation only.  Log the traceback first
+        # so redirected/background CLI sessions retain the real failure.
+        logger.exception("XRAG CLI command failed")
         from .utils.error_view import show_error_view
 
         show_error_view(e)
