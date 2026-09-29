@@ -10,8 +10,10 @@ import LlmStep from './components/steps/LlmStep.vue';
 import RetrievalStep from './components/steps/RetrievalStep.vue';
 import MetricsStep from './components/steps/MetricsStep.vue';
 import ResultsStep from './components/steps/ResultsStep.vue';
+import { quickMockResult } from './mockQuickResult';
 import logoUrl from '../../static/logo-mark.png';
 import closeUrl from '../../static/close.svg';
+import chevronUrl from '../../static/chevron-down.svg';
 
 const closeIconStyle = { '--close-icon': `url(${closeUrl})` };
 
@@ -31,8 +33,10 @@ const canGotoNext = computed(() => {
 
 let toastTimer = null;
 let healthTimer = null;
+let indexStream = null;
 function dismissToast() {
   store.toastError = '';
+  store.toastInfo = '';
   if (toastTimer) clearTimeout(toastTimer);
   toastTimer = null;
 }
@@ -42,6 +46,12 @@ function setError(message) {
   dismissToast();
   if (!message) return;
   store.toastError = message;
+  toastTimer = setTimeout(dismissToast, 8000);
+}
+function setInfoToast(message) {
+  dismissToast();
+  if (!message) return;
+  store.toastInfo = message;
   toastTimer = setTimeout(dismissToast, 8000);
 }
 function setNotice(message) { store.notice = message; store.error = ''; }
@@ -74,7 +84,12 @@ async function init() {
       apiName: llm.api_name || '', authToken: llm.auth_token || '',
       hfModel: llm.huggingface_model || 'llama', ollamaModel: llm.ollama_model || '',
       ollamaTimeout: llm.ollama_request_timeout || 60, temperature: llm.temperature || 0,
-      embeddings: embedding.embeddings || options.embeddings[0], splitType: chunk.split_type || 'sentence',
+      embeddingType: embedding.embedding_type || 'local',
+      embeddings: embedding.embeddings || options.embeddings[0],
+      embeddingApiKey: embedding.embedding_api_key || '',
+      embeddingApiBase: embedding.embedding_api_base || 'https://api.openai.com/v1',
+      embedBatchSize: embedding.embed_batch_size || 16,
+      splitType: chunk.split_type || 'sentence',
       chunkSize: chunk.chunk_size || 512, chunkOverlap: chunk.chunk_overlap ?? 20,
       windowSize: chunk.window_size || 3, chunkSizes: (chunk.chunk_sizes || [2048, 512, 128]).join(', '),
       persistDir: chunk.persist_dir || 'storage',
@@ -87,6 +102,14 @@ async function init() {
     const quickPreset = options.metric_presets?.find(preset => preset.id === 'quick');
     store.selectedMetrics = quickPreset ? [...quickPreset.metric_ids] : [];
     store.metricPreset = quickPreset ? 'quick' : '';
+    const configSource = config.config_source;
+    if (configSource?.path) {
+      const messageKey = configSource.initialized_from_default ? 'configInitialized' : 'configLoaded';
+      setInfoToast(format(t.value.messages[messageKey], { path: configSource.path }));
+    }
+    if (new URLSearchParams(window.location.search).get('mock') === 'quick') {
+      Object.assign(store, quickMockResult, { step: 6 });
+    }
   } catch (error) {
     setError(`${t.value.messages.initFailed} ${error.message}`);
   }
@@ -103,7 +126,79 @@ async function refreshHealth() {
 
 async function updateVector() {
   const chunkSizes = store.chunkSizes.split(',').map(value => Number(value.trim())).filter(Number.isFinite);
-  await api.updateVector({ embeddings: store.embeddings, split_type: store.splitType, chunk_size: store.chunkSize, chunk_overlap: store.chunkOverlap, window_size: store.windowSize, chunk_sizes: chunkSizes, persist_dir: store.persistDir });
+  await api.updateVector({ embedding_type: store.embeddingType, embeddings: store.embeddings, embedding_api_key: store.embeddingApiKey, embedding_api_base: store.embeddingApiBase, embed_batch_size: store.embedBatchSize, split_type: store.splitType, chunk_size: store.chunkSize, chunk_overlap: store.chunkOverlap, window_size: store.windowSize, chunk_sizes: chunkSizes, persist_dir: store.persistDir });
+}
+function closeIndexStream() { indexStream?.close(); indexStream = null; }
+function applyIndexProgress(data) {
+  Object.assign(store, {
+    indexStatus: data.status || store.indexStatus,
+    indexPhase: data.phase || store.indexPhase,
+    indexProgress: Number(data.progress || 0),
+    indexCompleted: Number(data.completed || 0),
+    indexTotal: Number(data.total || 0),
+  });
+}
+async function followIndexTask(result) {
+  store.indexTaskId = result.task_id;
+  applyIndexProgress(result.snapshot || { status: 'running', phase: 'pending', progress: 0 });
+  return new Promise((resolve, reject) => {
+    let settled = false;
+    const finish = (callback, value) => {
+      if (settled) return;
+      settled = true;
+      closeIndexStream();
+      callback(value);
+    };
+    const reconcileStatus = async () => {
+      try {
+        const status = await api.indexStatus(result.task_id);
+        applyIndexProgress(status);
+        if (status.status === 'done') {
+          finish(resolve, status);
+        } else if (status.status === 'error') {
+          finish(reject, new Error(status.error || t.value.messages.buildingIndex));
+        } else {
+          finish(reject, new Error(t.value.messages.indexConnectionLost));
+        }
+      } catch {
+        finish(reject, new Error(t.value.messages.indexConnectionLost));
+      }
+    };
+    closeIndexStream();
+    indexStream = new EventSource(`/api/index/${result.task_id}/stream`);
+    indexStream.onmessage = event => {
+      try {
+        const data = JSON.parse(event.data);
+        applyIndexProgress(data);
+        if (data.event === 'done' || data.status === 'done') {
+          finish(resolve, data);
+        } else if (data.event === 'error' || data.status === 'error') {
+          finish(reject, new Error(data.error || t.value.messages.buildingIndex));
+        }
+      } catch (error) { finish(reject, error); }
+    };
+    indexStream.onerror = reconcileStatus;
+  });
+}
+async function buildIndexWithProgress() {
+  return followIndexTask(await api.buildIndex());
+}
+async function loadExistingIndex() {
+  if (!store.existingIndexDir.trim()) return setError(t.value.vector.existingDir);
+  store.loading = true;
+  store.error = '';
+  store.notice = '';
+  Object.assign(store, { indexStatus: 'running', indexPhase: 'pending', indexProgress: 0, indexCompleted: 0, indexTotal: 0 });
+  try {
+    await updateVector();
+    await followIndexTask(await api.loadIndex({ persist_dir: store.existingIndexDir.trim() }));
+    setInfoToast(t.value.vector.phases.done);
+    gotoStep(3);
+  } catch (error) {
+    setError(error.message || String(error));
+  } finally {
+    store.loading = false;
+  }
 }
 async function updateLlm() {
   await api.updateLLM({ llm: store.llm, api_key: store.apiKey || undefined, api_base: store.apiBase || undefined, api_name: store.apiName || undefined, auth_token: store.authToken || undefined, huggingface_model: store.hfModel || undefined, ollama_model: store.ollamaModel || undefined, ollama_request_timeout: store.ollamaTimeout || undefined, temperature: store.temperature });
@@ -116,7 +211,14 @@ async function next() {
   store.error = '';
   try {
     if (store.step === 1 && !store.dataset) return setError(t.value.messages.chooseDataset);
-    if (store.step === 2) { await updateVector(); setNotice(t.value.messages.buildingIndex); await api.buildIndex(); setNotice(t.value.messages.indexBuilt); }
+    if (store.step === 2) {
+      store.loading = true;
+      Object.assign(store, { indexStatus: 'running', indexPhase: 'pending', indexProgress: 0, indexCompleted: 0, indexTotal: 0 });
+      try {
+        await updateVector(); setNotice(t.value.messages.buildingIndex);
+        await buildIndexWithProgress(); setNotice(t.value.messages.indexBuilt);
+      } finally { store.loading = false; }
+    }
     if (store.step === 3) { await updateLlm(); setNotice(t.value.messages.llmSaved); }
     if (store.step === 4) { await updateRetrieval(); setNotice(t.value.messages.buildingEngine); await api.buildQueryEngine(); setNotice(t.value.messages.engineReady); }
     if (store.step === 5) { if (!store.selectedMetrics.length) return setError(t.value.messages.chooseMetric); await startEvaluation(); return; }
@@ -151,7 +253,7 @@ async function generateFromFolder() {
 function closeEvalStream() { store.evalStream?.close(); store.evalStream = null; }
 function handleEvalEvent(data) {
   if (data.event === 'started') { store.evalTotal = data.total; store.evalCompleted = 0; }
-  if (data.event === 'progress') { Object.assign(store, { evalCompleted: data.completed, evalTotal: data.total, evalProgress: data.progress }); if (data.sample) store.evalSamples.push(data.sample); if (data.summary) store.evalSummary = data.summary; }
+  if (data.event === 'progress') { Object.assign(store, { evalCompleted: data.completed, evalTotal: data.total, evalProgress: data.progress }); if (data.sample && store.evalSamples.length < 5) store.evalSamples.push(data.sample); if (data.summary) store.evalSummary = data.summary; }
   if (data.event === 'sample_error') store.evalError = data.error || t.value.messages.sampleFailed;
   if (data.event === 'done') { store.evalStatus = 'done'; store.evalProgress = 1; if (data.summary) store.evalSummary = data.summary; closeEvalStream(); }
   if (data.event === 'error') { store.evalStatus = 'error'; store.evalError = data.error; closeEvalStream(); }
@@ -164,7 +266,7 @@ function subscribeToEvaluation(taskId) {
   stream.onmessage = event => { try { handleEvalEvent(JSON.parse(event.data)); } catch { /* Ignore malformed events. */ } };
 }
 async function startEvaluation() {
-  Object.assign(store, { evalStatus: 'running', evalProgress: 0, evalCompleted: 0, evalTotal: 0, evalSamples: [], evalSummary: null, evalError: '' });
+  Object.assign(store, { evalStatus: 'running', evalProgress: 0, evalCompleted: 0, evalTotal: 0, evalSamples: [], evalSummary: null, evalMeta: null, evalError: '' });
   try { const result = await api.startEvaluation({ metrics: store.selectedMetrics, num_samples: store.numSamples, experiment_1: store.experiment1 }); store.experimentId = result.experiment_id; store.evalTaskId = result.task_id; subscribeToEvaluation(result.task_id); gotoStep(6); }
   catch (error) { store.evalStatus = 'error'; store.evalError = error.message; setError(error.message); }
 }
@@ -177,6 +279,7 @@ onMounted(() => {
 });
 onBeforeUnmount(() => {
   closeEvalStream();
+  closeIndexStream();
   dismissToast();
   if (healthTimer) clearInterval(healthTimer);
 });
@@ -185,9 +288,9 @@ onBeforeUnmount(() => {
 <template>
   <div class="app-shell">
     <Transition name="toast">
-      <div v-if="store.toastError" class="toast toast-error" role="alert" aria-live="assertive">
-        <span class="toast-icon" aria-hidden="true">!</span>
-        <span class="toast-message">{{ store.toastError }}</span>
+      <div v-if="store.toastError || store.toastInfo" class="toast" :class="store.toastError ? 'toast-error' : 'toast-info'" :role="store.toastError ? 'alert' : 'status'" :aria-live="store.toastError ? 'assertive' : 'polite'">
+        <span class="toast-icon" aria-hidden="true">{{ store.toastError ? '!' : 'i' }}</span>
+        <span class="toast-message">{{ store.toastError || store.toastInfo }}</span>
         <button class="toast-close" type="button" :aria-label="t.common.close" @click="dismissToast"><span class="icon-close" :style="closeIconStyle" aria-hidden="true"></span></button>
       </div>
     </Transition>
@@ -199,6 +302,13 @@ onBeforeUnmount(() => {
           <a href="#features">{{ t.nav.features }}</a>
           <a href="#demo">{{ t.nav.demo }}</a>
           -->
+          <details class="paper-links">
+            <summary><span>{{ t.nav.paper }}</span><img :src="chevronUrl" alt="" aria-hidden="true" /></summary>
+            <div class="paper-links-menu">
+              <a href="https://doi.org/10.1109/ICDE65706.2026.00201" target="_blank" rel="noopener">{{ t.nav.paperDoi }}</a>
+              <a href="https://arxiv.org/pdf/2412.15529" target="_blank" rel="noopener" lang="en">{{ t.nav.paperArxiv }}</a>
+            </div>
+          </details>
           <a href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener" lang="en">{{ t.nav.github }}</a>
           <div class="lang-toggle">
             <button :class="{ active: lang === 'zh' }" @click="lang = 'zh'">中</button>
@@ -223,7 +333,7 @@ onBeforeUnmount(() => {
       </div>
       <component :is="currentStep" :store="store" :options="store.options" :t="t" @load-preset="loadPreset"
         @upload-json="uploadJson" @generate-folder="generateFromFolder" @restart="gotoStep(1)"
-        @cancel="cancelEvaluation" @error="setError" @notice="setNotice" />
+        @cancel="cancelEvaluation" @load-index="loadExistingIndex" @error="setError" @notice="setNotice" />
       <div v-if="store.step <= 5" class="nav-buttons"><button class="button button-secondary"
           :disabled="store.step === 1 || store.loading" @click="gotoStep(store.step - 1)">{{ t.common.previous
           }}</button><button class="button button-primary" :disabled="!canGotoNext || store.loading" @click="next"><span

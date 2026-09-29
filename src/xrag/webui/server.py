@@ -40,6 +40,7 @@ STATIC_DIR = Path(__file__).parent / "static"
 # Static option catalogues (also used by the frontend if it needs them).
 # ---------------------------------------------------------------------------
 LLM_OPTIONS = ["openai", "huggingface", "ollama"]
+EMBEDDING_BACKEND_OPTIONS = ["local", "openai"]
 HF_MODEL_OPTIONS = [
     "llama",
     "chatglm",
@@ -155,16 +156,14 @@ CONG_METRICS = [
 ]
 COGL_METRICS = [
     "UpTrain_Retrieval_Context_Relevance", "UpTrain_Retrieval_Context_Conciseness",
-    "Llama_retrieval_Relevancy", "Llama_response_correctness",
-    "Llama_response_semanticSimilarity", "Llama_response_answerRelevancy",
     "DeepEval_response_answerRelevancy", "UpTrain_Response_Completeness",
     "UpTrain_Response_Conciseness", "UpTrain_Response_Relevance",
     "UpTrain_Response_Valid", "UpTrain_Response_Response_Matching",
     "DeepEval_retrieval_contextualPrecision", "DeepEval_retrieval_contextualRecall",
     "DeepEval_retrieval_contextualRelevancy", "DeepEval_retrieval_faithfulness",
-    "DeepEval_response_hallucination", "Llama_retrieval_Faithfulness",
+    "DeepEval_response_hallucination",
     "UpTrain_Response_Consistency", "UpTrain_Retrieval_Context_Utilization",
-    "UpTrain_Retrieval_Factual_Accuracy", "UpTrain_Retrieval_Code_Hallucination",
+    "UpTrain_Retrieval_Factual_Accuracy",
 ]
 SEPER_METRICS = ["SePer_with_context", "SePer_without_context", "SePer_delta"]
 GOLDEN_CONTEXT_METRICS = ["Llama_retrieval_FaithfulnessG", "Llama_retrieval_RelevancyG"]
@@ -202,33 +201,27 @@ METRIC_GROUPS: List[Dict[str, Any]] = [
     {
         "id": "cogl", "code": "CogL", "label": "Semantic Evaluation",
         "sections": [
-            {"id": "context_quality", "metrics": [
-                {"id": "UpTrain_Retrieval_Context_Relevance", "label": "Context Relevance", "provider": "UpTrain"},
-                {"id": "UpTrain_Retrieval_Context_Conciseness", "label": "Context Conciseness", "provider": "UpTrain"},
-                {"id": "Llama_retrieval_Relevancy", "label": "Retrieval Relevancy", "provider": "LlamaIndex"},
+            {"id": "cogl_retrieval", "metrics": [
+                {"id": "UpTrain_Retrieval_Context_Relevance", "label": "Up-CRel", "full_name": "Uptrain Context Relevance", "provider": "UpTrain", "inputs": "Query, Retrieval Context"},
+                {"id": "UpTrain_Retrieval_Context_Conciseness", "label": "Up-CCns", "full_name": "Uptrain Context Conciseness", "provider": "UpTrain", "inputs": "Query, Golden Context, Retrieval Context"},
             ]},
-            {"id": "answer_quality", "metrics": [
-                {"id": "Llama_response_correctness", "label": "Answer Correctness", "provider": "LlamaIndex"},
-                {"id": "Llama_response_semanticSimilarity", "label": "Semantic Similarity", "provider": "LlamaIndex"},
-                {"id": "Llama_response_answerRelevancy", "label": "Answer Relevancy", "provider": "LlamaIndex"},
-                {"id": "DeepEval_response_answerRelevancy", "label": "Answer Relevancy", "provider": "DeepEval"},
-                {"id": "UpTrain_Response_Completeness", "label": "Response Completeness", "provider": "UpTrain"},
-                {"id": "UpTrain_Response_Conciseness", "label": "Response Conciseness", "provider": "UpTrain"},
-                {"id": "UpTrain_Response_Relevance", "label": "Response Relevance", "provider": "UpTrain"},
-                {"id": "UpTrain_Response_Valid", "label": "Response Validity", "provider": "UpTrain"},
-                {"id": "UpTrain_Response_Response_Matching", "label": "Response Matching", "provider": "UpTrain"},
+            {"id": "cogl_generation", "metrics": [
+                {"id": "DeepEval_response_answerRelevancy", "label": "Dp-ARel", "full_name": "DeepEval Response Relevancy", "provider": "DeepEval", "inputs": "Query, Actual Response"},
+                {"id": "UpTrain_Response_Completeness", "label": "Up-RCmp", "full_name": "Uptrain Response Completeness", "provider": "UpTrain", "inputs": "Query, Actual Response"},
+                {"id": "UpTrain_Response_Conciseness", "label": "Up-RCnc", "full_name": "Uptrain Response Conciseness", "provider": "UpTrain", "inputs": "Query, Actual Response"},
+                {"id": "UpTrain_Response_Relevance", "label": "Up-RRel", "full_name": "Uptrain Response Relevance", "provider": "UpTrain", "inputs": "Query, Actual Response"},
+                {"id": "UpTrain_Response_Valid", "label": "Up-RVal", "full_name": "Uptrain Response Validity", "provider": "UpTrain", "inputs": "Query, Actual Response"},
+                {"id": "UpTrain_Response_Response_Matching", "label": "Up-RMch", "full_name": "Uptrain Response Matching", "provider": "UpTrain", "inputs": "Query, Actual Response, Expected Answer"},
             ]},
-            {"id": "grounding", "metrics": [
-                {"id": "DeepEval_retrieval_contextualPrecision", "label": "Contextual Precision", "provider": "DeepEval"},
-                {"id": "DeepEval_retrieval_contextualRecall", "label": "Contextual Recall", "provider": "DeepEval"},
-                {"id": "DeepEval_retrieval_contextualRelevancy", "label": "Contextual Relevancy", "provider": "DeepEval"},
-                {"id": "DeepEval_retrieval_faithfulness", "label": "Faithfulness", "provider": "DeepEval"},
-                {"id": "DeepEval_response_hallucination", "label": "Hallucination", "provider": "DeepEval", "direction": "lower"},
-                {"id": "Llama_retrieval_Faithfulness", "label": "Faithfulness", "provider": "LlamaIndex"},
-                {"id": "UpTrain_Response_Consistency", "label": "Response Consistency", "provider": "UpTrain"},
-                {"id": "UpTrain_Retrieval_Context_Utilization", "label": "Context Utilization", "provider": "UpTrain"},
-                {"id": "UpTrain_Retrieval_Factual_Accuracy", "label": "Factual Accuracy", "provider": "UpTrain"},
-                {"id": "UpTrain_Retrieval_Code_Hallucination", "label": "Code Hallucination", "provider": "UpTrain", "direction": "lower"},
+            {"id": "cogl_retrieval_response", "metrics": [
+                {"id": "DeepEval_retrieval_contextualPrecision", "label": "Dp-CPre", "full_name": "DeepEval Context Precision", "provider": "DeepEval", "inputs": "Query, Actual Response, Expected Answer, Retrieval Context"},
+                {"id": "DeepEval_retrieval_contextualRecall", "label": "Dp-CRec", "full_name": "DeepEval Context Recall", "provider": "DeepEval", "inputs": "Query, Actual Response, Expected Answer, Retrieval Context"},
+                {"id": "DeepEval_retrieval_contextualRelevancy", "label": "Dp-CRel", "full_name": "DeepEval Context Relevance", "provider": "DeepEval", "inputs": "Query, Actual Response, Retrieval Context"},
+                {"id": "UpTrain_Response_Consistency", "label": "Up-RCns", "full_name": "Uptrain Context Consistency", "provider": "UpTrain", "inputs": "Query, Actual Response, Retrieval Context"},
+                {"id": "UpTrain_Retrieval_Context_Utilization", "label": "Up-CUti", "full_name": "Uptrain Context Utilization", "provider": "UpTrain", "inputs": "Query, Actual Response, Retrieval Context"},
+                {"id": "UpTrain_Retrieval_Factual_Accuracy", "label": "Up-FAcc", "full_name": "Uptrain Factual Accuracy", "provider": "UpTrain", "inputs": "Query, Actual Response, Retrieval Context"},
+                {"id": "DeepEval_retrieval_faithfulness", "label": "Dp-Fath", "full_name": "DeepEval Context Faithfulness", "provider": "DeepEval", "inputs": "Query, Actual Response, Retrieval Context"},
+                {"id": "DeepEval_response_hallucination", "label": "Dp-Hall", "full_name": "DeepEval Context Hallucination", "provider": "DeepEval", "inputs": "Query, Actual Response, Golden Context"},
             ]},
         ],
     },
@@ -300,6 +293,7 @@ class AppState:
     orchestrator_engine: Any = None
     orchestrator: str = "default"
     last_evaluation: Optional[Dict[str, Any]] = None
+    index_tasks: Dict[str, "IndexTask"] = field(default_factory=dict)
     tasks: Dict[str, "EvalTask"] = field(default_factory=dict)
     experiments: Dict[str, Dict[str, Any]] = field(default_factory=dict)
 
@@ -321,6 +315,20 @@ class EvalTask:
     queue: "queue.Queue[Dict[str, Any]]" = field(default_factory=queue.Queue)
     thread: Optional[threading.Thread] = None
     cancel_flag: threading.Event = field(default_factory=threading.Event)
+
+
+@dataclass
+class IndexTask:
+    task_id: str
+    status: str = "pending"
+    phase: str = "pending"
+    progress: float = 0.0
+    completed: int = 0
+    total: int = 0
+    error: Optional[str] = None
+    persist_dir: Optional[str] = None
+    queue: "queue.Queue[Dict[str, Any]]" = field(default_factory=queue.Queue)
+    thread: Optional[threading.Thread] = None
 
 
 STATE = AppState()
@@ -380,13 +388,21 @@ class LLMModelsRequest(BaseModel):
 
 
 class VectorDBUpdate(BaseModel):
+    embedding_type: Optional[str] = None
     embeddings: Optional[str] = None
+    embedding_api_key: Optional[str] = None
+    embedding_api_base: Optional[str] = None
+    embed_batch_size: Optional[int] = Field(default=None, ge=1)
     split_type: Optional[str] = None
     chunk_size: Optional[int] = None
     chunk_overlap: Optional[int] = None
     persist_dir: Optional[str] = None
     window_size: Optional[int] = Field(default=None, ge=1)
     chunk_sizes: Optional[List[int]] = None
+
+
+class IndexLoadRequest(BaseModel):
+    persist_dir: str = Field(min_length=1)
 
 
 class RetrievalUpdate(BaseModel):
@@ -422,6 +438,10 @@ class ConfigSummary(BaseModel):
 def _cfg_to_dict(cfg: Config) -> Dict[str, Any]:
     """Convert Config singleton into a plain dict for the frontend."""
     return {
+        "config_source": {
+            "path": getattr(cfg, "config_file_path", str(Path("config.toml").resolve())),
+            "initialized_from_default": bool(getattr(cfg, "initialized_from_default", False)),
+        },
         "llm": {
             "llm": getattr(cfg, "llm", None),
             "api_key": getattr(cfg, "api_key", None),
@@ -436,6 +456,8 @@ def _cfg_to_dict(cfg: Config) -> Dict[str, Any]:
         "embedding": {
             "embedding_type": getattr(cfg, "embedding_type", None),
             "embeddings": getattr(cfg, "embeddings", None),
+            "embedding_api_key": getattr(cfg, "embedding_api_key", None),
+            "embedding_api_base": getattr(cfg, "embedding_api_base", None),
             "embed_batch_size": getattr(cfg, "embed_batch_size", None),
         },
         "chunk": {
@@ -481,7 +503,11 @@ def _apply_llm_update(cfg: Config, body: LLMUpdate) -> None:
 
 
 def _apply_vector_update(cfg: Config, body: VectorDBUpdate) -> None:
-    for field in ("embeddings", "split_type", "chunk_size", "chunk_overlap", "persist_dir", "window_size", "chunk_sizes"):
+    if body.embedding_type is not None and body.embedding_type not in EMBEDDING_BACKEND_OPTIONS:
+        raise HTTPException(400, detail="Unsupported embedding backend")
+    for field in ("embedding_type", "embeddings", "embedding_api_key", "embedding_api_base",
+                  "embed_batch_size", "split_type", "chunk_size", "chunk_overlap",
+                  "persist_dir", "window_size", "chunk_sizes"):
         value = getattr(body, field)
         if value is not None:
             setattr(cfg, field, value)
@@ -602,6 +628,7 @@ def get_options() -> Dict[str, Any]:
     return {
         "llms": LLM_OPTIONS,
         "hf_models": HF_MODEL_OPTIONS,
+        "embedding_backends": EMBEDDING_BACKEND_OPTIONS,
         "embeddings": EMBEDDING_OPTIONS,
         "split_types": SPLIT_TYPE_OPTIONS,
         "preset_datasets": [
@@ -632,7 +659,9 @@ def get_capabilities() -> Dict[str, Any]:
         "version": 1,
         "options": get_options(),
         "fields": {
-            "index": ["embeddings", "split_type", "chunk_size", "chunk_overlap", "window_size", "chunk_sizes", "persist_dir"],
+            "index": ["embedding_type", "embeddings", "embedding_api_key", "embedding_api_base",
+                      "embed_batch_size", "split_type", "chunk_size", "chunk_overlap",
+                      "window_size", "chunk_sizes", "persist_dir"],
             "retrieval": ["retriever", "similarity_top_k", "query_transform", "postprocess_rerank", "response_synthesizer"],
             "evaluation": ["metrics", "num_samples", "experiment_1"],
         },
@@ -812,22 +841,162 @@ def current_dataset() -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 # Index / query engine endpoints.
 # ---------------------------------------------------------------------------
-@app.post("/api/index/build")
+def _snapshot_index(task: IndexTask) -> Dict[str, Any]:
+    return {
+        "task_id": task.task_id,
+        "status": task.status,
+        "phase": task.phase,
+        "progress": task.progress,
+        "completed": task.completed,
+        "total": task.total,
+        "persist_dir": task.persist_dir,
+        "error": task.error,
+    }
+
+
+def _run_index_build(task: IndexTask, documents: List[Any]) -> None:
+    cfg = Config()
+    task.status = "running"
+
+    def report(payload: Dict[str, Any]) -> None:
+        task.phase = str(payload.get("phase", task.phase))
+        task.progress = float(payload.get("progress", task.progress))
+        task.completed = int(payload.get("completed", task.completed))
+        task.total = int(payload.get("total", task.total))
+        task.queue.put({"event": "progress", **_snapshot_index(task)})
+
+    try:
+        from xrag.launcher import build_index as _build_index, get_index_persist_dir
+        index, hierarchical_storage_context = _build_index(
+            documents, progress_callback=report,
+        )
+        STATE.index = index
+        STATE.hierarchical_storage_context = hierarchical_storage_context
+        _reset_engines()
+        task.persist_dir = get_index_persist_dir(cfg)
+        task.status = "done"
+        task.phase = "done"
+        task.progress = 1.0
+        task.queue.put({"event": "done", **_snapshot_index(task)})
+    except Exception as exc:
+        logger.exception("build_index failed")
+        task.status = "error"
+        task.phase = "error"
+        task.error = str(exc)
+        task.queue.put({"event": "error", **_snapshot_index(task)})
+
+
+def _run_index_load(task: IndexTask, persist_dir: str) -> None:
+    task.status = "running"
+
+    def report(payload: Dict[str, Any]) -> None:
+        task.phase = str(payload.get("phase", task.phase))
+        task.progress = float(payload.get("progress", task.progress))
+        task.completed = int(payload.get("completed", task.completed))
+        task.total = int(payload.get("total", task.total))
+        task.queue.put({"event": "progress", **_snapshot_index(task)})
+
+    try:
+        from xrag.launcher import load_index as _load_index
+        index, hierarchical_storage_context = _load_index(
+            persist_dir, progress_callback=report,
+        )
+        STATE.index = index
+        STATE.hierarchical_storage_context = hierarchical_storage_context
+        _reset_engines()
+        task.persist_dir = persist_dir
+        task.status = "done"
+        task.phase = "done"
+        task.progress = 1.0
+        task.completed = 1
+        task.total = 1
+        task.queue.put({"event": "done", **_snapshot_index(task)})
+    except Exception as exc:
+        logger.exception("load_index failed")
+        task.status = "error"
+        task.phase = "error"
+        task.error = str(exc)
+        task.queue.put({"event": "error", **_snapshot_index(task)})
+
+
+@app.post("/api/index/build", status_code=202)
 def build_index_endpoint() -> Dict[str, Any]:
     if STATE.qa_dataset is None:
         raise HTTPException(400, "No dataset loaded. Pick or upload a dataset first.")
-    cfg = Config()
-    from xrag.launcher import build_index as _build_index
-    try:
-        index, hierarchical_storage_context = _build_index(STATE.qa_dataset["documents"])
-    except Exception as exc:
-        logger.exception("build_index failed")
-        raise HTTPException(500, f"build_index failed: {exc}") from exc
-    STATE.index = index
-    STATE.hierarchical_storage_context = hierarchical_storage_context
-    _reset_engines()
-    persist = cfg.persist_dir + "-" + cfg.dataset + "-" + cfg.embeddings + "-" + cfg.split_type + "-" + str(cfg.chunk_size)
-    return {"ok": True, "persist_dir": persist}
+    running = next((task for task in STATE.index_tasks.values() if task.status in ("pending", "running")), None)
+    if running:
+        return {"ok": True, "task_id": running.task_id, "snapshot": _snapshot_index(running)}
+    task = IndexTask(task_id=uuid.uuid4().hex)
+    task.status = "running"
+    STATE.index_tasks[task.task_id] = task
+    thread = threading.Thread(
+        target=_run_index_build,
+        args=(task, STATE.qa_dataset["documents"]),
+        daemon=True,
+        name=f"xrag-index-{task.task_id}",
+    )
+    task.thread = thread
+    thread.start()
+    return {"ok": True, "task_id": task.task_id, "snapshot": _snapshot_index(task)}
+
+
+@app.post("/api/index/load", status_code=202)
+def load_index_endpoint(body: IndexLoadRequest) -> Dict[str, Any]:
+    persist_dir = str(Path(body.persist_dir).expanduser().resolve())
+    if not Path(persist_dir).is_dir():
+        raise HTTPException(
+            404,
+            detail={"code": "index_directory_not_found", "persist_dir": persist_dir},
+        )
+    running = next(
+        (task for task in STATE.index_tasks.values() if task.status in ("pending", "running")),
+        None,
+    )
+    if running:
+        return {"ok": True, "task_id": running.task_id, "snapshot": _snapshot_index(running)}
+    task = IndexTask(task_id=uuid.uuid4().hex, status="running", persist_dir=persist_dir)
+    STATE.index_tasks[task.task_id] = task
+    thread = threading.Thread(
+        target=_run_index_load,
+        args=(task, persist_dir),
+        daemon=True,
+        name=f"xrag-index-load-{task.task_id}",
+    )
+    task.thread = thread
+    thread.start()
+    return {"ok": True, "task_id": task.task_id, "snapshot": _snapshot_index(task)}
+
+
+@app.get("/api/index/{task_id}")
+def get_index_build(task_id: str) -> Dict[str, Any]:
+    task = STATE.index_tasks.get(task_id)
+    if task is None:
+        raise HTTPException(404, "Unknown index task id")
+    return _snapshot_index(task)
+
+
+@app.get("/api/index/{task_id}/stream")
+def stream_index_build(task_id: str):
+    from fastapi.responses import StreamingResponse
+    task = STATE.index_tasks.get(task_id)
+    if task is None:
+        raise HTTPException(404, "Unknown index task id")
+
+    def event_stream():
+        yield f"data: {json.dumps({'event': 'snapshot', **_snapshot_index(task)}, ensure_ascii=False)}\n\n"
+        while True:
+            try:
+                event = task.queue.get(timeout=15)
+            except queue.Empty:
+                yield "event: ping\ndata: {}\n\n"
+                if task.status in ("done", "error"):
+                    return
+                continue
+            yield f"data: {json.dumps(event, ensure_ascii=False)}\n\n"
+            if event.get("event") in ("done", "error"):
+                return
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
 
 
 @app.post("/api/query-engine/build")
@@ -837,18 +1006,19 @@ def build_query_engine_endpoint() -> Dict[str, Any]:
     cfg = Config()
     orchestrator = _selected_orchestrator(cfg)
     try:
-        from xrag.retrievers.retriever import get_retriver
-        retriever = get_retriver(
-            cfg.retriever, STATE.index,
-            hierarchical_storage_context=STATE.hierarchical_storage_context, cfg=cfg,
-        )
         if orchestrator == "default":
             from xrag.launcher import build_query_engine as _build_query_engine
             STATE.query_engine = _build_query_engine(
                 STATE.index, STATE.hierarchical_storage_context
             )
             STATE.orchestrator_engine = STATE.query_engine
-        elif orchestrator == "open":
+        else:
+            from xrag.retrievers.retriever import get_retriver
+            retriever = get_retriver(
+                cfg.retriever, STATE.index,
+                hierarchical_storage_context=STATE.hierarchical_storage_context, cfg=cfg,
+            )
+        if orchestrator == "open":
             from xrag.open_rag import OpenRAGPipeline
             STATE.orchestrator_engine = OpenRAGPipeline(cfg, external_retriever=retriever)
         elif orchestrator == "self":
@@ -1033,11 +1203,12 @@ def _run_evaluation_inner(task: EvalTask, metrics: List[str], num_samples: int) 
                 "actual_response": actual,
                 "retrieval_context": retrieval_context,
                 "metrics": {
-                    k: results.metrics_results[k]["score"] / results.metrics_results[k]["count"]
-                    if results.metrics_results[k]["count"] > 0 else 0.0
-                    for k in results.metrics_results
+                    k: eval_result.metrics_results[k]["score"]
+                    if eval_result.metrics_results[k]["count"] > 0 else None
+                    for k in eval_result.metrics_results
                     if k in metrics and not k.endswith("_rev")
                 },
+                "metric_errors": eval_result.errors,
             }
             task.samples.append(sample)
             task.completed = idx + 1
@@ -1074,8 +1245,9 @@ def _summary_from_results(results, selected_metrics: Optional[List[str]] = None)
         "metrics": {},
     }
     for key, value in results.results.items():
-        if key in selected:
-            summary["global"][key] = value / max(1, results.results["n"])
+        if key in selected and key != "n":
+            count = getattr(results, "global_counts", {}).get(key, results.results["n"])
+            summary["global"][key] = value / count if count else None
     for key, value in results.metrics_results.items():
         if key in selected and not key.endswith("_rev"):
             if value["count"] == 0:
@@ -1085,6 +1257,16 @@ def _summary_from_results(results, selected_metrics: Optional[List[str]] = None)
                     "score": value["score"] / value["count"],
                     "valid_count": value["count"],
                 }
+    errors = getattr(results, "errors", {})
+    if errors:
+        summary["metric_errors"] = {
+            key: {"count": len(messages), "last_error": messages[-1]}
+            for key, messages in errors.items() if key in selected and messages
+        }
+    if hasattr(results, "global_counts"):
+        summary["global_valid_counts"] = {
+            key: count for key, count in results.global_counts.items() if key in selected
+        }
     return summary
 
 

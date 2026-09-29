@@ -13,6 +13,9 @@ function loadSelectedPreset(store) { if (store.presetDataset && !store.presetLoa
 <template>
   <section class="card">
     <h2>{{ t.dataset.title }}</h2>
+    <div v-if="store.dataset" class="alert alert-success step-ready-summary">
+      {{ t.dataset.loaded }} <strong>{{ store.dataset.display }}</strong> — {{ store.dataset.num_documents }} {{ t.dataset.documents }}, {{ store.dataset.num_test_questions }} {{ t.dataset.questions }} ({{ t.dataset.source }}: {{ t.dataset.sources[store.dataset.source] || store.dataset.source }}).
+    </div>
     <h3>{{ t.dataset.preset }}</h3>
     <div class="preset-cards">
       <button v-for="d in store.options?.preset_datasets || []" :key="d.id"
@@ -71,9 +74,6 @@ function loadSelectedPreset(store) { if (store.presetDataset && !store.presetLoa
         <button class="button button-ghost upload-button" type="button" @click="$emit('upload-json')">{{ t.dataset.chooseJson }}</button>
         <ul><li v-for="item in t.dataset.jsonFeatures" :key="item">{{ item }}</li></ul>
       </div>
-    </div>
-    <div v-if="store.dataset" class="alert alert-success dataset-summary">
-      {{ t.dataset.loaded }} <strong>{{ store.dataset.display }}</strong> — {{ store.dataset.num_documents }} {{ t.dataset.documents }}, {{ store.dataset.num_test_questions }} {{ t.dataset.questions }} ({{ t.dataset.source }}: {{ t.dataset.sources[store.dataset.source] || store.dataset.source }}).
     </div>
   </section>
 </template>

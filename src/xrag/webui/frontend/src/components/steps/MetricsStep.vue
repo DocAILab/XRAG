@@ -10,6 +10,25 @@ function sectionIds(section) { return [...new Set(section.metrics.filter(metric 
 function groupIds(group) { return [...new Set(group.sections.flatMap(sectionIds))]; }
 function isSelected(metric) { return metricIds(metric).every(id => props.store.selectedMetrics.includes(id)); }
 
+function metricHelp(metric) {
+  const details = [metric.full_name || metric.label];
+  if (metric.provider) details.push(metric.provider);
+  if (metric.inputs) details.push(`Inputs: ${metric.inputs}`);
+  if (metric.cost === 'high') details.push(props.t.metrics.highCost);
+  if (metric.experimental) details.push(props.t.metrics.experimental);
+  return details.join('\n');
+}
+
+function hasMetricHelp(metric) {
+  return Boolean(
+    metric.full_name
+    || metric.provider
+    || metric.inputs
+    || metric.cost === 'high'
+    || metric.experimental,
+  );
+}
+
 function toggleIds(ids, checked) {
   const selected = new Set(props.store.selectedMetrics);
   ids.forEach(id => checked ? selected.add(id) : selected.delete(id));
@@ -58,10 +77,8 @@ function applyPreset(preset) {
             :class="{ disabled: metric.available === false }">
             <input type="checkbox" :checked="isSelected(metric)" :disabled="metric.available === false"
               @change="toggleIds(metricIds(metric), $event.target.checked)" />
-            <span class="metric-name">{{ metric.label }}</span>
-            <span v-if="metric.provider" class="metric-flair">{{ metric.provider }}</span>
-            <span v-if="metric.cost === 'high'" class="metric-flair">{{ t.metrics.highCost }}</span>
-            <span v-if="metric.experimental" class="metric-flair">{{ t.metrics.experimental }}</span>
+            <abbr v-if="hasMetricHelp(metric)" class="metric-name metric-help" :title="metricHelp(metric)">{{ metric.label }}</abbr>
+            <span v-else class="metric-name">{{ metric.label }}</span>
           </label>
         </div>
         <div v-if="section.id === 'retrieval_utility'" class="metric-note">

@@ -2,12 +2,16 @@
 import { reactive } from 'vue';
 
 export const store = reactive({
-  step: 1, options: null, capabilities: null, config: null, error: '', notice: '', toastError: '', loading: false, ramUsageMb: null,
+  step: 1, options: null, capabilities: null, config: null, error: '', notice: '', toastError: '', toastInfo: '', loading: false, ramUsageMb: null,
   dataset: null, presetDataset: '', presetLoading: false, uploadFile: null,
   folderPath: './data/documents', folderNum: 3, folderSentenceLen: -1,
   folderOutput: './data/generated_qa.json',
-  embeddings: '', splitType: '', chunkSize: 512, chunkOverlap: 20, windowSize: 3,
+  embeddingType: 'local', embeddings: '', embeddingApiKey: '', embeddingApiBase: '', embedBatchSize: 16,
+  splitType: '', chunkSize: 512, chunkOverlap: 20, windowSize: 3,
   chunkSizes: '2048, 512, 128', persistDir: 'storage',
+  existingIndexDir: '',
+  indexTaskId: null, indexStatus: 'idle', indexPhase: '', indexProgress: 0,
+  indexCompleted: 0, indexTotal: 0,
   llm: '', apiKey: '', apiBase: '', apiName: '', authToken: '', hfModel: '',
   ollamaModel: '', ollamaTimeout: 60, temperature: 0,
   orchestrator: 'default', retriever: 'BM25', retrieverMode: 0,
@@ -15,5 +19,5 @@ export const store = reactive({
   similarityTopK: 3, textQaTemplate: '', refineTemplate: '',
   selectedMetrics: [], metricPreset: '', numSamples: 10, experiment1: false,
   experimentId: null, evalTaskId: null, evalStatus: 'idle', evalProgress: 0, evalCompleted: 0,
-  evalTotal: 0, evalSamples: [], evalSummary: null, evalError: '', evalStream: null,
+  evalTotal: 0, evalSamples: [], evalSummary: null, evalMeta: null, evalError: '', evalStream: null,
 });

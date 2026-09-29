@@ -1,11 +1,15 @@
 <script setup>
 import { ref } from 'vue';
 import { api } from '../../api';
+import eyeUrl from '../../../../static/eye.svg';
+import eyeSlashUrl from '../../../../static/eye-slash.svg';
 
 const props = defineProps({ store: Object, t: Object });
 const emit = defineEmits(['error', 'notice']);
 const models = ref([]);
 const loadingModels = ref(false);
+const showApiKey = ref(false);
+const showAuthToken = ref(false);
 
 async function queryModels() {
   loadingModels.value = true;
@@ -27,7 +31,15 @@ async function queryModels() {
     <h2>{{ t.llm.title }}</h2>
     <div class="form-row"><label class="field-label">{{ t.llm.select }}</label><select v-model="store.llm"><option v-for="opt in store.options?.llms || []" :key="opt" :value="opt">{{ opt === 'openai' ? 'OpenAI Models' : opt === 'huggingface' ? 'HuggingFace Models' : 'Ollama Models' }}</option></select></div>
     <template v-if="store.llm === 'openai'">
-      <div class="form-row"><label class="field-label">{{ t.llm.apiKey }}</label><input v-model="store.apiKey" type="password" placeholder="sk-..." /></div>
+      <div class="form-row">
+        <label class="field-label" for="llm-api-key">{{ t.llm.apiKey }}</label>
+        <div class="secret-input">
+          <input id="llm-api-key" v-model="store.apiKey" :type="showApiKey ? 'text' : 'password'" autocomplete="off" placeholder="sk-..." style="font-family: monospace;"/>
+          <button class="secret-toggle" type="button" :aria-label="showApiKey ? t.llm.hideApiKey : t.llm.showApiKey" :title="showApiKey ? t.llm.hideApiKey : t.llm.showApiKey" :aria-pressed="showApiKey" @click="showApiKey = !showApiKey">
+            <img :src="showApiKey ? eyeSlashUrl : eyeUrl" alt="" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
       <div class="form-row"><label class="field-label">{{ t.llm.apiBase }}</label><input v-model="store.apiBase" type="text" placeholder="https://api.openai.com/v1" /></div>
       <div class="form-row llm-model-row">
         <label class="field-label">{{ t.llm.modelName }}</label>
@@ -44,7 +56,15 @@ async function queryModels() {
     </template>
     <template v-else-if="store.llm === 'huggingface'">
       <div class="form-row"><label class="field-label">{{ t.llm.hfModel }}</label><select v-model="store.hfModel"><option v-for="opt in store.options?.hf_models || []" :key="opt" :value="opt">{{ opt }}</option></select></div>
-      <div class="form-row"><label class="field-label">{{ t.llm.authToken }}</label><input v-model="store.authToken" type="password" placeholder="hf_..." /></div>
+      <div class="form-row">
+        <label class="field-label" for="llm-auth-token">{{ t.llm.authToken }}</label>
+        <div class="secret-input">
+          <input id="llm-auth-token" v-model="store.authToken" :type="showAuthToken ? 'text' : 'password'" autocomplete="off" placeholder="hf_..." />
+          <button class="secret-toggle" type="button" :aria-label="showAuthToken ? t.llm.hideAuthToken : t.llm.showAuthToken" :title="showAuthToken ? t.llm.hideAuthToken : t.llm.showAuthToken" :aria-pressed="showAuthToken" @click="showAuthToken = !showAuthToken">
+            <img :src="showAuthToken ? eyeSlashUrl : eyeUrl" alt="" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
     </template>
     <template v-else>
       <div class="form-row"><label class="field-label">{{ t.llm.ollamaModel }}</label><input v-model="store.ollamaModel" type="text" placeholder="llama2:7b" /></div>

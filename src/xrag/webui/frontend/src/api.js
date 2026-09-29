@@ -42,6 +42,8 @@ export const api = {
   },
   fromFolder: body => request('/api/dataset/from-folder', jsonPost(body), 'Folder generation failed'),
   buildIndex: () => request('/api/index/build', { method: 'POST' }, 'Index build failed'),
+  loadIndex: body => request('/api/index/load', jsonPost(body), 'Vector database load failed'),
+  indexStatus: taskId => request(`/api/index/${taskId}`, undefined, 'Index status failed'),
   buildQueryEngine: () => request('/api/query-engine/build', { method: 'POST' }, 'Query engine build failed'),
   startEvaluation: body => request('/api/evaluate/start', jsonPost(body), 'Failed to start evaluation'),
   cancelEvaluation: taskId => request(`/api/evaluate/${taskId}/cancel`, { method: 'POST' }, 'Failed to cancel evaluation'),
