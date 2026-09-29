@@ -1,4 +1,4 @@
-from llama_index.llms.openai import OpenAI
+from llama_index.llms.openai_like import OpenAILike
 from llama_index.llms.ollama import Ollama
 from .huggingface_model import get_huggingfacellm
 from ..config import Config
@@ -18,8 +18,16 @@ llm_dict = {
 }
 
 
-def get_openai(api_base,api_key,api_name,temperature):
-    return OpenAI(api_key=api_key,api_base=api_base, temperature=temperature,model=api_name)
+def get_openai(api_base, api_key, api_name, temperature):
+    """Create an OpenAI-compatible chat LLM without a model-name allowlist."""
+    return OpenAILike(
+        api_key=api_key,
+        api_base=api_base,
+        temperature=temperature,
+        model=api_name,
+        context_window=128_000,
+        is_chat_model=True,
+    )
 
 
 
