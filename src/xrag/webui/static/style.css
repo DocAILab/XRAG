@@ -940,6 +940,14 @@ textarea {
   font-size: 11px;
 }
 
+.result-metric-section + .result-metric-section { margin-top: 18px; }
+.result-metric-section h4 {
+  margin: 0 0 6px;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .metric-results-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

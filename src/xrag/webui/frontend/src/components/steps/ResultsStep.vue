@@ -5,31 +5,54 @@ const props = defineProps({ store: Object, options: Object, t: Object });
 defineEmits(['restart', 'cancel']);
 const displayedSamples = computed(() => props.store.evalSamples.slice(0, 5));
 
-const metricLabels = computed(() => {
-  const labels = {};
-  for (const group of props.options?.metric_groups || []) {
-    for (const section of group.sections || []) {
-      for (const metric of section.metrics || []) {
-        for (const id of metric.metric_ids || [metric.id]) {
-          labels[id] = props.t.metrics.metricLabels?.[id]
-            || `${metric.label}${metric.provider ? ` (${metric.provider})` : ''}`;
+function metricIds(metric) { return metric.metric_ids || [metric.id]; }
+function metricLabel(metric, id) { return props.t.metrics.metricLabels?.[id] || metric.label; }
+function metricHelp(metric) {
+  const details = [metric.full_name || metric.label];
+  if (metric.provider) details.push(metric.provider);
+  if (metric.inputs) details.push(`Inputs: ${metric.inputs}`);
+  if (metric.cost === 'high') details.push(props.t.metrics.highCost);
+  if (metric.experimental) details.push(props.t.metrics.experimental);
+  return details.join('\n');
+}
+function hasMetricHelp(metric) {
+  return Boolean(metric.full_name || metric.provider || metric.inputs || metric.cost === 'high' || metric.experimental);
+}
+
+const resultGroups = computed(() => {
+  const summary = props.store.evalSummary;
+  if (!summary) return [];
+
+  return (props.options?.metric_groups || []).map(group => {
+    const sections = (group.sections || []).map(section => {
+      const rows = (section.metrics || []).flatMap(metric => metricIds(metric).flatMap(id => {
+        if (Object.prototype.hasOwnProperty.call(summary.global || {}, id)) {
+          return [{
+            id,
+            label: metricLabel(metric, id),
+            value: summary.global[id],
+            validCount: summary.global_valid_counts?.[id] ?? summary.n,
+            help: hasMetricHelp(metric) ? metricHelp(metric) : '',
+            error: summary.metric_errors?.[id]?.last_error || '',
+          }];
         }
-      }
-    }
-  }
-  return labels;
+        const result = summary.metrics?.[id];
+        if (!result) return [];
+        return [{
+          id,
+          label: metricLabel(metric, id),
+          value: result.valid_count ? result.score : null,
+          validCount: result.valid_count,
+          help: hasMetricHelp(metric) ? metricHelp(metric) : '',
+          error: summary.metric_errors?.[id]?.last_error || '',
+        }];
+      }));
+      return { id: section.id, rows };
+    }).filter(section => section.rows.length);
+    return { ...group, sections };
+  }).filter(group => group.sections.length);
 });
 
-const quickMetricIds = ['F1', 'mrr', 'hit10', 'NDCG', 'NLG_chrf_pp', 'NLG_rouge_rougeL', 'NLG_wer'];
-const metricRows = computed(() => quickMetricIds.flatMap(id => {
-  const globalValue = props.store.evalSummary?.global?.[id];
-  if (globalValue != null) return [{ id, value: globalValue, group: 'ConR', validCount: props.store.evalSummary?.n }];
-  const metric = props.store.evalSummary?.metrics?.[id];
-  if (!metric) return [];
-  return [{ id, value: metric.score, group: 'ConG', validCount: metric.valid_count }];
-}));
-
-function label(id) { return metricLabels.value[id] || id; }
 function score(value) { return Number(value).toFixed(4); }
 </script>
 
@@ -59,25 +82,27 @@ function score(value) { return Number(value).toFixed(4); }
       <div><dt>{{ t.results.samples }}</dt><dd>{{ store.evalCompleted }} / {{ store.evalTotal }}</dd></div>
       <div><dt>{{ t.results.duration }}</dt><dd>{{ store.evalMeta.duration }}</dd></div>
     </dl>
-    <div v-if="metricRows.length" class="result-section">
+    <div v-for="group in resultGroups" :key="group.id" class="result-section">
       <div class="result-section-heading">
-        <h3>{{ t.results.quickOverview }}</h3>
-        <span>{{ metricRows.length }} {{ t.results.metricsCount }}</span>
+        <h3>{{ t.metrics.groups[group.id] || group.label }}</h3>
+        <span v-if="group.code">{{ group.code }}</span>
       </div>
-      <!-- <div class="metric-results-grid">
-        <div v-for="metric in metricRows" :key="metric.id" class="metric-result">
-          <div class="metric-result-label"><span>{{ label(metric.id) }}</span><code>{{ metric.group }}</code></div>
-          <strong>{{ metric.validCount ? score(metric.value) : t.results.unavailable }}</strong>
-        </div>
-      </div> -->
-    </div>
-    <div v-if="store.evalSummary && Object.keys(store.evalSummary.global || {}).length" class="result-section">
-      <div class="result-section-heading"><h3>{{ t.results.retrievalAggregate }}</h3><span>ConR</span></div>
-      <table class="summary-table"><thead><tr><th>{{ t.results.metric }}</th><th>{{ t.results.score }}</th><th>{{ t.results.valid }}</th></tr></thead><tbody><tr v-for="(value, key) in store.evalSummary.global" :key="key"><td :title="store.evalSummary.metric_errors?.[key]?.last_error">{{ label(key) }}</td><td>{{ value == null ? t.results.unavailable : score(value) }}</td><td>{{ store.evalSummary.global_valid_counts?.[key] ?? store.evalSummary.n }}</td></tr></tbody></table>
-    </div>
-    <div v-if="store.evalSummary && Object.keys(store.evalSummary.metrics || {}).length" class="result-section">
-      <div class="result-section-heading"><h3>{{ t.results.aggregate }}</h3><span>ConG</span></div>
-      <table class="summary-table"><thead><tr><th>{{ t.results.metric }}</th><th>{{ t.results.score }}</th><th>{{ t.results.valid }}</th></tr></thead><tbody><tr v-for="(value, key) in store.evalSummary.metrics" :key="key"><td :title="store.evalSummary.metric_errors?.[key]?.last_error">{{ label(key) }}</td><td>{{ value.valid_count ? score(value.score) : t.results.unavailable }}</td><td>{{ value.valid_count }}</td></tr></tbody></table>
+      <div v-for="section in group.sections" :key="section.id" class="result-metric-section">
+        <h4 v-if="group.sections.length > 1">{{ t.metrics.sections[section.id] || section.id }}</h4>
+        <table class="summary-table">
+          <thead><tr><th>{{ t.results.metric }}</th><th>{{ t.results.score }}</th><th>{{ t.results.valid }}</th></tr></thead>
+          <tbody>
+            <tr v-for="row in section.rows" :key="row.id">
+              <td :title="row.error">
+                <abbr v-if="row.help" class="metric-name metric-help" :title="row.help">{{ row.label }}</abbr>
+                <span v-else>{{ row.label }}</span>
+              </td>
+              <td>{{ row.value == null ? t.results.unavailable : score(row.value) }}</td>
+              <td>{{ row.validCount }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div v-if="displayedSamples.length" class="result-section">
       <div class="result-section-heading"><h3>{{ t.results.perSample }}</h3><span>{{ displayedSamples.length }} {{ t.results.shown }}</span></div>
