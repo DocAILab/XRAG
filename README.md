@@ -1,14 +1,4 @@
-<div style="display: flex; justify-content: center; align-items: center; height: 100px;">
-  <h1 style="font-size: 48px;">
-    XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation
-  </h1>
-</div>
-
-
-
-
-
-
+# XRAG: eXamining the Core - Benchmarking Foundational Component Modules in Advanced Retrieval-Augmented Generation
 
 <img src="imgs/logo.png" width="100%" align="center" alt="XRAG">
 
@@ -19,7 +9,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/DocAILab/XRAG)](https://github.com/DocAILab/XRAG/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/DocAILab/XRAG)](https://github.com/DocAILab/XRAG/issues)
 [![arXiv](https://img.shields.io/badge/arXiv-2412.15529-b31b1b.svg)](https://arxiv.org/abs/2412.15529)
-
+[![DOI](https://img.shields.io/badge/DOI-10.1109%2FICDE65706.2026.00201-1070AD)](https://ieeexplore.ieee.org/document/11629265)
 ## 📑 Table of Contents
 
 - [:mega: Updates](#mega-updates)
