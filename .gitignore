@@ -166,6 +166,7 @@ cython_debug/
 .workbuddy/
 .claude/
 .codex/
+webui_uploads/
 paper.pdf
 config.toml
 WIKI.md
