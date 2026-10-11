@@ -32,6 +32,7 @@ export const api = {
   config: () => request('/api/config', undefined, 'Failed to load config'),
   updateLLM: body => request('/api/config/llm', jsonPost(body), 'LLM update failed'),
   listLLMModels: body => request('/api/llm/models', jsonPost(body), 'Automatic model lookup failed'),
+  listLocalEmbeddingModels: () => request('/api/embeddings/local-models', undefined, 'Automatic local model lookup failed'),
   updateVector: body => request('/api/config/vector', jsonPost(body), 'Vector update failed'),
   updateRetrieval: body => request('/api/config/retrieval', jsonPost(body), 'Retrieval update failed'),
   presetDataset: name => request('/api/dataset/preset', jsonPost({ name }), 'Failed to load dataset'),

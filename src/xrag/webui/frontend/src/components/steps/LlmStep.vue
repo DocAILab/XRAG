@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { api } from '../../api';
+import ModelCombobox from '../ModelCombobox.vue';
 import eyeUrl from '../../../../static/eye.svg';
 import eyeSlashUrl from '../../../../static/eye-slash.svg';
 
@@ -16,7 +17,6 @@ async function queryModels() {
   try {
     const result = await api.listLLMModels({ api_key: props.store.apiKey || undefined, api_base: props.store.apiBase || undefined });
     models.value = result.models;
-    if (result.models.length && !result.models.includes(props.store.apiName)) props.store.apiName = result.models[0];
     emit('notice', props.t.llm.modelsFound.replace('{count}', result.models.length));
   } catch {
     models.value = [];
@@ -44,10 +44,8 @@ async function queryModels() {
       <div class="form-row llm-model-row">
         <label class="field-label">{{ t.llm.modelName }}</label>
         <div class="llm-model-control">
-          <select v-if="models.length" v-model="store.apiName" :aria-label="t.llm.modelName">
-            <option v-for="model in models" :key="model" :value="model">{{ model }}</option>
-          </select>
-          <input v-else v-model="store.apiName" type="text" placeholder="gpt-4o" />
+          <ModelCombobox id="llm-model-name" v-model="store.apiName" :options="models"
+            :label="t.llm.modelName" placeholder="gpt-4o" />
           <button class="button button-primary" type="button" :disabled="loadingModels" @click="queryModels">
             {{ loadingModels ? t.common.loading : t.llm.queryModels }}
           </button>
@@ -56,20 +54,21 @@ async function queryModels() {
     </template>
     <template v-else-if="store.llm === 'huggingface'">
       <div class="form-row"><label class="field-label">{{ t.llm.hfModel }}</label><select v-model="store.hfModel"><option v-for="opt in store.options?.hf_models || []" :key="opt" :value="opt">{{ opt }}</option></select></div>
+      <!--
       <div class="form-row">
         <label class="field-label" for="llm-auth-token">{{ t.llm.authToken }}</label>
-        <div class="secret-input">
+         <div class="secret-input">
           <input id="llm-auth-token" v-model="store.authToken" :type="showAuthToken ? 'text' : 'password'" autocomplete="off" placeholder="hf_..." />
           <button class="secret-toggle" type="button" :aria-label="showAuthToken ? t.llm.hideAuthToken : t.llm.showAuthToken" :title="showAuthToken ? t.llm.hideAuthToken : t.llm.showAuthToken" :aria-pressed="showAuthToken" @click="showAuthToken = !showAuthToken">
             <img :src="showAuthToken ? eyeSlashUrl : eyeUrl" alt="" aria-hidden="true" />
           </button>
         </div>
-      </div>
+      </div> -->
     </template>
     <template v-else>
       <div class="form-row"><label class="field-label">{{ t.llm.ollamaModel }}</label><input v-model="store.ollamaModel" type="text" placeholder="llama2:7b" /></div>
       <div class="form-row"><label class="field-label">{{ t.llm.timeout }}</label><input v-model.number="store.ollamaTimeout" type="number" min="1" /></div>
     </template>
-    <div class="form-row"><label class="field-label">{{ t.llm.temperature }}</label><input v-model.number="store.temperature" type="number" step="0.1" /></div>
+    <div class="form-row"><label class="field-label">{{ t.llm.temperature }}</label><input v-model.number="store.temperature" type="number" step="0.1" max="2.0" min="0.0"/></div>
   </section>
 </template>

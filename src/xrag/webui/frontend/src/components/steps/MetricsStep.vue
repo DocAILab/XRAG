@@ -65,7 +65,8 @@ function applyPreset(preset) {
         </label>
         <code v-if="group.code" class="metric-code">{{ group.code }}</code>
       </div>
-      <div v-for="section in group.sections" :key="section.id" class="metric-section">
+      <div v-for="section in group.sections" :key="section.id" class="metric-section"
+        :class="{ 'metric-section-nested': group.sections.length > 1 }">
         <label v-if="group.sections.length > 1" class="metric-section-header">
           <input type="checkbox" :checked="sectionIds(section).length > 0 && sectionIds(section).every(id => store.selectedMetrics.includes(id))"
             :disabled="sectionIds(section).length === 0"
@@ -76,8 +77,12 @@ function applyPreset(preset) {
           <label v-for="metric in section.metrics" :key="metric.id" class="metric-check"
             :class="{ disabled: metric.available === false }">
             <input type="checkbox" :checked="isSelected(metric)" :disabled="metric.available === false"
+              :aria-describedby="hasMetricHelp(metric) ? `metric-help-${metric.id}` : undefined"
               @change="toggleIds(metricIds(metric), $event.target.checked)" />
-            <abbr v-if="hasMetricHelp(metric)" class="metric-name metric-help" :title="metricHelp(metric)">{{ metric.label }}</abbr>
+            <span v-if="hasMetricHelp(metric)" class="metric-name metric-help">
+              {{ metric.label }}
+              <span :id="`metric-help-${metric.id}`" class="metric-tooltip" role="tooltip">{{ metricHelp(metric) }}</span>
+            </span>
             <span v-else class="metric-name">{{ metric.label }}</span>
           </label>
         </div>

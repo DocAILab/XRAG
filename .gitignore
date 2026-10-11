@@ -167,6 +167,7 @@ cython_debug/
 .claude/
 .codex/
 webui_uploads/
+storage-hotpot_qa-BAAI/
 paper.pdf
 config.toml
 WIKI.md

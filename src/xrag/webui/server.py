@@ -715,6 +715,31 @@ def list_llm_models(body: LLMModelsRequest) -> Dict[str, Any]:
         raise HTTPException(502, detail={"code": "models_query_failed"}) from exc
 
 
+@app.get("/api/embeddings/local-models")
+def list_local_embedding_models() -> Dict[str, Any]:
+    """List repositories already present in the local Transformers cache."""
+    try:
+        from transformers.utils.hub import TRANSFORMERS_CACHE
+
+        cache_dir = Path(TRANSFORMERS_CACHE)
+        models = set()
+        if cache_dir.is_dir():
+            for entry in cache_dir.iterdir():
+                if not entry.is_dir() or not entry.name.startswith("models--"):
+                    continue
+                snapshots = entry / "snapshots"
+                if snapshots.is_dir() and any(snapshots.iterdir()):
+                    model_id = entry.name.removeprefix("models--").replace("--", "/")
+                    if model_id:
+                        models.add(model_id)
+        if not models:
+            raise FileNotFoundError("no cached Transformers models")
+        return {"models": sorted(models)}
+    except Exception as exc:
+        logger.warning("Local Hugging Face model lookup failed: %s", type(exc).__name__)
+        raise HTTPException(503, detail={"code": "local_models_query_failed"}) from exc
+
+
 @app.post("/api/config/vector")
 def update_vector(body: VectorDBUpdate) -> Dict[str, Any]:
     cfg = Config()

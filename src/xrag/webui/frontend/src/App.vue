@@ -92,7 +92,7 @@ async function init() {
       splitType: chunk.split_type || 'sentence',
       chunkSize: chunk.chunk_size || 512, chunkOverlap: chunk.chunk_overlap ?? 20,
       windowSize: chunk.window_size || 3, chunkSizes: (chunk.chunk_sizes || [2048, 512, 128]).join(', '),
-      persistDir: chunk.persist_dir || 'storage',
+      persistDir: '',
       orchestrator: retrieval.orchestrator || 'default', retriever: retrieval.retriever || 'BM25', retrieverMode: retrieval.retriever_mode || 0,
       queryTransform: retrieval.query_transform || 'none', postprocessRerank: retrieval.postprocess_rerank || 'none',
       responseSynthesizer: retrieval.response_synthesizer || 'refine', similarityTopK: retrieval.similarity_top_k || 3,

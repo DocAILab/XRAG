@@ -9,6 +9,13 @@ export default defineConfig({
     emptyOutDir: false,
     assetsDir: 'assets',
     assetsInlineLimit: 0,
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name][extname]',
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+      },
+    },
   },
   server: {
     proxy: {
