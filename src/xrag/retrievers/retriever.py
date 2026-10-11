@@ -298,7 +298,7 @@ def custom_retriever(index, retriver_type_CUSTOM='bm25_and'):
 # compact（默认）：事先压缩（连接）块，从而减少 LLM 调用。填充尽可能多的文本（从检索到的块中串联/打包）可以放入上下文窗口
 # tree_summarize：根据需要多次使用提示查询 LLM，以便所有串联的块 被查询，从而产生同样多的答案，这些答案本身在 LLM 调用中以递归方式用作块 依此类推，直到只剩下一个块，因此只有一个最终答案。
 # simple_summarize：截断所有文本块以适应单个 LLM 提示。适合快速 摘要目的，但可能会因截断而丢失详细信息。
-# accumulate：给定一组文本块和查询，将查询应用于每个文本 块，同时将响应累积到数组中。返回 all 的串联字符串。当您需要对每个文本分别运行相同查询时，非常有用
+# accumulate：给定一组文本块和查询，将查询应用于每个文本块，同时将响应累积到数组中。返回 all 的串联字符串。当您需要对每个文本分别运行相同查询时，非常有用
 # compact_accumulate：与 accumulate 相同，但会“压缩”每个类似于 的 LLM 提示符，并对每个文本块运行相同查询。compact
 def response_synthesizer(responce_synthsizer='refine'):
     if responce_synthsizer.lower()=='refine':
