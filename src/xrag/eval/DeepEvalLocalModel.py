@@ -1,5 +1,4 @@
 import torch
-from llama_index.llms.huggingface import HuggingFaceLLM
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from deepeval.models.base_model import DeepEvalBaseLLM
 

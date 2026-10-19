@@ -21,9 +21,6 @@ from uptrain.framework import DataSchema
 from jury import Jury
 import jury
 import evaluate
-from llama_index.core.evaluation import FaithfulnessEvaluator, CorrectnessEvaluator, GuidelineEvaluator
-from llama_index.core.evaluation import BaseEvaluator, EvaluationResult
-from llama_index.core.evaluation import AnswerRelevancyEvaluator, RelevancyEvaluator, SemanticSimilarityEvaluator
 import typing as t
 import polars as pl
 from uptrain.framework.evals import ParametricEval, ResponseMatching
@@ -72,6 +69,8 @@ class EvaluationResult:
             "DCG": 0.0,
             "IDCG": 0.0,
         }
+        self.global_counts = {key: 0 for key in self.results if key != "n"}
+        self.errors = {}
         # 初始化用于评估的指标，每一个指标都是一个包含score和count的字典
         evaluation_metrics = ["Llama_retrieval_Faithfulness", "Llama_retrieval_Relevancy", "Llama_response_correctness",
                               "Llama_response_semanticSimilarity", "Llama_response_answerRelevancy","Llama_retrieval_RelevancyG",
@@ -102,8 +101,7 @@ class EvaluationResult:
             self.metrics_results[metric] = {"score": 0, "count": 0}
             self.metrics_results[metric+"_rev"] = {"score": 0, "count": 0}
 
-        if metrics is None:
-            metrics = []
+        metrics = list(metrics or [])
         metrics.append("n")
         metrics.append("F1")
         metrics.append("em")
@@ -119,14 +117,22 @@ class EvaluationResult:
 
     def add(self, evaluate_result):
         for key in self.results.keys():
-            if key in self.metrics:
+            if key in self.metrics and key != "n":
                 self.results[key] += evaluate_result.results[key]
+                self.global_counts[key] += evaluate_result.global_counts[key]
         for key in self.metrics_results.keys():
             if key in self.metrics:
                 if evaluate_result.metrics_results[key]["score"] != None:
                     self.metrics_results[key]["score"] += evaluate_result.metrics_results[key]["score"]
                     self.metrics_results[key]["count"] += evaluate_result.metrics_results[key]["count"]
+        for key, messages in evaluate_result.errors.items():
+            self.errors.setdefault(key, []).extend(messages)
         self.results["n"] += 1
+
+    def record_error(self, metric, exc):
+        message = str(exc) or type(exc).__name__
+        self.errors.setdefault(metric, []).append(message)
+        logger.error("Metric %s failed: %s", metric, message)
     def print_results(self):
         for key, value in self.results.items():
             if key in self.metrics:
@@ -325,21 +331,23 @@ def get_DeepEval_Metrices(evalModelAgent,model_name="DeepEval_retrieval_contextu
 # todo: ours evaluator
 # class Evaluator(BaseEvaluator):
 def get_llama_evaluator(evalModelAgent,model_name="Llama_retrieval_Faithfulness"):
+    from llama_index.core import evaluation as llama_evaluation
+
     match model_name:
         case "Llama_retrieval_Faithfulness":
-            return FaithfulnessEvaluator(llm=evalModelAgent.llamaModel)
+            return llama_evaluation.FaithfulnessEvaluator(llm=evalModelAgent.llamaModel)
         case "Llama_retrieval_FaithfulnessG":
-            return FaithfulnessEvaluator(llm=evalModelAgent.llamaModel, eval_template=LLAMA_CUSTOM_FAITHFULNESS_TEMPLATE)
+            return llama_evaluation.FaithfulnessEvaluator(llm=evalModelAgent.llamaModel, eval_template=LLAMA_CUSTOM_FAITHFULNESS_TEMPLATE)
         case "Llama_retrieval_Relevancy":
-            return RelevancyEvaluator(llm=evalModelAgent.llamaModel)
+            return llama_evaluation.RelevancyEvaluator(llm=evalModelAgent.llamaModel)
         case "Llama_retrieval_RelevancyG":
-            return RelevancyEvaluator(llm=evalModelAgent.llamaModel)
+            return llama_evaluation.RelevancyEvaluator(llm=evalModelAgent.llamaModel)
         case "Llama_response_correctness":
-            return CorrectnessEvaluator(llm=evalModelAgent.llamaModel)
+            return llama_evaluation.CorrectnessEvaluator(llm=evalModelAgent.llamaModel)
         case "Llama_response_semanticSimilarity":
-            return SemanticSimilarityEvaluator()
+            return llama_evaluation.SemanticSimilarityEvaluator()
         case "Llama_response_answerRelevancy":
-            return AnswerRelevancyEvaluator(llm=evalModelAgent.llamaModel)
+            return llama_evaluation.AnswerRelevancyEvaluator(llm=evalModelAgent.llamaModel)
 
 
 def SePerEvaluate(
@@ -417,29 +425,39 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
     # 创建一个新类，主要是用来记录各个指标有效的个数以及得分
     eval_result = EvaluationResult()
     # region 常规指标
-    eval_result.results["F1"] = F1(retrieval_ids, golden_context_ids)
-    eval_result.results["em"] = Em(retrieval_ids, golden_context_ids)
-    eval_result.results["mrr"] = Mrr(retrieval_ids, golden_context_ids)
-    eval_result.results["hit1"] = Hit(retrieval_ids[0:1], golden_context_ids)
-    eval_result.results["hit10"] = Hit(retrieval_ids[0:10], golden_context_ids)
-    eval_result.results["MAP"] = MAP(retrieval_ids, golden_context_ids)
-    eval_result.results["NDCG"] = NDCG(retrieval_ids, golden_context_ids)
-    eval_result.results["DCG"] = DCG(retrieval_ids, golden_context_ids)
-    eval_result.results["IDCG"] = IDCG(retrieval_ids, golden_context_ids)
+    retrieval_metrics = {
+        "F1": lambda: F1(retrieval_ids, golden_context_ids),
+        "em": lambda: Em(retrieval_ids, golden_context_ids),
+        "mrr": lambda: Mrr(retrieval_ids, golden_context_ids),
+        "hit1": lambda: Hit(retrieval_ids[0:1], golden_context_ids),
+        "hit10": lambda: Hit(retrieval_ids[0:10], golden_context_ids),
+        "MAP": lambda: MAP(retrieval_ids, golden_context_ids),
+        "NDCG": lambda: NDCG(retrieval_ids, golden_context_ids),
+        "DCG": lambda: DCG(retrieval_ids, golden_context_ids),
+        "IDCG": lambda: IDCG(retrieval_ids, golden_context_ids),
+    }
+    for name, calculate in retrieval_metrics.items():
+        if name not in metrics:
+            continue
+        try:
+            eval_result.results[name] = calculate()
+            eval_result.global_counts[name] = 1
+        except Exception as exc:
+            eval_result.record_error(name, exc)
     # endregion
     # 由于upTrain可以一次计算多个指标，所以这个变量之后会从upTrain的多个指标
-    upTrain_metrics = list()
     # region llama_index evaluation
     for i in eval_result.evaluationName:
         if i in metrics and i[0:8] != "DeepEval" and i[0:7] != "UpTrain" and i[0:3] != "NLG" and i[0:5] != "SePer":
+            if "Llama_" in getattr(evalModelAgent, "init_errors", {}):
+                eval_result.record_error(i, evalModelAgent.init_errors["Llama_"])
+                continue
             print("now run " + i)
 
             count = 2
             while True:
                 try:
                     evaluator = get_llama_evaluator(evalModelAgent, i)
-                    res = EvaluationResult()
-                    res.passing = False
                     if i == "Llama_retrieval_FaithfulnessG":
                         # 这块跟prompt相关（LLAMA_CUSTOM_FAITHFULNESS_TEMPLATE）
                         query_str = f"Question: {question}\nInformation: {response.response}"
@@ -450,20 +468,24 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
                         # 这块要评测golden_context和其他的关系，相当于在原基础上更换retrieval_context
                         # 在Relevancy的实现中，会取出node里面的文本，所以我们构建的时候只传文本就好
                         # 这块语义差不多所以就没更换prompt
-                        response.source_nodes.clear()
+                        from copy import copy
+                        golden_response = copy(response)
+                        golden_response.source_nodes = []
                         for context in golden_context:
                             node = TextNode()
                             node.text = context
                             temp = NodeWithScore(node=node)
-                            response.source_nodes.append(temp)
-                        res = evaluator.evaluate_response(query=question, response=response)
+                            golden_response.source_nodes.append(temp)
+                        res = evaluator.evaluate_response(query=question, response=golden_response)
                     else:
                         # 这里的传参主要是想要使用系统自带的函数，在实现中会自动提取所需的内容
                         res = evaluator.evaluate_response(query=question, response=response, reference=expected_answer)
                     if res.passing:
                         eval_result.metrics_results[i]["score"] = 1
-                    elif 0 <= res.score and res.score <= 1:
+                    elif res.score is not None and 0 <= res.score <= 1:
                         eval_result.metrics_results[i]["score"] = res.score
+                    else:
+                        raise ValueError(f"Invalid score: {res.score}")
                     # 这里要记录一下数量，因为由于种种原因这个过程会报错，就会导致无效的记录
                     eval_result.metrics_results[i]["count"] = 1
                     break
@@ -471,42 +493,41 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
                     count = count - 1
 
                     logger.exception(e)
-                    print("error ")
                     if count == 0:
-                        print(i + " error")
+                        eval_result.record_error(i, e)
                         break
     # endregion
     # region uptrain evaluation
     for i in metrics:
-        if i in Map_Uptrain_metrics_truth_val.keys():
-            upTrain_metrics.append(i)
-    if upTrain_metrics.__len__() != 0:
-        # upTrain 可以进行多个指标的评测（传入要评测指标的list）,因此我们将要测的指标封装成一个list
-        upTrain_metrics_val = list()
-        for i in upTrain_metrics:
-            upTrain_metrics_val.append(Map_Uptrain_metrics_truth_val[i])
+        if i not in Map_Uptrain_metrics_truth_val:
+            continue
+        if "UpTrain_" in getattr(evalModelAgent, "init_errors", {}):
+            eval_result.record_error(i, evalModelAgent.init_errors["UpTrain_"])
+            continue
         count = 2
         while True:
             try:
-                result = UptrainEvaluate(evalModelAgent, question,actual_response,retrieval_context,expected_answer,golden_context,upTrain_metrics_val)
-                for i in upTrain_metrics:
-                    try:
-                        #TODO: fix NONETYPE
-                        if result[0][Map_Uptrain_metrics_score_name[i]] >= 0 and result[0][Map_Uptrain_metrics_score_name[i]] <= 1:
-                            eval_result.metrics_results[i]["score"] = result[0][Map_Uptrain_metrics_score_name[i]]
-                            eval_result.metrics_results[i]["count"] = 1
-                    except Exception as e:
-                        logger.exception(e)
+                result = UptrainEvaluate(evalModelAgent, question, actual_response, retrieval_context,
+                                         expected_answer, golden_context, [Map_Uptrain_metrics_truth_val[i]])
+                score = result[0][Map_Uptrain_metrics_score_name[i]]
+                if score is None or not 0 <= score <= 1:
+                    raise ValueError(f"Invalid score: {score}")
+                eval_result.metrics_results[i]["score"] = score
+                eval_result.metrics_results[i]["count"] = 1
                 break
             except Exception as e:
                 count = count - 1
                 logger.exception(e)
                 if count == 0:
+                    eval_result.record_error(i, e)
                     break
     # endregion
     # region deepEval evaluation
     for i in eval_result.evaluationName:
         if i in metrics and i[0:8] == "DeepEval":
+            if "DeepEval_" in getattr(evalModelAgent, "init_errors", {}):
+                eval_result.record_error(i, evalModelAgent.init_errors["DeepEval_"])
+                continue
             count = 2
             while True:
                 try:
@@ -520,11 +541,12 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
                     )
                     deepeval_metric = get_DeepEval_Metrices(evalModelAgent, i)
                     deepeval_metric.measure(test_case)
-                    if len(deepeval_metric.verdicts) == 0:
+                    if hasattr(deepeval_metric, "verdicts") and len(deepeval_metric.verdicts) == 0:
                         raise Exception("deepeval verdicts is zero")
 
-                    if deepeval_metric.score is not None and 0 <= deepeval_metric.score <= 1:
-                        eval_result.metrics_results[i]["score"] = deepeval_metric.score
+                    if deepeval_metric.score is None or not 0 <= deepeval_metric.score <= 1:
+                        raise ValueError(f"Invalid score: {deepeval_metric.score}")
+                    eval_result.metrics_results[i]["score"] = deepeval_metric.score
                     eval_result.metrics_results[i]["count"] = 1
                     break
                 except Exception as e:
@@ -532,56 +554,56 @@ def evaluating(question, response, actual_response, retrieval_context, retrieval
 
                     logger.exception(e)
                     #   file2.write(traceback.format_exc())
-                    print("error ")
                     if count == 0:
-                        print(i + " error")
+                        eval_result.record_error(i, e)
                         break
     # region NLG evaluation
-    NLG_metrics = []
     for i in metrics:
-        if i[0:3] == "NLG":
-            NLG_metrics.append(i[4:])
-    if NLG_metrics.__len__() != 0:
-        result = NLGEvaluate(question, actual_response, expected_answer, golden_context_ids, NLG_metrics)
-        for i in NLG_metrics:
-            eval_result.metrics_results["NLG_"+i]["score"] = result[i]
-            eval_result.metrics_results["NLG_"+i]["count"] = 1
+        if not i.startswith("NLG_"):
+            continue
+        try:
+            result = NLGEvaluate(question, actual_response, expected_answer, golden_context_ids, [i[4:]])
+            score = result[i[4:]]
+            if score is None or not np.isfinite(score):
+                raise ValueError(f"Invalid score: {score}")
+            eval_result.metrics_results[i]["score"] = score
+            eval_result.metrics_results[i]["count"] = 1
+        except Exception as exc:
+            logger.exception("NLG metric %s failed", i)
+            eval_result.record_error(i, exc)
 
     # endregion
 
     # region SePer evaluation
 
-    config = Config()
-    seper_config: t.Dict[str, t.Any] = config.config.get("seper", {})
-
-    if seper_config.get("enabled", False):
+    seper_metrics = [i for i in metrics if i in ("SePer_with_context", "SePer_without_context", "SePer_delta")]
+    if seper_metrics:
         try:
+            seper_config: t.Dict[str, t.Any] = Config().config.get("seper", {})
+            if not seper_config.get("enabled", False):
+                raise ValueError("SePer is disabled")
             seper_result = SePerEvaluate(
                 question, retrieval_context, expected_answer, seper_config
             )
 
-            if "SePer_with_context" in metrics:
-                eval_result.metrics_results["SePer_with_context"] = {}
-                eval_result.metrics_results["SePer_with_context"]["score"] = (
-                    seper_result.get("seper_with_context", 0.0)
-                )
-                eval_result.metrics_results["SePer_with_context"]["count"] = 1
-            if "SePer_without_context" in metrics:
-                eval_result.metrics_results["SePer_without_context"] = {}
-                eval_result.metrics_results["SePer_without_context"]["score"] = (
-                    seper_result.get("seper_without_context", 0.0)
-                )
-                eval_result.metrics_results["SePer_without_context"]["count"] = 1
-            if "SePer_delta" in metrics:
-                eval_result.metrics_results["SePer_delta"] = {}
-                eval_result.metrics_results["SePer_delta"]["score"] = (
-                    seper_result.get("delta_seper", 0.0)
-                )
-                eval_result.metrics_results["SePer_delta"]["count"] = 1
+            keys = {"SePer_with_context": "seper_with_context",
+                    "SePer_without_context": "seper_without_context", "SePer_delta": "delta_seper"}
+            for name in seper_metrics:
+                try:
+                    score = seper_result[keys[name]]
+                    if score is None or not np.isfinite(score):
+                        raise ValueError(f"Invalid score: {score}")
+                    eval_result.metrics_results[name]["score"] = score
+                    eval_result.metrics_results[name]["count"] = 1
+                except Exception as exc:
+                    eval_result.record_error(name, exc)
 
         except Exception as e:
-            logger.error(f"SePer evaluation failed: {str(e)}")
-            raise e
+            logger.exception("SePer evaluation failed")
+            for name in seper_metrics:
+                eval_result.metrics_results[name]["score"] = 0
+                eval_result.metrics_results[name]["count"] = 0
+                eval_result.record_error(name, e)
 
     # endregion
 
@@ -622,9 +644,7 @@ def F1(retrieved_ids, expected_ids):
 
     return F1_score
 def Em(retrieved_ids, expected_ids):
-    retrieved_ids.sort()
-    expected_ids.sort()
-    if expected_ids == retrieved_ids:
+    if sorted(expected_ids) == sorted(retrieved_ids):
         return 1
     return 0
 

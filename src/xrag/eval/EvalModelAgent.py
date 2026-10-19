@@ -32,52 +32,69 @@ class EvalModelAgent():
         api_name = self.args.api_name
         api_key = self.args.api_key
         api_base = self.args.api_base
-        if api_name == "" and (needs_llama or needs_deepeval):
-            import torch
-            from transformers import AutoModelForCausalLM, AutoTokenizer
+        self.init_errors = {}
         logger.info("EvalModelName:")
         logger.info(api_name)
         logger.info("EvalModelAPI:")
         logger.info(api_key[0:4] + "***" + api_key[-4:])
-        if needs_llama and api_name == "":
-            from llama_index.llms.huggingface import HuggingFaceLLM
+        if needs_llama:
+            try:
+                self._init_llama(api_name, api_key, api_base, llamaIndex_LocalmodelName)
+            except Exception as exc:
+                logger.exception("LlamaIndex evaluator initialization failed")
+                self.init_errors["Llama_"] = str(exc)
+        if needs_deepeval:
+            try:
+                self._init_deepeval(api_name, api_key, api_base, deepEval_LocalModelName, llamaIndex_LocalmodelName)
+            except Exception as exc:
+                logger.exception("DeepEval evaluator initialization failed")
+                self.init_errors["DeepEval_"] = str(exc)
+        if needs_uptrain:
+            try:
+                self._init_uptrain(api_name, api_key, api_base, uptrain_LocalModelName)
+            except Exception as exc:
+                logger.exception("UpTrain evaluator initialization failed")
+                self.init_errors["UpTrain_"] = str(exc)
 
-            self._llama_model = AutoModelForCausalLM.from_pretrained(llamaIndex_LocalmodelName,
-                                                     torch_dtype=torch.float16,
-                                                     device_map="auto").eval()
-            self._llama_tokenizer = AutoTokenizer.from_pretrained(llamaIndex_LocalmodelName)
+    def _init_llama(self, api_name, api_key, api_base, model_name):
+        if api_name == "":
+            from ..llms.huggingface_model import get_huggingfacellm
+
+            self.llamaModel = get_huggingfacellm(
+                model_name,
+                max_new_tokens=llm_args["max_new_tokens"],
+                temperature=llm_args["generate_kwargs"]["temperature"],
+            )
+            self._llama_model = self.llamaModel.model
+            self._llama_tokenizer = self.llamaModel.tokenizer
             load_tokenizer.append(self._llama_tokenizer)
-            self.llamaModel = HuggingFaceLLM(context_window=llm_args["context_window"],
-                              max_new_tokens=llm_args["max_new_tokens"],
-                              completion_to_prompt=qwen_completion_to_prompt,
-                              generate_kwargs=llm_args["generate_kwargs"],
-                              model=self._llama_model,
-                              tokenizer=self._llama_tokenizer,
-                              device_map="cuda:0",)
-        elif needs_llama:
+        else:
             from llama_index.llms.openai import OpenAI
 
             self.llamaModel = OpenAI(api_key=api_key, api_base=api_base,
                       model=api_name)
-        if needs_deepeval and api_name == "":
+    def _init_deepeval(self, api_name, api_key, api_base, model_name, llama_model_name):
+        if api_name == "":
+            import torch
+            from transformers import AutoModelForCausalLM, AutoTokenizer
             from .DeepEvalLocalModel import DeepEvalLocalModel
 
-            if deepEval_LocalModelName == llamaIndex_LocalmodelName:
-                if not needs_llama:
+            if model_name == llama_model_name:
+                if not (hasattr(self, "_llama_model") and hasattr(self, "_llama_tokenizer")):
                     self._llama_model = AutoModelForCausalLM.from_pretrained(
-                        llamaIndex_LocalmodelName, torch_dtype=torch.float16, device_map="auto"
+                        llama_model_name, torch_dtype=torch.float16, device_map="auto"
                     ).eval()
-                    self._llama_tokenizer = AutoTokenizer.from_pretrained(llamaIndex_LocalmodelName)
+                    self._llama_tokenizer = AutoTokenizer.from_pretrained(llama_model_name)
                 self._deepEval_model = self._llama_model
                 self._deepEval_tokenizer = self._llama_tokenizer
             else:
-                self._deepEval_model = AutoModelForCausalLM.from_pretrained(deepEval_LocalModelName,
+                self._deepEval_model = AutoModelForCausalLM.from_pretrained(model_name,
                                                      torch_dtype=torch.float16,
                                                      device_map="auto").eval()
-                self._deepEval_tokenizer = AutoTokenizer.from_pretrained(deepEval_LocalModelName)
+                self._deepEval_tokenizer = AutoTokenizer.from_pretrained(model_name)
             self.deepEvalModel = DeepEvalLocalModel(model=self._deepEval_model,
                                                     tokenizer=self._deepEval_tokenizer)
-        elif needs_deepeval:
+        else:
             from langchain_openai import ChatOpenAI
             from .DeepEvalLocalModel import DeepEvalLocalModel
 
@@ -85,11 +102,12 @@ class EvalModelAgent():
                       model_name=api_name)
             self.deepEvalModel = DeepEvalLocalModel(model=self._deepEval_model,
                                                     tokenizer="")
-        if needs_uptrain and api_name == "":
+    def _init_uptrain(self, api_name, api_key, api_base, model_name):
+        if api_name == "":
             from uptrain import Settings
 
-            self.uptrainSetting = Settings(model="ollama/"+uptrain_LocalModelName)
-        elif needs_uptrain:
+            self.uptrainSetting = Settings(model="ollama/"+model_name)
+        else:
             from uptrain import Settings
 
             self.uptrainSetting = Settings(

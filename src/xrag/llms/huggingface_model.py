@@ -1,216 +1,205 @@
+"""Generic Hugging Face causal-chat model adapter."""
+
+from __future__ import annotations
+
 from functools import partial
+from pathlib import Path
+from threading import Thread
+from typing import Any, Generator, Optional
 
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModel
-from transformers.generation.utils import GenerationConfig
-from llama_index.llms.huggingface import HuggingFaceLLM
-# pip install llama-index-llms-huggingface
-from ..config import Config
-from ..utils import get_module_logger
+from llama_index.core.llms import CompletionResponse, CustomLLM, LLMMetadata
+from llama_index.core.llms.callbacks import llm_completion_callback
+from pydantic import Field
+from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer, TextIteratorStreamer
 
-cfg = Config()
-logger = get_module_logger(__name__)
-
-load_tokenizer = []
+from .huggingface_templates import TEMPLATE_NAMES, messages_to_prompt, stop_token_ids
 
 
-def llama_model_and_tokenizer(name, auth_token):
-    # Create tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(name, token=auth_token)
-
-    # Create model
-    model = AutoModelForCausalLM.from_pretrained(name, token=auth_token, torch_dtype=torch.float16,
-                                                 rope_scaling={"type": "dynamic", "factor": 2},
-                                                 load_in_8bit=True, device_map="auto").eval()
-
-    return tokenizer, model
-
-
-def llama_completion_to_prompt(completion):
-    return f"""<s>[INST] <<SYS>>
-        You are a helpful, respectful and honest assistant. Always answer as 
-        helpfully as possible, while being safe. Your answers should not include
-        any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.
-        Please ensure that your responses are socially unbiased and positive in nature.
-
-        If a question does not make any sense, or is not factually coherent, explain 
-        why instead of answering something not correct. If you don't know the answer 
-        to a question, please don't share false information.
-
-        Your goal is to provide answers relating to the financial performance of 
-        the company.<</SYS>>
-        {completion} [/INST]"""
+LEGACY_MODEL_ALIASES = {
+    "llama": "meta-llama/Llama-2-7b-chat-hf",
+    "chatglm": "THUDM/chatglm3-6b",
+    "qwen": "Qwen/Qwen1.5-7B-Chat",
+    "qwen14_int8": "Qwen/Qwen1.5-14B-Chat-GPTQ-Int8",
+    "qwen7_int8": "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8",
+    "qwen1.8": "Qwen/Qwen1.5-1.8B-Chat",
+    "baichuan": "baichuan-inc/Baichuan2-7B-Chat",
+    "falcon": "tiiuae/falcon-7b-instruct",
+    "mpt": "mosaicml/mpt-7b-chat",
+    "yi": "01-ai/Yi-6B-Chat",
+}
 
 
-def chatglm_model_and_tokenizer(name):
-    # Create tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(name, trust_remote_code=True)
-    load_tokenizer.append(tokenizer)
+class TransformersChatLLM(CustomLLM):
+    """LlamaIndex adapter backed directly by a Transformers causal LM."""
 
-    # Create model
-    model = AutoModel.from_pretrained(name, trust_remote_code=True).half().cuda().eval()
+    model: Any = Field(exclude=True)
+    tokenizer: Any = Field(exclude=True)
+    model_name: str
+    context_window: int
+    max_new_tokens: int
+    stopping_ids: list[int] = Field(default_factory=list)
+    generate_kwargs: dict[str, Any] = Field(default_factory=dict)
 
-    return tokenizer, model
+    @property
+    def metadata(self) -> LLMMetadata:
+        return LLMMetadata(
+            context_window=self.context_window,
+            num_output=self.max_new_tokens,
+            model_name=self.model_name,
+            is_chat_model=True,
+        )
+
+    def _format_prompt(self, prompt: str, formatted: bool) -> str:
+        if formatted:
+            return prompt
+        if self.query_wrapper_prompt:
+            prompt = self.query_wrapper_prompt.format(query_str=prompt)
+        if self.completion_to_prompt:
+            return self.completion_to_prompt(prompt)
+        return f"{self.system_prompt}\n\n{prompt}" if self.system_prompt else prompt
+
+    def _model_inputs(self, prompt: str) -> Any:
+        inputs = self.tokenizer(prompt, return_tensors="pt", add_special_tokens=False)
+        device = getattr(self.model, "device", None)
+        return inputs.to(device) if device is not None else inputs
+
+    def _generation_options(self, **kwargs: Any) -> dict[str, Any]:
+        options = {**self.generate_kwargs, **kwargs}
+        options.setdefault("max_new_tokens", self.max_new_tokens)
+        if self.stopping_ids:
+            options.setdefault("eos_token_id", self.stopping_ids)
+        pad_id = getattr(self.tokenizer, "pad_token_id", None)
+        if pad_id is not None:
+            options.setdefault("pad_token_id", pad_id)
+        return options
+
+    @llm_completion_callback()
+    def complete(self, prompt: str, formatted: bool = False, **kwargs: Any) -> CompletionResponse:
+        prompt = self._format_prompt(prompt, formatted)
+        inputs = self._model_inputs(prompt)
+        output = self.model.generate(**inputs, **self._generation_options(**kwargs))
+        input_length = inputs["input_ids"].shape[-1]
+        text = self.tokenizer.decode(output[0][input_length:], skip_special_tokens=True)
+        return CompletionResponse(text=text, raw=output)
+
+    @llm_completion_callback()
+    def stream_complete(
+        self, prompt: str, formatted: bool = False, **kwargs: Any
+    ) -> Generator[CompletionResponse, None, None]:
+        prompt = self._format_prompt(prompt, formatted)
+        inputs = self._model_inputs(prompt)
+        streamer = TextIteratorStreamer(
+            self.tokenizer, skip_prompt=True, skip_special_tokens=True
+        )
+        errors: list[BaseException] = []
+
+        def generate() -> None:
+            try:
+                self.model.generate(
+                    **inputs,
+                    streamer=streamer,
+                    **self._generation_options(**kwargs),
+                )
+            except BaseException as exc:
+                errors.append(exc)
+                streamer.on_finalized_text("", stream_end=True)
+
+        worker = Thread(target=generate, daemon=True)
+        worker.start()
+        full_text = ""
+        for delta in streamer:
+            full_text += delta
+            yield CompletionResponse(text=full_text, delta=delta)
+        worker.join()
+        if errors:
+            raise errors[0]
 
 
-def chatglm_completion_to_prompt(completion):
-    return "<|user|>\n " + completion + "<|assistant|>"
+def resolve_model_name(name: str) -> str:
+    name = (name or "").strip()
+    if not name:
+        raise ValueError("A Hugging Face repository ID or local model path is required.")
+    return LEGACY_MODEL_ALIASES.get(name, name)
 
 
-def qwen_model_and_tokenizer(name):
-    # Create tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(name)
-    load_tokenizer.append(tokenizer)
-
-    # Create model
-    model = AutoModelForCausalLM.from_pretrained(name,
-                                                 torch_dtype=torch.float16,
-                                                 device_map="auto").eval()
-
-    return tokenizer, model
+def _context_window(model_config: Any, requested: int) -> int:
+    candidates = []
+    for field in ("max_position_embeddings", "n_positions", "seq_length"):
+        value = getattr(model_config, field, None)
+        if isinstance(value, int) and 0 < value < 10_000_000:
+            candidates.append(value)
+    detected = min(candidates) if candidates else 4096
+    return min(requested, detected) if requested > 0 else detected
 
 
-def qwen_completion_to_prompt(completion):
-    tokenizer = load_tokenizer[0]
-    messages = [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": completion}
-    ]
-    return tokenizer.apply_chat_template(
-        messages,
-        tokenize=False,
-        add_generation_prompt=True
-    )
+def _dtype() -> torch.dtype:
+    if not torch.cuda.is_available():
+        return torch.float32
+    return torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
 
 
-def baichuan_model_and_tokenizer(name):
-    # Create tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(name, use_fast=False, trust_remote_code=True)
-    load_tokenizer.append(tokenizer)
+def get_huggingfacellm(
+    name: str,
+    *,
+    auth_token: Optional[str] = None,
+    template: str = "auto",
+    context_window: int = 0,
+    max_new_tokens: int = 512,
+    temperature: float = 0.0,
+    trust_remote_code: bool = False,
+) -> TransformersChatLLM:
+    """Load any Transformers causal LM with native or explicit chat formatting.
 
-    # Create model
-    model = AutoModelForCausalLM.from_pretrained(name, torch_dtype=torch.float16, trust_remote_code=True, device_map="auto").eval()
-    model.generation_config = GenerationConfig.from_pretrained("baichuan-inc/Baichuan2-7B-Chat")
+    Without an explicit token, use the login saved by the Hugging Face CLI.
+    Read the credential file directly so environment credentials are not used.
+    """
+    if template not in TEMPLATE_NAMES:
+        raise ValueError(f"Unknown Hugging Face chat template: {template}")
+    if max_new_tokens < 1:
+        raise ValueError("max_new_tokens must be at least 1")
 
-    return tokenizer, model
+    model_name = resolve_model_name(name)
+    token: Any = auth_token.strip() if auth_token and auth_token.strip() else False
+    if token is False:
+        from huggingface_hub.constants import HF_TOKEN_PATH
 
+        try:
+            token = Path(HF_TOKEN_PATH).read_text(encoding="utf-8").strip() or False
+        except FileNotFoundError:
+            pass
+    shared = {"token": token, "trust_remote_code": bool(trust_remote_code)}
+    config = AutoConfig.from_pretrained(model_name, **shared)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, **shared)
+    if tokenizer.pad_token_id is None and tokenizer.eos_token_id is not None:
+        tokenizer.pad_token = tokenizer.eos_token
 
-def baichuan_completion_to_prompt(completion):
-    return "<reserved_106>" + completion + "<reserved_107>"  # "You are a helpful assistant.<reserved_106>" + completion + "<reserved_107>""
+    resolved_context = _context_window(config, int(context_window or 0))
+    if max_new_tokens >= resolved_context:
+        raise ValueError("Maximum generated tokens must be smaller than the context window.")
+    renderer = partial(messages_to_prompt, tokenizer, template)
+    # Validate the selected format before downloading or allocating model weights.
+    renderer([{"role": "user", "content": "template validation"}])
 
-
-def falcon_model_and_tokenizer(name):
-    # Create tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(name)
-    load_tokenizer.append(tokenizer)
-
-    # Create model
-    model = AutoModelForCausalLM.from_pretrained(name, trust_remote_code=True, device_map="auto").eval()
-
-    return tokenizer, model
-
-
-def falcon_completion_to_prompt(completion):
-    return completion
-
-
-def mpt_model_and_tokenizer(name):
-    # Create tokenizer
-    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neox-20b")
-    load_tokenizer.append(tokenizer)
-
-    # Create model
-    model = AutoModelForCausalLM.from_pretrained(name, trust_remote_code=True, device_map="auto").eval()
-
-    return tokenizer, model
-
-
-def mpt_completion_to_prompt(completion):
-    return completion
-
-
-def yi_model_and_tokenizer(name):
-    # Create tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(name, use_fast=False)
-    load_tokenizer.append(tokenizer)
-
-    # Create model
     model = AutoModelForCausalLM.from_pretrained(
-        name,
-        torch_dtype=torch.float16,
-        device_map="auto"
-    ).eval()
+        model_name,
+        config=config,
+        device_map="auto" if torch.cuda.is_available() else None,
+        torch_dtype=_dtype(),
+        **shared,
+    )
+    generate_kwargs = {"do_sample": temperature > 0}
+    if temperature > 0:
+        generate_kwargs["temperature"] = float(temperature)
 
-    return tokenizer, model
-
-
-def yi_completion_to_prompt(completion):
-    return "<|im_start|> user\n" + completion + "<|im_end|> \n<|im_start|>assistant\n"
-
-
-tokenizer_and_model_fn_dict = {
-    "meta-llama/Llama-2-7b-chat-hf": partial(llama_model_and_tokenizer, auth_token=cfg.auth_token),
-    "THUDM/chatglm3-6b": chatglm_model_and_tokenizer,
-    "Qwen/Qwen1.5-7B-Chat": qwen_model_and_tokenizer,
-    "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8": qwen_model_and_tokenizer,
-    "baichuan-inc/Baichuan2-7B-Chat": baichuan_model_and_tokenizer,
-    "tiiuae/falcon-7b-instruct": falcon_model_and_tokenizer,
-    "mosaicml/mpt-7b-chat": mpt_model_and_tokenizer,
-    "01-ai/Yi-6B-Chat": yi_model_and_tokenizer,
-}
-
-completion_to_prompt_dict = {
-    "meta-llama/Llama-2-7b-chat-hf": llama_completion_to_prompt,
-    "THUDM/chatglm3-6b": chatglm_completion_to_prompt,
-    "Qwen/Qwen1.5-7B-Chat": qwen_completion_to_prompt,
-    "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8": qwen_completion_to_prompt,
-    "baichuan-inc/Baichuan2-7B-Chat": baichuan_completion_to_prompt,
-    "tiiuae/falcon-7b-instruct": falcon_completion_to_prompt,
-    "mosaicml/mpt-7b-chat": mpt_completion_to_prompt,
-    "01-ai/Yi-6B-Chat": yi_completion_to_prompt,
-}
-
-# llm_argument_dict = {
-#     "meta-llama/Llama-2-7b-chat-hf": {"context_window": 4096, "max_new_tokens": 256,
-#                                       "generate_kwargs": {"temperature": 0.7, "top_k": 50, "top_p": 0.95}},
-#     "THUDM/chatglm3-6b": {"context_window": 4096, "max_new_tokens": 256,
-#                           "generate_kwargs": {"do_sample": True, "temperature": 0.7, "top_k": 50, "top_p": 0.95,
-#                                               "eos_token_id": [2, 64795, 64797]}},
-#     "Qwen/Qwen1.5-7B-Chat": {"context_window": 4096, "max_new_tokens": 256,
-#                              "generate_kwargs": {"temperature": 0.7, "top_k": 50, "top_p": 0.95}},
-#     "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8": {"context_window": 4096, "max_new_tokens": 256,
-#                              "generate_kwargs": {"temperature": 0.7, "top_k": 50, "top_p": 0.95}},
-#     "baichuan-inc/Baichuan2-7B-Chat": {"context_window": 4096, "max_new_tokens": 256, "generate_kwargs": None},
-#     "tiiuae/falcon-7b-instruct": {"context_window": 4096, "max_new_tokens": 256,
-#                                   "generate_kwargs": {"do_sample": True, "temperature": 0.7, "top_k": 50,
-#                                                       "top_p": 0.95}},
-#     "mosaicml/mpt-7b-chat": {"context_window": 4096, "max_new_tokens": 256,
-#                              "generate_kwargs": {"do_sample": True, "temperature": 0.7, "top_k": 50, "top_p": 0.95}},
-#     "01-ai/Yi-6B-Chat": {"context_window": 4096, "max_new_tokens": 256,
-#                          "generate_kwargs": {"temperature": 0.7, "top_k": 50, "top_p": 0.95}},
-# }
-
-llm_argument_dict = {
-    "meta-llama/Llama-2-7b-chat-hf": {"context_window": 4096, "generate_kwargs": {"temperature": 0}},
-    "THUDM/chatglm3-6b": {"context_window": 4096, "generate_kwargs": {"temperature": 0, "eos_token_id": [2, 64795, 64797]}},
-    "Qwen/Qwen1.5-7B-Chat": {"context_window": 4096, "generate_kwargs": {"temperature": 0}},
-    "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8": {"context_window": 4096, "generate_kwargs": {"temperature": 0}},
-    "baichuan-inc/Baichuan2-7B-Chat": {"context_window": 4096, "generate_kwargs": {"temperature": 0}},
-    "tiiuae/falcon-7b-instruct": {"context_window": 4096, "generate_kwargs": {"temperature": 0}},
-    "mosaicml/mpt-7b-chat": {"context_window": 4096, "generate_kwargs": {"temperature": 0}},
-    "01-ai/Yi-6B-Chat": {"context_window": 4096, "generate_kwargs": {"temperature": 0}},
-}
-
-def get_huggingfacellm(name):
-    logger.info("name is " + name)
-    tokenizer, model = tokenizer_and_model_fn_dict[name](name)
-
-    # Create a HF LLM using the llama index wrapper
-    llm = HuggingFaceLLM(context_window=llm_argument_dict[name]["context_window"],
-                         max_new_tokens=llm_argument_dict[name]["max_new_tokens"],
-                         completion_to_prompt=completion_to_prompt_dict[name],
-                         generate_kwargs=llm_argument_dict[name]["generate_kwargs"],
-                         model=model,
-                         tokenizer=tokenizer,
-                         device_map="auto", )
-    return llm
+    return TransformersChatLLM(
+        model=model,
+        tokenizer=tokenizer,
+        model_name=model_name,
+        context_window=resolved_context,
+        max_new_tokens=max_new_tokens,
+        messages_to_prompt=renderer,
+        completion_to_prompt=lambda prompt: renderer([{"role": "user", "content": prompt}]),
+        stopping_ids=stop_token_ids(tokenizer, template),
+        generate_kwargs=generate_kwargs,
+    )

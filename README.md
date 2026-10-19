@@ -349,7 +349,11 @@ auth_token = "hf_xxx"        # Hugging Face auth token
 [settings]
 llm = "openai" # openai, huggingface, ollama
 ollama_model = "llama2:7b" # ollama model name
-huggingface_model = "llama" # huggingface model name
+huggingface_model = "Qwen/Qwen2.5-7B-Instruct" # repository ID or local path
+huggingface_template = "auto" # native tokenizer chat template; explicit fallbacks are available
+huggingface_context_window = 0 # 0 = detect from model configuration
+huggingface_max_new_tokens = 512
+huggingface_trust_remote_code = false
 embeddings = "BAAI/bge-large-en-v1.5"
 split_type = "sentence"
 chunk_size = 128

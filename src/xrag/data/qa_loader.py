@@ -80,7 +80,12 @@ def build_split(answers, questions, supporting_facts, title2id, title2sentences)
     logger.info(f"questions: {len(questions)}")
     logger.info(f"filter_questions: {len(filter_questions)}")
     return filter_questions,filter_answers, golden_ids, golden_sentences
-def get_qa_dataset(dataset_name:str,files=None):
+def get_qa_dataset(dataset_name: str, files=None, qa_limit: int | None = None):
+    """Load a QA dataset and its associated source documents.
+
+    For HotpotQA, ``qa_limit`` selects the first N validation questions whose
+    supporting articles exist in their context; they become test_data.
+    """
     if files is not None:
         # files is a json file, containing a list of {question, answer, file_paths}
         questions = []
@@ -195,20 +200,43 @@ def get_qa_dataset(dataset_name:str,files=None):
         answers = dataset['train']['answer'] + dataset['test']['answer'] + dataset['validation']['answer']
         golden_sources = dataset['train']['graph'] + dataset['test']['graph'] + dataset['validation']['graph']
     elif dataset_name == "hotpot_qa":
-        dataset = load_dataset(
-            "hotpot_qa",
-            "fullwiki",
-            storage_options={
+        if qa_limit is not None and qa_limit < 1:
+            raise ValueError("qa_limit must be greater than zero")
+        load_options = {
+            "storage_options": {
                 "client_kwargs": {
                     "timeout": aiohttp.ClientTimeout(total=cfg.dataset_download_timeout)
                 }
-            },
-        )
+            }
+        }
+        if qa_limit is not None:
+            load_options["split"] = "validation"
+        try:
+            dataset = load_dataset("hotpot_qa", "fullwiki", **load_options)
+        except (DatasetNotFoundError, FileNotFoundError):
+            if qa_limit is None:
+                raise
+            # Older Hub caches use the unnamespaced repository ID.
+            dataset = load_dataset("hotpot_qa", "fullwiki", **load_options)
 
-        questions = dataset['train']['question'] + dataset['validation']['question']
-        answers = dataset['train']['answer'] + dataset['validation']['answer']
-        golden_sources = dataset['train']['context'] + dataset['validation']['context']
-        supporting_facts = dataset['train']['supporting_facts'] + dataset['validation']['supporting_facts']
+        # Newer `datasets` returns a Column for split indexing; normalize to
+        # regular lists before combining train and validation records.
+        if qa_limit is not None:
+            records = [
+                (index, question, answer, context, facts)
+                for index, (question, answer, context, facts) in enumerate(zip(
+                    dataset['question'], dataset['answer'], dataset['context'], dataset['supporting_facts']
+                ))
+                if set(facts['title']).issubset(set(context['title']))
+            ][:qa_limit]
+            if len(records) < qa_limit:
+                raise ValueError(f"HotpotQA validation has only {len(records)} QA records with complete context")
+            source_indices, questions, answers, golden_sources, supporting_facts = map(list, zip(*records))
+        else:
+            questions = list(dataset['train']['question']) + list(dataset['validation']['question'])
+            answers = list(dataset['train']['answer']) + list(dataset['validation']['answer'])
+            golden_sources = list(dataset['train']['context']) + list(dataset['validation']['context'])
+            supporting_facts = list(dataset['train']['supporting_facts']) + list(dataset['validation']['supporting_facts'])
         source_sentences = []
         title2sentences = {}
         titles = []
@@ -238,11 +266,14 @@ def get_qa_dataset(dataset_name:str,files=None):
         documents = get_documents(title2sentences, title2id)
 
         indexes = list(range(len(questions)))
-        # split the dataset 8:1:1
-        random.shuffle(indexes)
-        train_indexes = indexes[:int(len(indexes)*0.9)]
-        valid_indexes = indexes[int(len(indexes)*0.9):int(len(indexes)*0.99)]
-        test_indexes = indexes[int(len(indexes)*0.99):]
+        if qa_limit is not None:
+            train_indexes, valid_indexes, test_indexes = [], [], indexes
+        else:
+            # Preserve the legacy random 90/9/1 split for full datasets.
+            random.shuffle(indexes)
+            train_indexes = indexes[:int(len(indexes)*0.9)]
+            valid_indexes = indexes[int(len(indexes)*0.9):int(len(indexes)*0.99)]
+            test_indexes = indexes[int(len(indexes)*0.99):]
         train_data = {}
         valid_data = {}
         test_data = {}
@@ -260,6 +291,8 @@ def get_qa_dataset(dataset_name:str,files=None):
             title2start=title2start,
             title2id=title2id,
             documents=documents,
+            qa_limit=qa_limit,
+            source_indices=source_indices if qa_limit is not None else None,
             dataset=dataset)
     elif dataset_name == "drop":
         """

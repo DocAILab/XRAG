@@ -1,21 +1,11 @@
 from llama_index.llms.openai_like import OpenAILike
 from llama_index.llms.ollama import Ollama
-from .huggingface_model import get_huggingfacellm
+from .huggingface_model import LEGACY_MODEL_ALIASES, get_huggingfacellm
 from ..config import Config
 
 
-llm_dict = {
-    "llama": "meta-llama/Llama-2-7b-chat-hf",
-    "chatglm": "THUDM/chatglm3-6b",
-    "qwen": "Qwen/Qwen1.5-7B-Chat",
-    "qwen14_int8": "Qwen/Qwen1.5-14B-Chat-GPTQ-Int8",
-    "qwen7_int8": "Qwen/Qwen1.5-7B-Chat-GPTQ-Int8",
-    "qwen1.8": "Qwen/Qwen1.5-1.8B-Chat",
-    "baichuan": "baichuan-inc/Baichuan2-7B-Chat",
-    "falcon": "tiiuae/falcon-7b-instruct",
-    "mpt": "mosaicml/mpt-7b-chat",
-    "yi": "01-ai/Yi-6B-Chat",
-}
+# Kept for callers that imported the old alias mapping.
+llm_dict = LEGACY_MODEL_ALIASES
 
 
 def get_openai(api_base, api_key, api_name, temperature):
@@ -30,14 +20,41 @@ def get_openai(api_base, api_key, api_name, temperature):
     )
 
 
+def get_ollama(model, url, port, request_timeout):
+    """Create an Ollama LLM using the configured server address."""
+    url = (url or "http://localhost").strip().rstrip("/")
+    if "://" not in url:
+        url = f"http://{url}"
+    return Ollama(
+        model=model,
+        base_url=f"{url}:{int(port)}",
+        request_timeout=request_timeout,
+    )
+
+
 
 def get_llm(name):
     if name == 'huggingface':
-        return get_huggingfacellm(Config().huggingface_model)
+        cfg = Config()
+        return get_huggingfacellm(
+            cfg.huggingface_model,
+            auth_token=getattr(cfg, "auth_token", None),
+            template=getattr(cfg, "huggingface_template", "auto"),
+            context_window=getattr(cfg, "huggingface_context_window", 0),
+            max_new_tokens=getattr(cfg, "huggingface_max_new_tokens", 512),
+            temperature=getattr(cfg, "temperature", 0.0),
+            trust_remote_code=getattr(cfg, "huggingface_trust_remote_code", False),
+        )
     elif name == 'openai':
         return get_openai(api_base=Config().api_base, api_key=Config().api_key, temperature=Config().temperature, api_name=Config().api_name)
     elif name == 'ollama':
-        return Ollama(model=Config().ollama_model, request_timeout=Config().ollama_request_timeout)
+        cfg = Config()
+        return get_ollama(
+            model=cfg.ollama_model,
+            url=getattr(cfg, "ollama_url", "http://localhost"),
+            port=getattr(cfg, "ollama_port", 11434),
+            request_timeout=cfg.ollama_request_timeout,
+        )
     else:
         raise ValueError(f"no model name: {name}.")
 

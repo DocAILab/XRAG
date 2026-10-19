@@ -1,9 +1,10 @@
 import os
+import hashlib
 os.environ['HF_ENDPOINT'] = 'https://hf-mirror.com'
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core import Settings, PromptTemplate
 from ..llms import get_llm
-from ..index import get_index
+from ..index import get_index, load_persisted_index
 from ..eval.evaluate_rag import evaluating
 from ..embs.embedding import get_embedding
 from ..data.qa_loader import get_qa_dataset
@@ -29,21 +30,60 @@ def seed_everything(seed):
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
 
-def build_index(documents):
-    cfg = Config()
-    llm = get_llm(cfg.llm)
-    # Create and dl embeddings instance
-    embeddings = get_embedding(cfg.embeddings,cfg.embed_batch_size)
 
+def get_index_persist_dir(cfg):
+    embedding_id = cfg.embeddings
+    if getattr(cfg, "embedding_type", "local") == "openai":
+        api_base = (getattr(cfg, "embedding_api_base", "") or "").rstrip("/")
+        provider_id = hashlib.sha256(api_base.encode("utf-8")).hexdigest()[:10]
+        embedding_id = f"openai-{provider_id}-{embedding_id.replace('/', '_')}"
+    return (
+        f"{cfg.persist_dir}-{cfg.dataset}-{embedding_id}-"
+        f"{cfg.split_type}-{cfg.chunk_size}"
+    )
+
+
+def configure_embedding_model(cfg):
+    embeddings = get_embedding(
+        cfg.embeddings,
+        cfg.embed_batch_size,
+        embedding_type=getattr(cfg, "embedding_type", "local"),
+        api_key=getattr(cfg, "embedding_api_key", None),
+        api_base=getattr(cfg, "embedding_api_base", None),
+    )
     Settings.chunk_size = cfg.chunk_size
-    Settings.llm = llm
     Settings.embed_model = embeddings
+    return embeddings
+
+
+def load_index(persist_dir, progress_callback=None):
+    cfg = Config()
+    if progress_callback:
+        progress_callback({"phase": "loading_model", "completed": 0, "total": 1, "progress": 0.05})
+    configure_embedding_model(cfg)
+    if progress_callback:
+        progress_callback({"phase": "model_ready", "completed": 0, "total": 1, "progress": 0.15})
+    return load_persisted_index(
+        persist_dir,
+        split_type=cfg.split_type,
+        progress_callback=progress_callback,
+    )
+
+def build_index(documents, progress_callback=None):
+    cfg = Config()
+    if progress_callback:
+        progress_callback({"phase": "loading_model", "completed": 0, "total": 0, "progress": 0.02})
+    # Index construction only needs the embedding model. The generation model
+    # is initialized later when the query engine is built.
+    configure_embedding_model(cfg)
+    if progress_callback:
+        progress_callback({"phase": "model_ready", "completed": 0, "total": 0, "progress": 0.08})
+
     # pip install llama-index-embeddings-langchain
 
     # Keep the configured base directory stable across repeated builds.
     # Mutating cfg.persist_dir here used to append the suffix again on every run.
-    persist_dir = cfg.persist_dir + '-' + cfg.dataset + '-' + cfg.embeddings + '-' + cfg.split_type + '-' + str(
-        cfg.chunk_size)
+    persist_dir = get_index_persist_dir(cfg)
 
     semantic_setting={
         "buffer_size":cfg.buffer_size,
@@ -53,13 +93,15 @@ def build_index(documents):
     }
     index, hierarchical_storage_context = get_index(documents, persist_dir, split_type=cfg.split_type,
                                                     chunk_size=cfg.chunk_size,chunk_overlap=cfg.chunk_overlap,
-                                                    chunk_sizes=cfg.chunk_sizes,semantic_setting=semantic_setting, window_size=cfg.window_size)
+                                                    chunk_sizes=cfg.chunk_sizes,semantic_setting=semantic_setting, window_size=cfg.window_size,
+                                                    progress_callback=progress_callback)
 
 
     return index, hierarchical_storage_context
 
 def build_query_engine(index, hierarchical_storage_context, use_async=False):
     cfg = Config()
+    Settings.llm = get_llm(cfg.llm)
     query_engine = RetrieverQueryEngine(
         retriever=get_retriver(cfg.retriever, index, hierarchical_storage_context=hierarchical_storage_context,cfg=cfg),
         response_synthesizer=response_synthesizer(cfg.responce_synthsizer),
