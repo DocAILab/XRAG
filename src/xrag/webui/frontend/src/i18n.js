@@ -7,10 +7,10 @@ export const messages = {
       subtitle: 'A powerful benchmarking framework for evaluating foundational components in advanced RAG systems',
       demo: 'Online Demo',
     },
-    steps: ['Set Dataset', 'Build Vector Database', 'Configure LLM', 'Configure Retrieval', 'Set Evaluation Metrics', 'View Test Results'],
+    steps: ['Load Dataset', 'Build Vector Database', 'Configure LLM', 'Configure Retrieval', 'Set Evaluation Metrics', 'View Test Results'],
     common: { previous: 'Previous', next: 'Next', runEvaluation: 'Run Evaluation', cancel: 'Cancel', close: 'Close', startOver: 'Start Over', loading: 'Loading…' },
     dataset: {
-      title: 'Set Dataset', preset: 'Choose Preset Dataset', custom: 'Or Upload Custom Dataset', loadSelected: 'Load Selected Dataset', loadingPreset: 'Loading dataset',
+      title: 'Load Dataset', preset: 'Choose Preset Dataset', custom: 'Or Upload Custom Dataset', loadSelected: 'Load Selected Dataset', loadingPreset: 'Loading dataset',
       descriptions: { hotpot_qa: 'Multi-hop QA Dataset', drop: 'Numerical Reasoning Dataset', natural_questions: 'Natural Language QA Dataset' },
       folderTitle: 'Upload Document Folder', folderDesc: 'Supports PDF, TXT, DOCX, etc.', folderPath: 'Folder path', folderPlaceholder: 'Path to a folder of documents', questionsPerFile: 'Number of questions per file', sentenceLength: 'Sentence length (-1 = file-level)', outputPath: 'Output JSON path', chooseFolder: 'Generate from Folder',
       folderFeatures: ['Standard dataset support', 'Custom dataset integration', 'Folder import support'],
@@ -26,10 +26,10 @@ export const messages = {
       }, 
       queryLocalModels: 'Get local models',
       embedding: 'Embedding Model', apiBase: 'Embedding API Base URL', apiKey: 'Embedding API Key', 
-      batchSize: 'Embedding Batch Size', splitType: 'Split Type', chunkSize: 'Chunk Size', chunkOverlap: 'Chunk Overlap', windowSize: 'Sentence Window Size', chunkSizes: 'Hierarchy Chunk Sizes', persistDir: 'Persist Directory', loadExistingTitle: 'Load Existing Vector Database', existingDir: 'Vector Database Directory', existingDirPlaceholder: 'Full path to a persisted LlamaIndex directory', loadExisting: 'Load Vector Database', building: 'Building vector index', embeddedNodes: 'Embedded nodes', persistDirPlaceholder: 'Path to save the vector indices',
+      batchSize: 'Embedding Batch Size', splitType: 'Split Type', chunkSize: 'Chunk Size', chunkOverlap: 'Chunk Overlap', windowSize: 'Sentence Window Size', chunkSizes: 'Hierarchy Chunk Sizes', persistDir: 'Persist Directory', persistDirRequired: 'Enter a persist directory first.', generate: 'Generate', loadExistingTitle: 'Or Load Existing Vector Database', existingDir: 'Vector Database Directory', existingDirPlaceholder: 'Full path to a persisted LlamaIndex directory', loadExisting: 'Load Vector Database', building: 'Building vector index', embeddedNodes: 'Embedded nodes', persistDirPlaceholder: 'Path to save the vector indices',
       phases: { pending: 'Preparing index build', loading_model: 'Loading embedding model', model_ready: 'Embedding model ready', splitting: 'Splitting documents', embedding: 'Generating embeddings', persisting: 'Persisting vector index', loading_existing: 'Loading existing index', done: 'Index loaded' }, splitTypes: {} },
     llm: { 
-      title: 'Configure LLM', select: 'Select Language Model Endpoint type', apiKey: 'API Key', showApiKey: 'Show API key', hideApiKey: 'Hide API key', apiBase: 'API Base URL', modelName: 'Model Name', queryModels: 'Fetch models from URL', modelsFound: 'Found {count} models.', modelsQueryFailed: 'Automatic model lookup failed. Enter a model name manually.', hfModel: 'HuggingFace Model', authToken: 'Auth Token', showAuthToken: 'Show access token', hideAuthToken: 'Hide access token', ollamaModel: 'Ollama Model', timeout: 'Request Timeout (seconds)', temperature: 'Temperature' 
+      title: 'Configure LLM', select: 'Select Language Model Endpoint type', apiKey: 'API Key', showApiKey: 'Show API key', hideApiKey: 'Hide API key', apiBase: 'API Base URL', modelName: 'Model Name', queryModels: 'Fetch models from URL', modelsFound: 'Found {count} models.', modelsQueryFailed: 'Automatic model lookup failed. Make sure your server setting is correct.', hfModel: 'Hugging Face Model or Local Path', queryLocalModels: 'Get local models', localModelsQueryFailed: 'No local Transformers models were found. Enter a repository ID or path manually.', authToken: 'Hugging Face Access Token', showAuthToken: 'Show access token', hideAuthToken: 'Hide access token', hfTemplate: 'Conversation Template', hfTemplateAuto: 'Auto (model tokenizer)', hfTemplateHelp: 'Auto uses the chat template shipped with the tokenizer. Select a fallback only for older repositories without one.', hfTemplateCredit: 'Fallback formats adapted from LLaMA-Factory by hiyouga and contributors (Apache-2.0).', hfContextWindow: 'Context Window', hfContextWindowHelp: '0 detects it from the model configuration.', hfMaxNewTokens: 'Maximum Generated Tokens', hfTrustRemoteCode: 'Allow repository custom code', hfTrustWarning: 'Only enable for repositories you trust.', ollamaModel: 'Ollama Model', ollamaUrl: 'Ollama Server URL', ollamaPort: 'Port', queryOllamaModels: 'Fetch Ollama models', ollamaModelsQueryFailed: 'Automatic Ollama model lookup failed. Enter a model name manually.', timeout: 'Request Timeout (seconds)', temperature: 'Temperature'
     },
     retrieval: {
       transforms: {
@@ -41,7 +41,18 @@ export const messages = {
         subquery_fewshot: 'Sub-question Decomposition (Few-shot)',
       },
       typeHelp: 'Choose how to retrieve context for a question. BM25 uses keyword matching; Vector uses embedding similarity. Other retrievers require the corresponding index structure.',
-      title: 'Configure Retrieval', type: 'Retriever Type', retrieval: 'Retrieval', mode: 'Retriever Mode', modeValue: 'Mode', topK: 'Top K Results', pre: 'Pre-retrieval Process', noneProcess: 'No Processing', rerank: 'Post-process Rerank', noneRerank: 'No Reranking', orchestrator: 'Orchestrator', synthesizer: 'Response Synthesizer', qaTemplate: 'QA Template', refineTemplate: 'Refine Template', rerankers: { long_context_reorder: 'Long context reorder (LlamaIndex)', colbertv2_rerank: 'colbert-ir/colbertv2.0', 'bge-reranker-base': 'BAAI/bge-reranker-base' }
+      title: 'Configure Retrieval', type: 'Retriever Type', retrieval: 'Retrieval',
+      mode: 'Retriever Mode', modeValue: 'Mode',
+      topK: 'Top K Results',
+      pre: 'Pre-retrieval',
+      noneProcess: 'No Processing',
+      rerank: 'Post-processor (Reranker)',
+      noneRerank: 'No Reranking',
+      orchestrator: 'Orchestrator',
+      synthesizer: 'Post-retrival',
+      qaTemplate: 'QA Template',
+      refineTemplate: 'Refine Template',
+      rerankers: { long_context_reorder: 'Long context reorder (LlamaIndex)', colbertv2_rerank: 'colbert-ir/colbertv2.0', 'bge-reranker-base': 'BAAI/bge-reranker-base' }
     },
     metrics: {
       title: 'Set Evaluation Metrics', samples: 'Number of test samples', presets: 'Recommended presets', selected: 'metrics selected', highCost: 'High cost', experimental: 'Experimental', requires: 'Requires:',
@@ -52,16 +63,16 @@ export const messages = {
       seperOutputs: 'Outputs: with context, without context, and delta.', seperUnavailable: 'Unavailable because SePer is disabled in the current configuration.', goldenContextNote: 'G uses the golden context as the reference.',
     },
     results: { title: 'View Test Results', experimentId: 'Experiment ID:', running: 'Running evaluation', complete: 'samples complete.', failed: 'Evaluation failed:', cancelled: 'Evaluation cancelled.', finished: 'Evaluation complete', processed: 'samples processed', quickPreset: 'Quick preset', quickOverview: 'Quick evaluation overview', metricsCount: 'metrics', dataset: 'Dataset', model: 'Generation model', samples: 'Samples', duration: 'Duration', shown: 'shown', retrievalAggregate: 'Retrieval Quality', aggregate: 'Answer Text Match', metric: 'Metric', score: 'Score', valid: 'Valid Count', unavailable: 'Unavailable', perSample: 'Sample details', answer: 'Answer', expected: 'Expected', retrieved: 'Retrieved', chunks: 'contexts' },
-    messages: { initFailed: 'Failed to initialise:', configLoaded: 'Loaded configuration from {path}.', configInitialized: 'Initialised {path} with the default configuration.', chooseDataset: 'Pick a preset dataset or upload a custom one first.', datasetNotFound: 'Dataset {name} was not found.', datasetLoadFailed: 'Could not load dataset {name}. Please ensure it is available.', buildingIndex: 'Building index…', indexBuilt: 'Index built.', indexConnectionLost: 'The index build connection was interrupted. Please try again.', llmSaved: 'LLM config saved.', buildingEngine: 'Building query engine…', engineReady: 'Query engine ready.', chooseMetric: 'Select at least one evaluation metric.', loaded: 'Loaded {name}.', chooseJson: 'Choose a JSON file first.', uploaded: 'Uploaded {name}.', generated: 'Generated {count} QA pairs.', sampleFailed: 'Sample failed' },
+    messages: { initFailed: 'Failed to initialise:', configLoaded: 'Loaded configuration from {path}.', configInitialized: 'Initialised {path} with the default configuration.', chooseDataset: 'Pick a preset dataset or upload a custom one first.', datasetNotFound: 'Dataset {name} was not found.', datasetLoadFailed: 'Could not load dataset {name}. Please ensure it is available.', buildingIndex: 'Building index…', buildIndexFirst: 'Generate or load a vector database first.', indexBuilt: 'Index built.', indexConnectionLost: 'The index build connection was interrupted. Please try again.', llmSaved: 'LLM config saved.', buildingEngine: 'Building query engine…', engineReady: 'Query engine ready.', chooseMetric: 'Select at least one evaluation metric.', loaded: 'Loaded {name}.', chooseJson: 'Choose a JSON file first.', uploaded: 'Uploaded {name}.', generated: 'Generated {count} QA pairs.', sampleFailed: 'Sample failed' },
   },
   zh: {
     nav: { workflow: '使用流程', features: '特性', demo: '演示', paper: '论文', paperDoi: 'IEEE ICDE (Xplore)', paperArxiv: 'arXiv', github: 'GitHub' },
     footer: { copyright: '© XRAG', github: 'GitHub', docs: '文档', ram: '内存：' },
     hero: { title: 'XRAG: eXamining the Core - Benchmarking Foundational Components in Advanced Retrieval-Augmented Generation', subtitle: '用于评估 RAG 系统基础组件的基准测试框架', demo: '在线演示' },
-    steps: ['设置数据集', '构建向量库', '配置 LLM', '配置检索', '设置评测指标', '查看测试结果'],
+    steps: ['读取数据集', '构建向量库', '配置 LLM', '配置检索', '设置评测指标', '查看测试结果'],
     common: { previous: '上一步', next: '下一步', runEvaluation: '运行评测', cancel: '取消', close: '关闭', startOver: '重新开始', loading: '加载中…' },
     dataset: {
-      title: '设置数据集', preset: '选择预设数据集', custom: '或上传自定义数据集', loadSelected: '加载所选数据集', loadingPreset: '正在加载数据集',
+      title: '读取数据集', preset: '选择预设数据集', custom: '或上传自定义数据集', loadSelected: '加载所选数据集', loadingPreset: '正在加载数据集',
       descriptions: { hotpot_qa: '多跳问答数据集', drop: '数值推理数据集', natural_questions: '自然语言问答数据集' },
       folderTitle: '导入文档文件夹', folderDesc: '支持 PDF、TXT、DOCX 等格式', folderPath: '文件夹路径', folderPlaceholder: '文档文件夹路径', questionsPerFile: '每个文件生成的问题数', sentenceLength: '句子长度（-1 表示按文件处理）', outputPath: '输出 JSON 路径', chooseFolder: '从文件夹生成',
       folderFeatures: ['支持标准数据集', '支持自定义数据集集成', '支持文件夹批量导入'],
@@ -73,11 +84,11 @@ export const messages = {
       backend: '嵌入模型后端',  backends: { local: '本地 Hugging Face', openai: 'OpenAI 兼容 API' }, 
       queryLocalModels: '获取本地模型',
       embedding: '嵌入模型', apiBase: '嵌入模型 API Base URL', apiKey: '嵌入模型 API 密钥', 
-      batchSize: '嵌入批大小', splitType: '切分方式', chunkSize: '文本块大小', chunkOverlap: '文本块重叠大小', windowSize: '句子窗口大小', chunkSizes: '分层文本块大小', persistDir: '持久化目录', loadExistingTitle: '加载已有向量库', existingDir: '向量库目录', existingDirPlaceholder: 'LlamaIndex 持久化目录的完整路径', loadExisting: '加载向量库', building: '正在构建向量索引', embeddedNodes: '已生成向量节点', 
+      batchSize: '嵌入批大小', splitType: '切分方式', chunkSize: '文本块大小', chunkOverlap: '文本块重叠大小', windowSize: '句子窗口大小', chunkSizes: '分层文本块大小', persistDir: '持久化目录', loadExistingTitle: '或加载已有向量库', existingDir: '向量库目录', existingDirPlaceholder: 'LlamaIndex 持久化目录的完整路径', loadExisting: '加载向量库', building: '正在构建向量索引', embeddedNodes: '已生成向量节点',
       phases: { pending: '正在准备构建索引', loading_model: '正在加载嵌入模型', model_ready: '嵌入模型已就绪', splitting: '正在切分文档', embedding: '正在生成向量', persisting: '正在保存向量索引', loading_existing: '正在加载已有索引', done: '索引已就绪' }, 
-      persistDirPlaceholder: '向量索引保存路径',
+      persistDirPlaceholder: '向量索引保存路径', persistDirRequired: '请先填写持久化目录。', generate: '生成',
       splitTypes: { sentence: '按句子', sentence_window: '句子窗口', character: '按字符', hierarchical: '分层切分' } },
-    llm: { title: '配置大语言模型', select: '选择LLM接入端点类型', apiKey: 'API 密钥', showApiKey: '显示 API 密钥', hideApiKey: '隐藏 API 密钥', apiBase: 'API Base URL', modelName: '模型名称', queryModels: '从URL读取模型列表', modelsFound: '已找到 {count} 个模型。', modelsQueryFailed: '自动查询失败，请手动填写模型名称。', hfModel: 'HuggingFace 模型', authToken: '访问令牌', showAuthToken: '显示访问令牌', hideAuthToken: '隐藏访问令牌', ollamaModel: 'Ollama 模型', timeout: '请求超时（秒）', temperature: '温度' },
+    llm: { title: '配置大语言模型', select: '选择 LLM 接入端点类型', apiKey: 'API 密钥', showApiKey: '显示 API 密钥', hideApiKey: '隐藏 API 密钥', apiBase: 'API Base URL', modelName: '模型名称', queryModels: '从 URL 读取模型列表', modelsFound: '已找到 {count} 个模型。', modelsQueryFailed: '自动查询失败，请手动填写模型名称。', hfModel: 'Hugging Face 模型或本地路径', queryLocalModels: '获取本地模型', localModelsQueryFailed: '未找到本地 Transformers 模型，请手动填写仓库 ID 或路径。', authToken: 'Hugging Face 访问令牌', showAuthToken: '显示访问令牌', hideAuthToken: '隐藏访问令牌', hfTemplate: '对话模板', hfTemplateAuto: '自动（模型 tokenizer）', hfTemplateHelp: '自动模式使用 tokenizer 自带的对话模板；仅在旧模型仓库未提供模板时选择兼容模板。', hfTemplateCredit: '兼容模板改编自 hiyouga 及贡献者的 LLaMA-Factory（Apache-2.0）。', hfContextWindow: '上下文窗口', hfContextWindowHelp: '填写 0 时从模型配置自动识别。', hfMaxNewTokens: '最大生成 Token 数', hfTrustRemoteCode: '允许执行仓库自定义代码', hfTrustWarning: '仅对你信任的模型仓库启用。', ollamaModel: 'Ollama 模型', ollamaUrl: 'Ollama 服务 URL', ollamaPort: '端口', queryOllamaModels: '获取 Ollama 模型', ollamaModelsQueryFailed: '获取 Ollama 模型失败，请确保配置填写正确。', timeout: '请求超时（秒）', temperature: '温度' },
     retrieval: {
       transforms: {
         hyde_zeroshot: 'Hypothetical Document Embedding (Zero-shot)',
@@ -88,7 +99,7 @@ export const messages = {
         subquery_fewshot: 'Sub-question Decomposition (Few-shot)',
       },
       typeHelp: '选择如何为问题检索上下文。BM25 使用关键词匹配，Vector 使用向量相似度；其他检索器需要相应的索引结构。',
-      title: '配置检索', type: '检索器类型', retrieval: '检索', mode: '检索器模式', modeValue: '模式', topK: '返回结果数（Top K）', pre: '检索前处理', noneProcess: '无', rerank: '检索后重排', noneRerank: '无', orchestrator: '编排器', synthesizer: '回答合成器', qaTemplate: '问答模板', refineTemplate: '优化模板', rerankers: { long_context_reorder: 'Long context reorder (LlamaIndex)', colbertv2_rerank: 'colbert-ir/colbertv2.0', 'bge-reranker-base': 'BAAI/bge-reranker-base' }
+      title: '配置检索', type: '检索器类型', retrieval: '检索', mode: '检索器模式', modeValue: '模式', topK: '返回结果数（Top K）', pre: '检索前处理', noneProcess: '无', rerank: '后处理器（重排器）', noneRerank: '无', orchestrator: '编排器', synthesizer: '回答合成器', qaTemplate: '问答模板', refineTemplate: '优化模板', rerankers: { long_context_reorder: 'Long context reorder (LlamaIndex)', colbertv2_rerank: 'colbert-ir/colbertv2.0', 'bge-reranker-base': 'BAAI/bge-reranker-base' }
     },
     metrics: {
       title: '设置评测指标', samples: '测试样本数', presets: '推荐预设', selected: '个指标已选择', highCost: '高成本', experimental: '实验性', requires: '需要：',
@@ -99,7 +110,7 @@ export const messages = {
       seperOutputs: '输出：有上下文、无上下文和差值。', seperUnavailable: '当前配置未启用 SePer，因此不可选择。', goldenContextNote: 'G 表示使用黄金上下文作为参考。',
     },
     results: { title: '查看测试结果', experimentId: '实验 ID：', running: '正在运行评测', complete: '个样本已完成。', failed: '评测失败：', cancelled: '评测已取消。', finished: '评测完成', processed: '个样本已处理', quickPreset: '快速评测', quickOverview: '快速评测概览', metricsCount: '项指标', dataset: '数据集', model: '生成模型', samples: '样本', duration: '用时', shown: '条展示', retrievalAggregate: '检索质量', aggregate: '答案文本匹配', metric: '指标', score: '得分', valid: '有效数量', unavailable: '不可用', perSample: '样本明细', answer: '回答', expected: '参考答案', retrieved: '已检索', chunks: '段上下文' },
-    messages: { initFailed: '初始化失败：', configLoaded: '已读取配置 {path}。', configInitialized: '已使用默认配置初始化 {path}。', chooseDataset: '请先选择预设数据集或上传自定义数据集。', datasetNotFound: '未找到{name}数据集。', datasetLoadFailed: '{name}数据集加载失败，请确保数据集存在。', buildingIndex: '正在构建索引…', indexBuilt: '索引构建完成。', indexConnectionLost: '索引构建连接已中断，请重试。', llmSaved: '大语言模型配置已保存。', buildingEngine: '正在构建查询引擎…', engineReady: '查询引擎已就绪。', chooseMetric: '请至少选择一个评测指标。', loaded: '已加载 {name}。', chooseJson: '请先选择 JSON 文件。', uploaded: '已上传 {name}。', generated: '已生成 {count} 个问答对。', sampleFailed: '样本评测失败' },
+    messages: { initFailed: '初始化失败：', configLoaded: '已读取配置 {path}。', configInitialized: '已使用默认配置初始化 {path}。', chooseDataset: '请先选择预设数据集或上传自定义数据集。', datasetNotFound: '未找到{name}数据集。', datasetLoadFailed: '{name}数据集加载失败，请确保数据集存在。', buildingIndex: '正在构建索引…', buildIndexFirst: '请先生成或加载向量数据库。', indexBuilt: '索引构建完成。', indexConnectionLost: '索引构建连接已中断，请重试。', llmSaved: '大语言模型配置已保存。', buildingEngine: '正在构建查询引擎…', engineReady: '查询引擎已就绪。', chooseMetric: '请至少选择一个评测指标。', loaded: '已加载 {name}。', chooseJson: '请先选择 JSON 文件。', uploaded: '已上传 {name}。', generated: '已生成 {count} 个问答对。', sampleFailed: '样本评测失败' },
   },
 };
 import { computed, ref, watch } from 'vue';

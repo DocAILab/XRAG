@@ -9,8 +9,19 @@ const props = defineProps({ store: Object, t: Object });
 const emit = defineEmits(['error', 'notice']);
 const models = ref([]);
 const loadingModels = ref(false);
+const ollamaModels = ref([]);
+const loadingOllamaModels = ref(false);
+const localHfModels = ref([]);
+const loadingLocalHfModels = ref(false);
 const showApiKey = ref(false);
-const showAuthToken = ref(false);
+
+function selectHfModel(value) {
+  props.store.hfModel = value;
+  const model = value.trim().toLowerCase();
+  const match = Object.entries(props.store.options?.hf_model_templates || {})
+    .find(([name]) => name.toLowerCase() === model);
+  props.store.hfTemplate = match?.[1] || 'auto';
+}
 
 async function queryModels() {
   loadingModels.value = true;
@@ -23,6 +34,37 @@ async function queryModels() {
     emit('error', props.t.llm.modelsQueryFailed);
   } finally {
     loadingModels.value = false;
+  }
+}
+
+async function queryOllamaModels() {
+  loadingOllamaModels.value = true;
+  try {
+    const result = await api.listOllamaModels({
+      ollama_url: props.store.ollamaUrl || undefined,
+      ollama_port: props.store.ollamaPort || undefined,
+    });
+    ollamaModels.value = result.models;
+    emit('notice', props.t.llm.modelsFound.replace('{count}', result.models.length));
+  } catch {
+    ollamaModels.value = [];
+    emit('error', props.t.llm.ollamaModelsQueryFailed);
+  } finally {
+    loadingOllamaModels.value = false;
+  }
+}
+
+async function queryLocalHfModels() {
+  loadingLocalHfModels.value = true;
+  try {
+    const result = await api.listLocalHuggingFaceModels();
+    localHfModels.value = result.models;
+    emit('notice', props.t.llm.modelsFound.replace('{count}', result.models.length));
+  } catch {
+    localHfModels.value = [];
+    emit('error', props.t.llm.localModelsQueryFailed);
+  } finally {
+    loadingLocalHfModels.value = false;
   }
 }
 </script>
@@ -53,20 +95,65 @@ async function queryModels() {
       </div>
     </template>
     <template v-else-if="store.llm === 'huggingface'">
-      <div class="form-row"><label class="field-label">{{ t.llm.hfModel }}</label><select v-model="store.hfModel"><option v-for="opt in store.options?.hf_models || []" :key="opt" :value="opt">{{ opt }}</option></select></div>
-      <!--
       <div class="form-row">
-        <label class="field-label" for="llm-auth-token">{{ t.llm.authToken }}</label>
-         <div class="secret-input">
-          <input id="llm-auth-token" v-model="store.authToken" :type="showAuthToken ? 'text' : 'password'" autocomplete="off" placeholder="hf_..." />
-          <button class="secret-toggle" type="button" :aria-label="showAuthToken ? t.llm.hideAuthToken : t.llm.showAuthToken" :title="showAuthToken ? t.llm.hideAuthToken : t.llm.showAuthToken" :aria-pressed="showAuthToken" @click="showAuthToken = !showAuthToken">
-            <img :src="showAuthToken ? eyeSlashUrl : eyeUrl" alt="" aria-hidden="true" />
+        <label class="field-label" for="hf-model-name">{{ t.llm.hfModel }}</label>
+        <div class="llm-model-control">
+          <ModelCombobox id="hf-model-name" :model-value="store.hfModel" @update:model-value="selectHfModel"
+            :options="localHfModels"
+            :label="t.llm.hfModel" placeholder="Qwen/Qwen2.5-7B-Instruct" />
+          <button class="button button-primary" type="button" :disabled="loadingLocalHfModels" @click="queryLocalHfModels">
+            {{ loadingLocalHfModels ? t.common.loading : t.llm.queryLocalModels }}
           </button>
         </div>
-      </div> -->
+      </div>
+      <!-- <div class="form-row">
+        <label class="field-label" for="hf-template">
+          {{ t.llm.hfTemplate }}
+          <a class="inline-help" href="https://github.com/hiyouga/LLaMA-Factory" target="_blank" rel="noopener noreferrer" :title="`${t.llm.hfTemplateHelp}\n${t.llm.hfTemplateCredit}`" :aria-label="`${t.llm.hfTemplateHelp} ${t.llm.hfTemplateCredit}`">ⓘ</a>
+        </label>
+        <select id="hf-template" v-model="store.hfTemplate">
+          <option v-for="template in store.options?.hf_templates || ['auto']" :key="template" :value="template">
+            {{ template === 'auto' ? t.llm.hfTemplateAuto : template }}
+          </option>
+        </select>
+      </div>
+      <div class="hf-number-grid">
+        <div class="form-row">
+          <label class="field-label" for="hf-context-window">
+            {{ t.llm.hfContextWindow }}
+            <span class="inline-help" :title="t.llm.hfContextWindowHelp" :aria-label="t.llm.hfContextWindowHelp">ⓘ</span>
+          </label>
+          <input id="hf-context-window" v-model.number="store.hfContextWindow" type="number" min="0" step="1" />
+        </div>
+        <div class="form-row">
+          <label class="field-label" for="hf-max-new-tokens">{{ t.llm.hfMaxNewTokens }}</label>
+          <input id="hf-max-new-tokens" v-model.number="store.hfMaxNewTokens" type="number" min="1" step="1" />
+        </div>
+      </div>
+      <label class="hf-trust-control">
+        <input v-model="store.hfTrustRemoteCode" type="checkbox" />
+        <span>{{ t.llm.hfTrustRemoteCode }} <small>{{ t.llm.hfTrustWarning }}</small></span>
+      </label> -->
     </template>
     <template v-else>
-      <div class="form-row"><label class="field-label">{{ t.llm.ollamaModel }}</label><input v-model="store.ollamaModel" type="text" placeholder="llama2:7b" /></div>
+      <div class="ollama-server-control">
+        <div class="form-row">
+          <label class="field-label" for="ollama-url">{{ t.llm.ollamaUrl }}</label><input id="ollama-url" v-model="store.ollamaUrl" type="text" placeholder="http://localhost" />
+        </div>
+        <div class="form-row">
+          <label class="field-label" for="ollama-port">{{ t.llm.ollamaPort }}</label><input id="ollama-port" v-model.number="store.ollamaPort" type="text" />
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="field-label">{{ t.llm.ollamaModel }}</label>
+        <div class="llm-model-control">
+          <ModelCombobox id="ollama-model-name" v-model="store.ollamaModel" :options="ollamaModels"
+            :label="t.llm.ollamaModel" placeholder="llama2:7b" />
+          <button class="button button-primary" type="button" :disabled="loadingOllamaModels" @click="queryOllamaModels">
+            {{ loadingOllamaModels ? t.common.loading : t.llm.queryOllamaModels }}
+          </button>
+        </div>
+      </div>
       <div class="form-row"><label class="field-label">{{ t.llm.timeout }}</label><input v-model.number="store.ollamaTimeout" type="number" min="1" /></div>
     </template>
     <div class="form-row"><label class="field-label">{{ t.llm.temperature }}</label><input v-model.number="store.temperature" type="number" step="0.1" max="2.0" min="0.0"/></div>

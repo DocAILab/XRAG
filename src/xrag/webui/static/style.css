@@ -314,10 +314,6 @@ a:hover { text-decoration: underline; }
   margin-bottom: 18px;
 }
 
-.form-row + .form-row {
-  margin-top: 16px;
-}
-
 .llm-model-control {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -328,6 +324,55 @@ a:hover { text-decoration: underline; }
 .llm-model-control .button {
   min-width: 126px;
   white-space: nowrap;
+}
+
+.hf-number-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.field-note {
+  margin: 6px 0 0;
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.field-note a {
+  color: var(--primary);
+}
+
+.hf-trust-control {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0 0 18px;
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.hf-trust-control input {
+  margin-top: 2px;
+}
+
+.hf-trust-control small {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.ollama-server-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr).15fr;
+  gap: 12px;
+}
+#ollama-port {
+  text-align: right;
+}
+.ollama-server-control > .form-row {
+  min-width: 0;
 }
 
 .model-combobox {
@@ -559,6 +604,18 @@ textarea {
 
 .index-load-control .button {
   min-width: 132px;
+  white-space: nowrap;
+}
+
+.persist-generate-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.persist-generate-control .button {
+  min-width: 126px;
   white-space: nowrap;
 }
 
@@ -1380,11 +1437,14 @@ textarea {
   .preset-cards, .upload-grid, .metric-grid {
     grid-template-columns: 1fr;
   }
+  .hf-number-grid {
+    grid-template-columns: 1fr;
+  }
   .stepper {
     grid-template-columns: repeat(3, 1fr);
     row-gap: 16px;
   }
-  .app-header .container, .app-footer .container {
+  .app-footer .container {
     flex-direction: column;
     gap: 8px;
     text-align: center;
@@ -1394,14 +1454,23 @@ textarea {
     justify-content: center;
   }
   .app-header .container {
-    height: auto;
-    padding-top: 8px;
-    padding-bottom: 10px;
+    flex-direction: row;
+    height: 64px;
+    gap: 16px;
+    text-align: left;
   }
   .nav {
-    width: 100%;
-    justify-content: center;
+    width: auto;
+    min-width: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
     gap: 14px;
+  }
+  .brand,
+  .paper-links summary,
+  .lang-toggle {
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
   .nav a {
     white-space: nowrap;
@@ -1420,14 +1489,28 @@ textarea {
     padding-left: 16px;
     padding-right: 16px;
   }
+  .app-header .container {
+    gap: 8px;
+  }
+  .brand {
+    gap: 8px;
+    font-size: 18px;
+  }
+  .brand .brand-logo {
+    width: 34px;
+    height: 32px;
+  }
   .nav {
-    gap: 10px;
+    gap: 8px;
   }
   .nav a {
     font-size: 13px;
   }
+  .paper-links summary {
+    font-size: 13px;
+  }
   .lang-toggle button {
-    padding: 5px 8px;
+    padding: 5px 7px;
   }
   .llm-model-control {
     grid-template-columns: 1fr;

@@ -19,7 +19,7 @@ import traceback
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -41,18 +41,18 @@ STATIC_DIR = Path(__file__).parent / "static"
 # ---------------------------------------------------------------------------
 LLM_OPTIONS = ["openai", "huggingface", "ollama"]
 EMBEDDING_BACKEND_OPTIONS = ["local", "openai"]
-HF_MODEL_OPTIONS = [
-    "llama",
-    "chatglm",
-    "qwen",
-    "qwen14_int8",
-    "qwen7_int8",
-    "qwen1.8",
-    "baichuan",
-    "falcon",
-    "mpt",
-    "yi",
-]
+# Exact repository mappings only: newer variants may use different formatting
+# or thinking/tool conventions even when they share the same model family.
+HF_MODEL_TEMPLATES = {
+    "Qwen/Qwen2.5-7B-Instruct": "chatml",
+    "meta-llama/Llama-2-7b-chat-hf": "llama2",
+    "meta-llama/Llama-3.1-8B-Instruct": "llama3",
+    "mistralai/Mistral-7B-Instruct-v0.1": "mistral",
+    "google/gemma-2-2b-it": "gemma",
+    "microsoft/Phi-3-mini-4k-instruct": "phi3",
+}
+HF_MODEL_OPTIONS = ["Qwen/Qwen2.5-7B-Instruct"]
+HF_TEMPLATE_OPTIONS = ["auto", "chatml", "llama2", "llama3", "mistral", "gemma", "phi3", "plain"]
 EMBEDDING_OPTIONS = [
     "BAAI/bge-large-en-v1.5",
     "BAAI/bge-m3",
@@ -141,11 +141,11 @@ QUERY_TRANSFORM_OPTIONS = [
 ]
 ORCHESTRATOR_OPTIONS = ["default", "self", "adaptive", "sim", "open"]
 ORCHESTRATOR_DISPLAY = {
-    "default": "Default",
-    "self": "Self-RAG",
-    "adaptive": "Adaptive-RAG",
-    "sim": "SIM-RAG",
-    "open": "Open-RAG",
+    "default": "Vanilla RAG (Sequential)",
+    "self": "Self-RAG (Conditional)",
+    "adaptive": "Adaptive-RAG (Hybrid)",
+    "sim": "SIM-RAG (Iterative)",
+    "open": "Open-RAG (Conditional)",
 }
 
 CONR_METRICS = ["F1", "em", "mrr", "hit1", "hit10", "MAP", "NDCG", "DCG", "IDCG"]
@@ -375,9 +375,14 @@ class LLMUpdate(BaseModel):
     api_key: Optional[str] = None
     api_base: Optional[str] = None
     api_name: Optional[str] = None
-    auth_token: Optional[str] = None
     huggingface_model: Optional[str] = None
+    huggingface_template: Optional[Literal["auto", "chatml", "llama2", "llama3", "mistral", "gemma", "phi3", "plain"]] = None
+    huggingface_context_window: Optional[int] = Field(default=None, ge=0)
+    huggingface_max_new_tokens: Optional[int] = Field(default=None, ge=1)
+    huggingface_trust_remote_code: Optional[bool] = None
     ollama_model: Optional[str] = None
+    ollama_url: Optional[str] = None
+    ollama_port: Optional[int] = Field(default=None, ge=1, le=65535)
     ollama_request_timeout: Optional[int] = None
     temperature: Optional[float] = None
 
@@ -385,6 +390,11 @@ class LLMUpdate(BaseModel):
 class LLMModelsRequest(BaseModel):
     api_key: Optional[str] = None
     api_base: Optional[str] = None
+
+
+class OllamaModelsRequest(BaseModel):
+    ollama_url: Optional[str] = None
+    ollama_port: Optional[int] = Field(default=None, ge=1, le=65535)
 
 
 class VectorDBUpdate(BaseModel):
@@ -447,9 +457,14 @@ def _cfg_to_dict(cfg: Config) -> Dict[str, Any]:
             "api_key": getattr(cfg, "api_key", None),
             "api_base": getattr(cfg, "api_base", None),
             "api_name": getattr(cfg, "api_name", None),
-            "auth_token": getattr(cfg, "auth_token", None),
             "huggingface_model": getattr(cfg, "huggingface_model", None),
+            "huggingface_template": getattr(cfg, "huggingface_template", "auto"),
+            "huggingface_context_window": getattr(cfg, "huggingface_context_window", 0),
+            "huggingface_max_new_tokens": getattr(cfg, "huggingface_max_new_tokens", 512),
+            "huggingface_trust_remote_code": getattr(cfg, "huggingface_trust_remote_code", False),
             "ollama_model": getattr(cfg, "ollama_model", None),
+            "ollama_url": getattr(cfg, "ollama_url", "http://localhost"),
+            "ollama_port": getattr(cfg, "ollama_port", 11434),
             "ollama_request_timeout": getattr(cfg, "ollama_request_timeout", None),
             "temperature": getattr(cfg, "temperature", None),
         },
@@ -494,8 +509,11 @@ def _cfg_to_dict(cfg: Config) -> Dict[str, Any]:
 
 
 def _apply_llm_update(cfg: Config, body: LLMUpdate) -> None:
-    for field in ("llm", "api_key", "api_base", "api_name", "auth_token",
-                  "huggingface_model", "ollama_model", "ollama_request_timeout",
+    for field in ("llm", "api_key", "api_base", "api_name",
+                  "huggingface_model", "huggingface_template", "huggingface_context_window",
+                  "huggingface_max_new_tokens", "huggingface_trust_remote_code",
+                  "ollama_model", "ollama_url", "ollama_port",
+                  "ollama_request_timeout",
                   "temperature"):
         value = getattr(body, field)
         if value is not None:
@@ -628,6 +646,8 @@ def get_options() -> Dict[str, Any]:
     return {
         "llms": LLM_OPTIONS,
         "hf_models": HF_MODEL_OPTIONS,
+        "hf_model_templates": HF_MODEL_TEMPLATES,
+        "hf_templates": HF_TEMPLATE_OPTIONS,
         "embedding_backends": EMBEDDING_BACKEND_OPTIONS,
         "embeddings": EMBEDDING_OPTIONS,
         "split_types": SPLIT_TYPE_OPTIONS,
@@ -659,6 +679,11 @@ def get_capabilities() -> Dict[str, Any]:
         "version": 1,
         "options": get_options(),
         "fields": {
+            "llm": ["llm", "api_key", "api_base", "api_name",
+                    "huggingface_model", "huggingface_template", "huggingface_context_window",
+                    "huggingface_max_new_tokens", "huggingface_trust_remote_code",
+                    "ollama_model", "ollama_url", "ollama_port",
+                    "ollama_request_timeout", "temperature"],
             "index": ["embedding_type", "embeddings", "embedding_api_key", "embedding_api_base",
                       "embed_batch_size", "split_type", "chunk_size", "chunk_overlap",
                       "window_size", "chunk_sizes", "persist_dir"],
@@ -715,8 +740,52 @@ def list_llm_models(body: LLMModelsRequest) -> Dict[str, Any]:
         raise HTTPException(502, detail={"code": "models_query_failed"}) from exc
 
 
-@app.get("/api/embeddings/local-models")
-def list_local_embedding_models() -> Dict[str, Any]:
+@app.post("/api/llm/ollama-models")
+def list_ollama_models(body: OllamaModelsRequest) -> Dict[str, Any]:
+    """Fetch locally available model names from an Ollama-compatible server."""
+    cfg = Config()
+    url = (body.ollama_url or getattr(cfg, "ollama_url", None) or "http://localhost").strip().rstrip("/")
+    port = body.ollama_port or getattr(cfg, "ollama_port", 11434)
+    if "://" not in url:
+        url = f"http://{url}"
+    request = urllib.request.Request(
+        f"{url}:{port}/api/tags",
+        headers={"Accept": "application/json"},
+        method="GET",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=15) as response:
+            if response.status < 200 or response.status >= 300:
+                raise HTTPException(502, detail={"code": "ollama_models_query_failed"})
+            payload = json.loads(response.read().decode("utf-8"))
+        models = sorted({
+            item.get("name") or item.get("model")
+            for item in payload.get("models", [])
+            if isinstance(item, dict) and (item.get("name") or item.get("model"))
+        })
+        if not models:
+            raise ValueError("Ollama response did not contain model names")
+        return {"models": models}
+    except HTTPException:
+        raise
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, ValueError, json.JSONDecodeError) as exc:
+        logger.warning("Automatic Ollama model lookup failed: %s", type(exc).__name__)
+        raise HTTPException(502, detail={"code": "ollama_models_query_failed"}) from exc
+
+
+def _is_causal_model_snapshot(snapshot: Path) -> bool:
+    try:
+        config = json.loads((snapshot / "config.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError, json.JSONDecodeError):
+        return False
+    architectures = config.get("architectures") or []
+    auto_map = config.get("auto_map") or {}
+    return any("ForCausalLM" in str(name) for name in architectures) or bool(
+        auto_map.get("AutoModelForCausalLM")
+    )
+
+
+def _local_transformers_models(*, causal_only: bool = False) -> Dict[str, Any]:
     """List repositories already present in the local Transformers cache."""
     try:
         from transformers.utils.hub import TRANSFORMERS_CACHE
@@ -728,7 +797,11 @@ def list_local_embedding_models() -> Dict[str, Any]:
                 if not entry.is_dir() or not entry.name.startswith("models--"):
                     continue
                 snapshots = entry / "snapshots"
-                if snapshots.is_dir() and any(snapshots.iterdir()):
+                available_snapshots = list(snapshots.iterdir()) if snapshots.is_dir() else []
+                if available_snapshots and (
+                    not causal_only
+                    or any(_is_causal_model_snapshot(snapshot) for snapshot in available_snapshots)
+                ):
                     model_id = entry.name.removeprefix("models--").replace("--", "/")
                     if model_id:
                         models.add(model_id)
@@ -738,6 +811,17 @@ def list_local_embedding_models() -> Dict[str, Any]:
     except Exception as exc:
         logger.warning("Local Hugging Face model lookup failed: %s", type(exc).__name__)
         raise HTTPException(503, detail={"code": "local_models_query_failed"}) from exc
+
+
+@app.get("/api/huggingface/local-models")
+def list_local_huggingface_models() -> Dict[str, Any]:
+    return _local_transformers_models(causal_only=True)
+
+
+@app.get("/api/embeddings/local-models")
+def list_local_embedding_models() -> Dict[str, Any]:
+    """Backward-compatible alias used by Step 2."""
+    return _local_transformers_models()
 
 
 @app.post("/api/config/vector")

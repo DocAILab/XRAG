@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { api } from './api';
 import { useLocale } from './i18n';
 import { store } from './store';
@@ -16,6 +16,7 @@ import closeUrl from '../../static/close.svg';
 import chevronUrl from '../../static/chevron-down.svg';
 
 const closeIconStyle = { '--close-icon': `url(${closeUrl})` };
+const paperLinks = ref(null);
 
 const { lang, t, format } = useLocale();
 const stepComponents = [DatasetStep, VectorStep, LlmStep, RetrievalStep, MetricsStep, ResultsStep];
@@ -27,6 +28,7 @@ const canGotoNext = computed(() => {
       store.dataset.source === 'preset' && store.dataset.name === store.presetDataset
     );
   }
+  if (store.step === 2) return store.indexStatus === 'done';
   if (store.step === 5) return store.selectedMetrics.length > 0;
   return store.step >= 2 && store.step <= 4;
 });
@@ -81,8 +83,14 @@ async function init() {
     const retrieval = config.retrieval;
     Object.assign(store, {
       llm: llm.llm || 'openai', apiKey: llm.api_key || '', apiBase: llm.api_base || '',
-      apiName: llm.api_name || '', authToken: llm.auth_token || '',
-      hfModel: llm.huggingface_model || 'llama', ollamaModel: llm.ollama_model || '',
+      apiName: llm.api_name || '',
+      hfModel: llm.huggingface_model || 'Qwen/Qwen2.5-7B-Instruct',
+      hfTemplate: llm.huggingface_template || 'auto',
+      hfContextWindow: llm.huggingface_context_window ?? 0,
+      hfMaxNewTokens: llm.huggingface_max_new_tokens || 512,
+      hfTrustRemoteCode: Boolean(llm.huggingface_trust_remote_code),
+      ollamaModel: llm.ollama_model || '',
+      ollamaUrl: llm.ollama_url || 'http://localhost', ollamaPort: llm.ollama_port || 11434,
       ollamaTimeout: llm.ollama_request_timeout || 60, temperature: llm.temperature || 0,
       embeddingType: embedding.embedding_type || 'local',
       embeddings: embedding.embeddings || options.embeddings[0],
@@ -183,6 +191,23 @@ async function followIndexTask(result) {
 async function buildIndexWithProgress() {
   return followIndexTask(await api.buildIndex());
 }
+async function generateIndex() {
+  if (!store.persistDir.trim()) return setError(t.value.vector.persistDirRequired);
+  store.loading = true;
+  store.error = '';
+  store.notice = '';
+  Object.assign(store, { indexStatus: 'running', indexPhase: 'pending', indexProgress: 0, indexCompleted: 0, indexTotal: 0 });
+  try {
+    await updateVector();
+    setNotice(t.value.messages.buildingIndex);
+    await buildIndexWithProgress();
+    setNotice(t.value.messages.indexBuilt);
+  } catch (error) {
+    setError(error.message || String(error));
+  } finally {
+    store.loading = false;
+  }
+}
 async function loadExistingIndex() {
   if (!store.existingIndexDir.trim()) return setError(t.value.vector.existingDir);
   store.loading = true;
@@ -201,7 +226,7 @@ async function loadExistingIndex() {
   }
 }
 async function updateLlm() {
-  await api.updateLLM({ llm: store.llm, api_key: store.apiKey || undefined, api_base: store.apiBase || undefined, api_name: store.apiName || undefined, auth_token: store.authToken || undefined, huggingface_model: store.hfModel || undefined, ollama_model: store.ollamaModel || undefined, ollama_request_timeout: store.ollamaTimeout || undefined, temperature: store.temperature });
+  await api.updateLLM({ llm: store.llm, api_key: store.apiKey || undefined, api_base: store.apiBase || undefined, api_name: store.apiName || undefined, huggingface_model: store.hfModel || undefined, huggingface_template: store.hfTemplate, huggingface_context_window: store.hfContextWindow, huggingface_max_new_tokens: store.hfMaxNewTokens, huggingface_trust_remote_code: store.hfTrustRemoteCode, ollama_model: store.ollamaModel || undefined, ollama_url: store.ollamaUrl || undefined, ollama_port: store.ollamaPort || undefined, ollama_request_timeout: store.ollamaTimeout || undefined, temperature: store.temperature });
 }
 async function updateRetrieval() {
   await api.updateRetrieval({ orchestrator: store.orchestrator, retriever: store.retriever, retriever_mode: store.retrieverMode, similarity_top_k: store.similarityTopK, query_transform: store.queryTransform, postprocess_rerank: store.postprocessRerank, response_synthesizer: store.responseSynthesizer, text_qa_template: store.textQaTemplate, refine_template: store.refineTemplate });
@@ -211,14 +236,7 @@ async function next() {
   store.error = '';
   try {
     if (store.step === 1 && !store.dataset) return setError(t.value.messages.chooseDataset);
-    if (store.step === 2) {
-      store.loading = true;
-      Object.assign(store, { indexStatus: 'running', indexPhase: 'pending', indexProgress: 0, indexCompleted: 0, indexTotal: 0 });
-      try {
-        await updateVector(); setNotice(t.value.messages.buildingIndex);
-        await buildIndexWithProgress(); setNotice(t.value.messages.indexBuilt);
-      } finally { store.loading = false; }
-    }
+    if (store.step === 2 && store.indexStatus !== 'done') return setError(t.value.messages.buildIndexFirst);
     if (store.step === 3) { await updateLlm(); setNotice(t.value.messages.llmSaved); }
     if (store.step === 4) { await updateRetrieval(); setNotice(t.value.messages.buildingEngine); await api.buildQueryEngine(); setNotice(t.value.messages.engineReady); }
     if (store.step === 5) { if (!store.selectedMetrics.length) return setError(t.value.messages.chooseMetric); await startEvaluation(); return; }
@@ -228,14 +246,14 @@ async function next() {
 
 async function loadPreset(name) {
   store.loading = true; store.presetLoading = true; setError('');
-  try { const result = await api.presetDataset(name); store.dataset = result.dataset; setNotice(format(t.value.messages.loaded, { name: result.dataset.display })); }
+  try { const result = await api.presetDataset(name); store.dataset = result.dataset; store.indexStatus = 'idle'; setNotice(format(t.value.messages.loaded, { name: result.dataset.display })); }
   catch (error) { setError(datasetErrorMessage(error, name)); }
   finally { store.loading = false; store.presetLoading = false; }
 }
 async function uploadJson() {
   if (!store.uploadFile) return setError(t.value.messages.chooseJson);
   store.loading = true; setError('');
-  try { const result = await api.uploadJson(store.uploadFile); store.dataset = result.dataset; store.presetDataset = ''; setNotice(format(t.value.messages.uploaded, { name: store.uploadFile.name })); }
+  try { const result = await api.uploadJson(store.uploadFile); store.dataset = result.dataset; store.presetDataset = ''; store.indexStatus = 'idle'; setNotice(format(t.value.messages.uploaded, { name: store.uploadFile.name })); }
   catch (error) { setError(error.message); }
   finally { store.loading = false; }
 }
@@ -245,6 +263,7 @@ async function generateFromFolder() {
     const result = await api.fromFolder({ folder_path: store.folderPath, output_json: store.folderOutput, num_questions: store.folderNum, sentence_length: store.folderSentenceLen });
     store.dataset = result.dataset;
     store.presetDataset = '';
+    store.indexStatus = 'idle';
     setNotice(format(t.value.messages.generated, { count: result.num_generated_qa_pairs }));
   } catch (error) { setError(error.message); }
   finally { store.loading = false; }
@@ -272,16 +291,26 @@ async function startEvaluation() {
 }
 async function cancelEvaluation() { if (store.evalTaskId) await api.cancelEvaluation(store.evalTaskId); }
 
+function closePaperMenu() {
+  if (paperLinks.value) paperLinks.value.open = false;
+}
+
+function closePaperMenuOnOutsideClick(event) {
+  if (paperLinks.value?.open && !paperLinks.value.contains(event.target)) closePaperMenu();
+}
+
 onMounted(() => {
   init();
   refreshHealth();
   healthTimer = setInterval(refreshHealth, 5000);
+  document.addEventListener('pointerdown', closePaperMenuOnOutsideClick);
 });
 onBeforeUnmount(() => {
   closeEvalStream();
   closeIndexStream();
   dismissToast();
   if (healthTimer) clearInterval(healthTimer);
+  document.removeEventListener('pointerdown', closePaperMenuOnOutsideClick);
 });
 </script>
 
@@ -302,11 +331,11 @@ onBeforeUnmount(() => {
           <a href="#features">{{ t.nav.features }}</a>
           <a href="#demo">{{ t.nav.demo }}</a>
           -->
-          <details class="paper-links">
+          <details ref="paperLinks" class="paper-links">
             <summary><span>{{ t.nav.paper }}</span><img :src="chevronUrl" alt="" aria-hidden="true" /></summary>
             <div class="paper-links-menu">
-              <a href="https://doi.org/10.1109/ICDE65706.2026.00201" target="_blank" rel="noopener">{{ t.nav.paperDoi }}</a>
-              <a href="https://arxiv.org/pdf/2412.15529" target="_blank" rel="noopener" lang="en">{{ t.nav.paperArxiv }}</a>
+              <a href="https://doi.org/10.1109/ICDE65706.2026.00201" target="_blank" rel="noopener" @click="closePaperMenu">{{ t.nav.paperDoi }}</a>
+              <a href="https://arxiv.org/pdf/2412.15529" target="_blank" rel="noopener" lang="en" @click="closePaperMenu">{{ t.nav.paperArxiv }}</a>
             </div>
           </details>
           <a href="https://github.com/DocAILab/XRAG" target="_blank" rel="noopener" lang="en">{{ t.nav.github }}</a>
@@ -333,7 +362,8 @@ onBeforeUnmount(() => {
       </div>
       <component :is="currentStep" :store="store" :options="store.options" :t="t" @load-preset="loadPreset"
         @upload-json="uploadJson" @generate-folder="generateFromFolder" @restart="gotoStep(1)"
-        @cancel="cancelEvaluation" @load-index="loadExistingIndex" @error="setError" @notice="setNotice" />
+        @cancel="cancelEvaluation" @build-index="generateIndex" @load-index="loadExistingIndex"
+        @error="setError" @notice="setNotice" />
       <div v-if="store.step <= 5" class="nav-buttons"><button class="button button-secondary"
           :disabled="store.step === 1 || store.loading" @click="gotoStep(store.step - 1)">{{ t.common.previous
           }}</button><button class="button button-primary" :disabled="!canGotoNext || store.loading" @click="next"><span

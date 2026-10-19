@@ -4,7 +4,7 @@ import { api } from '../../api';
 import ModelCombobox from '../ModelCombobox.vue';
 import chevronUrl from '../../../../static/chevron-down.svg';
 const props = defineProps({ store: Object, t: Object });
-const emit = defineEmits(['load-index', 'error', 'notice']);
+const emit = defineEmits(['build-index', 'load-index', 'error', 'notice']);
 const buildExpanded = ref(true);
 const loadExpanded = ref(false);
 const localModels = ref([]);
@@ -77,7 +77,16 @@ async function queryLocalModels() {
       <div class="form-row"><label class="field-label">{{ t.vector.chunkOverlap }}</label><input v-model.number="store.chunkOverlap" type="number" min="0" /></div>
       <div v-if="store.splitType === 'sentence_window'" class="form-row"><label class="field-label">{{ t.vector.windowSize }}</label><input v-model.number="store.windowSize" type="number" min="1" /></div>
       <div v-if="store.splitType === 'hierarchical'" class="form-row"><label class="field-label">{{ t.vector.chunkSizes }}</label><input v-model="store.chunkSizes" type="text" placeholder="2048, 512, 128" /></div>
-      <div class="form-row"><label class="field-label">{{ t.vector.persistDir }}</label><input v-model="store.persistDir" type="text" :placeholder="t.vector.persistDirPlaceholder "/></div>
+      <div class="form-row">
+        <label class="field-label" for="persist-directory">{{ t.vector.persistDir }}</label>
+        <div class="persist-generate-control">
+          <input id="persist-directory" v-model="store.persistDir" type="text" :placeholder="t.vector.persistDirPlaceholder" />
+          <button class="button button-primary" type="button"
+            :disabled="store.loading || !store.persistDir.trim()" @click="$emit('build-index')">
+            {{ store.loading ? t.common.loading : t.vector.generate }}
+          </button>
+        </div>
+      </div>
       <div v-if="store.indexStatus === 'running'" class="index-build-progress" role="status" aria-live="polite">
         <div class="index-build-status">
           <span>{{ t.vector.phases[store.indexPhase] || t.vector.building }}</span>
