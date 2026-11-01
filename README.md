@@ -437,3 +437,7 @@ Or access via [arXiv](https://arxiv.org/abs/2412.15529).
 ## 🙏 Thank You
 
 Thank you for using XRAG! We hope it proves valuable in your research and development efforts in the field of Retrieval-Augmented Generation.
+
+
+
+[![Star History Chart](https://api.star-history.com/svg?repos=DocAILab/XRAG&type=Date)](https://star-history.com/#OWNER/REPO&Date)
