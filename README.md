@@ -10,6 +10,8 @@
 [![GitHub issues](https://img.shields.io/github/issues/DocAILab/XRAG)](https://github.com/DocAILab/XRAG/issues)
 [![arXiv](https://img.shields.io/badge/arXiv-2412.15529-b31b1b.svg)](https://arxiv.org/abs/2412.15529)
 [![DOI](https://img.shields.io/badge/DOI-10.1109%2FICDE65706.2026.00201-1070AD)](https://ieeexplore.ieee.org/document/11629265)
+[![Project Page](https://img.shields.io/badge/Project-Page-5351b9)](https://xiaolizhang77.github.io/XRAG/)
+
 ## 📑 Table of Contents
 
 - [:mega: Updates](#mega-updates)
